@@ -6,7 +6,7 @@
 #    By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/29 15:04:08 by rihoy             #+#    #+#              #
-#    Updated: 2024/02/29 18:33:56 by rihoy            ###   ########.fr        #
+#    Updated: 2024/02/29 23:18:31 by rihoy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,17 +64,17 @@ LIB = $(UTILS)/lib.a
 #		Rules
 #-----------------------#
 all : $(NAME)
-	@echo "$(C_G)Compilation lib STATUS [OK]$(RESET)"
+	@echo "$(C_G)Compilation Minishell STATUS [OK]$(RESET)"
 
 $(NAME) : $(LIB) $(FILE_O)
-	@$(CC) $(FLAGS) $(LIB) $(FILE_O) $(UTILS) -o $(NAME) ./main.c -I $(INCLUDES)
+	@$(CC) $(FLAGS) $(FILE_O) -o $(NAME) main.c -I $(INCLUDES) $(UTILS)/lib.a
 
 $(LIB) :
 	@make -C $(UTILS) --silent
 
 $(OBJS)/%.o : $(SRCS)/$(PARS)/%.c
 	@mkdir -p $(OBJS)
-	@$(CC) $(FLAGS) -I $(INCLUDES) -c $< -o $@
+	@$(CC) $(FLAGS) -I $(INCLUDES) -I $(UTILS) -c $< -o $@
 	@echo "$(C_B)loading : $(RESET)$< $(C_G)[OK]$(RESET)"
 
 clean :
@@ -86,8 +86,8 @@ fclean :
 	@$(RM) $(NAME)
 	@$(RM) $(OBJS)
 	@make fclean -C $(UTILS) --silent
-	@echo "$(C_R)FILE '*.o' for $(NAME) deleted$(RESET)"
-	@echo "$(C_R) $(NAME) deleted$(RESET)"
+	@echo "$(C_W)FILE '*.o' for $(C_R)$(NAME) deleted$(RESET)"
+	@echo "Projet $(C_R)$(NAME) deleted$(RESET)"
 
 re : fclean all
 

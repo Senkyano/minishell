@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 18:35:55 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/02/29 22:39:24 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define MINISHELL_H
 
 #include <stdlib.h>
-#include "../utils/lib_utils.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 typedef struct	s_lstcmd
 {
