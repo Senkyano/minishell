@@ -6,7 +6,7 @@
 #    By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/29 15:04:08 by rihoy             #+#    #+#              #
-#    Updated: 2024/02/29 23:18:31 by rihoy            ###   ########.fr        #
+#    Updated: 2024/02/29 23:24:50 by rihoy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ FILE_O =	$(FILE_PARS_C:$(SRCS)/$(PARS)/%.c=$(OBJS)/%.o)
 # **************************** #
 UTILS = utils
 LIB = $(UTILS)/lib.a
+EXTENSION = $(UTILS)/lib.a
 
 #--------------------------------------#
 #		Rules
@@ -67,7 +68,7 @@ all : $(NAME)
 	@echo "$(C_G)Compilation Minishell STATUS [OK]$(RESET)"
 
 $(NAME) : $(LIB) $(FILE_O)
-	@$(CC) $(FLAGS) $(FILE_O) -o $(NAME) main.c -I $(INCLUDES) $(UTILS)/lib.a
+	@$(CC) $(FLAGS) $(FILE_O) -o $(NAME) main.c -I $(INCLUDES) $(EXTENSION)
 
 $(LIB) :
 	@make -C $(UTILS) --silent
