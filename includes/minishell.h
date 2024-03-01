@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/01 14:06:31 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/01 16:32:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,22 @@ typedef struct	s_lstcmd
 {
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
-	pid_t			child;	  // child
+	pid_t			cmd_child;	  // child sous-process
 	struct s_lstcmd	*next;
 }	t_lstcmd;
+
+typedef struct s_lstfd
+{
+	char			*name;
+	bool			in_file;
+	int				fd;
+	struct s_lstfd	*next;
+}	t_lstfd;
 
 typedef struct	s_body
 {
 	int				prio; //prio sur le process
+	pid_t			body_child; // child main process
 	t_lstcmd		*allcmd; //Commande entre pipe
 	struct s_body	*next; //process suivant
 }	t_body;
@@ -53,6 +62,7 @@ typedef struct	s_shell
 // Erreur
 void	launch_shell(int argc, const char **env);
 void	gestion_exit(char *msg, t_shell *bash);
+// Get
 void	get_true_path(t_shell *bash, char const **env);
 
 #endif

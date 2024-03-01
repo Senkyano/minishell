@@ -1,30 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   lst_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 14:03:05 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/01 14:38:47 by rihoy            ###   ########.fr       */
+/*   Created: 2024/03/01 14:37:44 by rihoy             #+#    #+#             */
+/*   Updated: 2024/03/01 14:38:02 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lib_utils.h"
 
-int	main(int argc, const char **argv, const char **env)
-{
-	t_shell	bash;
 
-	if (argv == NULL)
-		return (1);
-	launch_shell(argc, env);
-	get_true_path(&bash, env);
-	// while (1)
-	// {
-	// 	waitpid();
-	// }
-	free_split(bash.path);
-	return (0);
-}
