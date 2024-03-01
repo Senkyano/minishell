@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   condition_launch.c                                 :+:      :+:    :+:   */
+/*   error_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 14:05:03 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/01 13:43:03 by rihoy            ###   ########.fr       */
+/*   Created: 2024/03/01 14:02:49 by rihoy             #+#    #+#             */
+/*   Updated: 2024/03/01 14:21:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lib_utils.h"
 
-void	launch_shell(int argc, const char **env)
+void	gestion_exit(char *msg, t_shell *bash)
 {
-	if (argc != 1)
-	{
-		printf(CY"Minishell >: "RED"'argument not require'\n"RST);
-		exit(0);
-	}
-	if (!env | !env[0])
-	{
-		printf(CY"Minishell >: "RED"'environement require'\n"RST);
-		exit(0);
-	}
-	printf(BLK"Minishell by "PUR"Yrio "BLK"and"Y" Rihoy"RST"\n");
+	printf(CY"Minishell >: "RED"%s\n"RST, msg);
+	if (bash->path)
+		free_split(bash->path);
+	exit(0);
 }

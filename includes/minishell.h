@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 22:39:24 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/01 14:06:31 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+// colors
+#define BLK "\e[0;90m"
+#define RED "\e[1;31m" // ERROR
+#define GR "\e[1;92m"
+#define Y "\e[1;93m"
+#define BLU "\e[1;94m" //Minishell name
+#define PUR "\e[1;95m"
+#define CY "\e[1;96m"
+#define WH "\e[0;97m"
+#define RST "\e[0m"
+
 typedef struct	s_lstcmd
 {
 	char			**cmd;	  // cmd
@@ -26,19 +37,22 @@ typedef struct	s_lstcmd
 	struct s_lstcmd	*next;
 }	t_lstcmd;
 
-// typedef struct	s_body
-// {
-// 	t_lstcmd			*
-// 	struct s_lstprio	*next;
-// }	t_body;
+typedef struct	s_body
+{
+	int				prio; //prio sur le process
+	t_lstcmd		*allcmd; //Commande entre pipe
+	struct s_body	*next; //process suivant
+}	t_body;
 
 typedef struct	s_shell
 {
-	int			exit_status;
-	char		**path;
-	t_lstcmd	*allcmd;
+	int			exit_status; // gestion des erreur
+	char		**path; // True path
+	t_body		*process;
 }	t_shell;
-
+// Erreur
 void	launch_shell(int argc, const char **env);
+void	gestion_exit(char *msg, t_shell *bash);
+void	get_true_path(t_shell *bash, char const **env);
 
 #endif

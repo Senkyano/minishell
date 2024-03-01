@@ -6,7 +6,7 @@
 #    By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/29 15:04:08 by rihoy             #+#    #+#              #
-#    Updated: 2024/02/29 23:24:50 by rihoy            ###   ########.fr        #
+#    Updated: 2024/03/01 14:12:48 by rihoy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ RESET = \033[0m
 #--------------------------------------#
 #		File
 #-----------------------#
-FILE_PARS_C =	$(SRCS)/$(PARS)/condition_launch.c
+FILE_PARS_C =	$(SRCS)/$(PARS)/condition_launch.c \
+				$(SRCS)/$(PARS)/get_path.c \
+				$(SRCS)/$(PARS)/error_exit.c
 
 # FILE_MAIN_C = main.c
 
@@ -68,7 +70,7 @@ all : $(NAME)
 	@echo "$(C_G)Compilation Minishell STATUS [OK]$(RESET)"
 
 $(NAME) : $(LIB) $(FILE_O)
-	@$(CC) $(FLAGS) $(FILE_O) -o $(NAME) main.c -I $(INCLUDES) $(EXTENSION)
+	@$(CC) $(FLAGS) $(FILE_O) -o $(NAME) main.c -I $(INCLUDES) -I $(UTILS) $(EXTENSION)
 
 $(LIB) :
 	@make -C $(UTILS) --silent
