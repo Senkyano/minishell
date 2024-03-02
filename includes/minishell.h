@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/01 16:32:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/02 22:35:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include <sys/types.h>
 
 // colors
@@ -29,21 +30,23 @@
 #define WH "\e[0;97m"
 #define RST "\e[0m"
 
+typedef struct s_lstfd
+{
+	char			*name;
+	bool			in_file;
+	bool			here_doc;
+	int				fd;
+	struct s_lstfd	*next;
+}	t_lstfd;
+
 typedef struct	s_lstcmd
 {
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			cmd_child;	  // child sous-process
+	t_lstfd			*lst_fd;
 	struct s_lstcmd	*next;
 }	t_lstcmd;
-
-typedef struct s_lstfd
-{
-	char			*name;
-	bool			in_file;
-	int				fd;
-	struct s_lstfd	*next;
-}	t_lstfd;
 
 typedef struct	s_body
 {

@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd.c                                          :+:      :+:    :+:   */
+/*   lib_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/02 22:15:59 by rihoy            ###   ########.fr       */
+/*   Created: 2024/03/02 21:32:00 by rihoy             #+#    #+#             */
+/*   Updated: 2024/03/02 21:36:32 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "lib_utils.h"
 
+void	*lib_memset(void *pt, int value, size_t stats)
+{
+	char	*init;
 
+	init = pt;
+	while (stats > 0)
+	{
+		init[stats - 1] = (unsigned char)value;
+		stats--;
+	}
+	return (init);
+}

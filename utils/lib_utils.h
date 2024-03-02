@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/19 14:05:26 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/02 21:38:27 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ size_t	sent_len(char **sent);
 bool	str_cmp(char *str, char *str2);
 bool	slib_cmp(char *str, char *str2);
 bool	last_cmp(char *str, char *str2);
-bool	in_lim(char *str, char *lim);
 bool	str_ncmp(char *str, char *str2, size_t n);
 // JOIN
 char	*str_join(char *str1, char *str2);
@@ -56,5 +55,7 @@ char	**lib_split(char *str, char *set);
 void	free_split(char **sent);
 // SRCH
 int		lib_srch(char *str, char to_find);
+// set
+void	*lib_memset(void *pt, int value, size_t stats);
 
 #endif

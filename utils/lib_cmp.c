@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:56:55 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 14:10:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/02 21:07:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,28 +77,6 @@ bool	str_ncmp(char *str, char *str2, size_t n)
 		if (str[i] != str2[i])
 			return (false);
 		i++;
-	}
-	return (true);
-}
-
-bool	in_lim(char *str, char *lim)
-{
-	size_t	i;
-	size_t	j;
-
-	j = 0;
-	i = 0;
-	while (str[i] || lim[j])
-	{
-		if (lim[j] == 0)
-		{
-			if (str[i] == '\n' || str[i] == 0)
-				return (true);
-		}
-		if (str[i] != lim[j])
-			return (false);
-		i++;
-		j++;
 	}
 	return (true);
 }
