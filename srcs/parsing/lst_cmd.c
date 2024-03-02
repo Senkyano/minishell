@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:38 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/02 22:39:43 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/02 23:26:27 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_lstcmd	*box_cmd(char *cmd, t_lstfd *fd_cmd, t_shell *bash)
 	return (new_cmd);
 }
 
-void	do_lstcmd(t_body *process, t_lstcmd *cmd)
+void	add_lstcmd(t_body *process, t_lstcmd *cmd)
 {
 	t_lstcmd	*curr_cmd;
 

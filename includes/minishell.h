@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/02 22:35:44 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/02 23:44:40 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,15 @@ typedef struct	s_shell
 	t_body		*process;
 }	t_shell;
 // Erreur
-void	launch_shell(int argc, const char **env);
-void	gestion_exit(char *msg, t_shell *bash);
+void		launch_shell(int argc, const char **env);
+void		gestion_exit(char *msg, t_shell *bash);
 // Get
-void	get_true_path(t_shell *bash, char const **env);
+void		get_true_path(t_shell *bash, char const **env);
+// Process
+void		add_proccess(t_shell *bash, t_body *process);
+t_body		*bloc_process(t_lstcmd *lstcmd, int prio);
+// Cmd
+t_lstcmd	*box_cmd(char *cmd, t_lstfd *fd_cmd, t_shell *bash);
+void		add_lstcmd(t_body *process, t_lstcmd *cmd);
 
 #endif
