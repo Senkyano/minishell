@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/02 23:44:40 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/03 13:40:40 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
+	char		**space;
 	t_body		*process;
 }	t_shell;
 // Erreur
