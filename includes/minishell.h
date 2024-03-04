@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/03 13:40:40 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/04 18:49:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,19 @@
 #define WH "\e[0;97m"
 #define RST "\e[0m"
 
+typedef struct s_token
+{
+	bool			in_doquote;
+	bool			in_sgquote;
+	bool			in_par;
+}	t_token;
+
 typedef struct s_lstfd
 {
 	char			*name;
 	bool			in_file;
 	bool			here_doc;
-	int				fd;
+	int				fd; 
 	struct s_lstfd	*next;
 }	t_lstfd;
 
@@ -74,5 +81,12 @@ t_body		*bloc_process(t_lstcmd *lstcmd, int prio);
 // Cmd
 t_lstcmd	*box_cmd(char *cmd, t_lstfd *fd_cmd, t_shell *bash);
 void		add_lstcmd(t_body *process, t_lstcmd *cmd);
+
+
+
+
+
+// test
+void	cutting(char *str);
 
 #endif
