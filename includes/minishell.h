@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/04 18:49:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/04 22:01:02 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@
 
 typedef struct s_token
 {
+	bool			in_cmd;
 	bool			in_doquote;
 	bool			in_sgquote;
 	bool			in_par;
+	bool			new_process;
 }	t_token;
 
 typedef struct s_lstfd
@@ -46,29 +48,26 @@ typedef struct s_lstfd
 	struct s_lstfd	*next;
 }	t_lstfd;
 
-typedef struct	s_lstcmd
+typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
+	bool			proc_or;
+	bool			proc_and;
+	bool			proc_def;
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
-	pid_t			cmd_child;	  // child sous-process
+	pid_t			child;	  // child sous-process
 	t_lstfd			*lst_fd;
-	struct s_lstcmd	*next;
+	struct s_lstcmd	*def_next;
+	struct s_lstcmd	*and_next;
+	struct s_lstcmd	*or_next;
 }	t_lstcmd;
-
-typedef struct	s_body
-{
-	int				prio; //prio sur le process
-	pid_t			body_child; // child main process
-	t_lstcmd		*allcmd; //Commande entre pipe
-	struct s_body	*next; //process suivant
-}	t_body;
 
 typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
 	char		**space;
-	t_body		*process;
+	t_lstcmd	*lstcmd;
 }	t_shell;
 // Erreur
 void		launch_shell(int argc, const char **env);
@@ -76,17 +75,14 @@ void		gestion_exit(char *msg, t_shell *bash);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Process
-void		add_proccess(t_shell *bash, t_body *process);
-t_body		*bloc_process(t_lstcmd *lstcmd, int prio);
 // Cmd
 t_lstcmd	*box_cmd(char *cmd, t_lstfd *fd_cmd, t_shell *bash);
-void		add_lstcmd(t_body *process, t_lstcmd *cmd);
 
 
 
 
 
 // test
-void	cutting(char *str);
+int			cutting(char *str, t_lstcmd *base);
 
 #endif

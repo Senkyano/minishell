@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/04 18:34:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/04 22:02:27 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "lib_utils.h"
 
 static int	skip_space(char *str);
-static int	skip_char(char *str);
 
 // void	get_all_process(char *process, t_shell *bash)
 // {
@@ -32,33 +31,20 @@ static int	skip_char(char *str);
 // 	}
 // }
 
-void	cutting(char *str)
+int	cutting(char *str, t_lstcmd *base)
 {
 	int			i;
-	// t_token		token;
-	// char		**process;
+	t_token		token;
+	t_lstcmd	*tmp;
 
-	// process = NULL;
-	// lib_memset(&token, 0, sizeof(token));
+	lib_memset(&token, 0, sizeof(token));
+	token.in_cmd = true;
 	i = 0;
 	while (str[i])
 	{
 		i += skip_space(str + i);
-		// printf("%d %s\n", i, (str + i));
-		if (str[i])
-			i += skip_char(str + i);
+		// i += cutting(str + i, base); la recursive se feras appelle que pour or/and
 	}
-}
-
-static int	skip_char(char *str/*, t_token *token*/)
-{
-	int	i;
-	
-	i = 0;
-	// if (token->)
-	while (str[i] && str[i] != 32 && str[i] != 11)
-		i++;
-	return (i);	
 }
 
 static int	skip_space(char *str)
