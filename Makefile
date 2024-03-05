@@ -6,7 +6,7 @@
 #    By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/29 15:04:08 by rihoy             #+#    #+#              #
-#    Updated: 2024/03/04 16:38:44 by rihoy            ###   ########.fr        #
+#    Updated: 2024/03/05 15:33:47 by rihoy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,8 @@ RESET = \033[0m
 FILE_PARS_C =	$(SRCS)/$(PARS)/condition_launch.c \
 				$(SRCS)/$(PARS)/get_path.c \
 				$(SRCS)/$(PARS)/error_exit.c \
-				$(SRCS)/$(PARS)/get_process.c
+				$(SRCS)/$(PARS)/get_process.c \
+				$(SRCS)/$(PARS)/check_str.c
 
 # FILE_MAIN_C = main.c
 

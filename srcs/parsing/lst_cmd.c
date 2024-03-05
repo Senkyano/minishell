@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:38 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/04 21:45:13 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/05 15:38:18 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash)
 	return (new_cmd);
 }
 
-void		add_or(t_lstcmd *process_or, t_lstcmd *def_cmd)
+void	add_or(t_lstcmd *process_or, t_lstcmd *def_cmd)
 {
 	t_lstcmd	*process_cur;
 
@@ -38,7 +38,7 @@ void		add_or(t_lstcmd *process_or, t_lstcmd *def_cmd)
 	process_cur->or_next = def_cmd;
 }
 
-void		add_and(t_lstcmd *process_and, t_lstcmd *def_cmd)
+void	add_and(t_lstcmd *process_and, t_lstcmd *def_cmd)
 {
 	t_lstcmd	*process_cur;
 
@@ -50,7 +50,7 @@ void		add_and(t_lstcmd *process_and, t_lstcmd *def_cmd)
 	process_cur->and_next = def_cmd;
 }
 
-void		add_default(t_lstcmd *lst_cmd, t_lstcmd *cmd)
+void	add_default(t_lstcmd *lst_cmd, t_lstcmd *cmd)
 {
 	t_lstcmd	*curr_lst;
 

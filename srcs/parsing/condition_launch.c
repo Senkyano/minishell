@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:05:03 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/04 16:38:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/05 16:44:21 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	launch_shell(int argc, const char **env)
 {
-	if (argc != 2)
+	if (argc != 1)
 	{
 		printf(CY"Minishell >: "RED"'argument not require'\n"RST);
 		exit(0);
