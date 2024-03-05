@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 20:20:39 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/05 22:10:09 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ typedef struct s_lstfd
 
 typedef struct	s_infopars
 {
+	int		spe; // 1 = file, 2 = redirection, 3 = cmd, 4 = pipe, 5 = process_and, 6 = process_or
+	char	*str;
 	// pour le parsing attribuer token
-}
+}	t_infopars;
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
@@ -75,6 +77,7 @@ typedef struct	s_shell
 	char		**path; // True path
 	char		**space;
 	t_lstcmd	*lstcmd;
+	t_infopars	*lst_char;
 }	t_shell;
 // Erreur
 void		launch_shell(int argc, const char **env);
