@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 18:51:18 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/05 20:20:39 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ typedef struct s_lstfd
 	int				fd;
 	struct s_lstfd	*next;
 }	t_lstfd;
+
+typedef struct	s_infopars
+{
+	// pour le parsing attribuer token
+}
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {

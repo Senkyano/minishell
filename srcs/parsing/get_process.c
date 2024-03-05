@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 15:32:47 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/05 19:28:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,22 @@
 // 	}
 // }
 
-// int	cutting(char *str, t_lstcmd *base)
-// {
-// 	int			i;
-// 	t_token		token;
-// 	t_lstcmd	*tmp;
+int	cutting(char *str, t_lstcmd *base)
+{
+	int			i;
+	t_token		token;
+	t_lstcmd	*tmp;
 
-// 	lib_memset(&token, 0, sizeof(token));
-// 	token.in_cmd = true;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		i += skip_space(str + i);
-// 		if (str[i] == '|' && str[i + 1] != '|')
-// 		else if (str[i] == '|' && str[i + 1] == '|')
-// 		else if (str[i] == '&' && str[i + 1] == '&')
-			
-// 		// i += cutting(str + i, base); la recursive se feras appelle que pour or/and
-// 	}
-// }
+	lib_memset(&token, 0, sizeof(token));
+	token.in_cmd = true;
+	i = 0;
+	while (str[i])
+	{
+		i += skip_space(str + i);
+					
+		// i += cutting(str + i, base); la recursive se feras appelle que pour or/and
+	}
+}
 
 // static	void	id_main_process(t_token *token, char *str)
 // {

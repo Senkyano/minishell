@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:30:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 18:52:56 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/05 19:17:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ bool	valid_str(char *str)
 		in_doquote(str[i], &token);
 		in_parsing(str[i], &token);
 	}
+	if (last_cmp(str, "&&\n") || last_cmp(str, "||\n"))
+		token.error = true;
 	if (!token.in_par && !token.in_doquote && !token.in_sgquote && !token.error)
 		return (true);
 	return (false);
