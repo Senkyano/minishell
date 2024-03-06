@@ -6,12 +6,30 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 19:28:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/06 17:10:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lib_utils.h"
+
+void	build_process(char *str, t_shell *bash)
+{
+	if (!valid_str(str))
+	{
+		printf(CY"Minishell >: "RED"Invalid process\n");
+		return ;
+	}
+	bash->str_split = lib_split(str, " ");
+	if (!bash->str_split)
+	{
+		printf(CY"Minishell >: "RED"Malloc fail\n");
+		return ;
+	}
+	
+}
+
+
 
 // static int	skip_space(char *str);
 
@@ -31,22 +49,22 @@
 // 	}
 // }
 
-int	cutting(char *str, t_lstcmd *base)
-{
-	int			i;
-	t_token		token;
-	t_lstcmd	*tmp;
+// int	cutting(char *str, t_lstcmd *base)
+// {
+// 	int			i;
+// 	t_token		token;
+// 	t_lstcmd	*tmp;
 
-	lib_memset(&token, 0, sizeof(token));
-	token.in_cmd = true;
-	i = 0;
-	while (str[i])
-	{
-		i += skip_space(str + i);
-					
-		// i += cutting(str + i, base); la recursive se feras appelle que pour or/and
-	}
-}
+// 	lib_memset(&token, 0, sizeof(token));
+// 	token.in_cmd = true;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		i += skip_space(str + i);
+// 		if ()
+// 		// i += cutting(str + i, base); la recursive se feras appelle que pour or/and
+// 	}
+// }
 
 // static	void	id_main_process(t_token *token, char *str)
 // {

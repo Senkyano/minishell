@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:30:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 19:17:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/06 17:27:00 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	in_parsing(char c, t_token *token)
 	else if (c == ')' && token->in_par && !token->in_sgquote && \
 !token->in_doquote)
 		token->in_par--;
-	else if (c == ')' && !token->in_par)
+	else if (c == ')' && !token->in_par && !token->in_sgquote && \
+!token->in_doquote)
 		token->error = true;
 }

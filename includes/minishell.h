@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 22:10:09 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/06 17:46:43 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ typedef struct s_token
 	bool			process_and;
 }	t_token;
 
+typedef struct s_list {
+	int				index;
+	char			*key;
+	char			*value;
+	char			**splitting;
+	struct s_list	*next;
+}				t_envlist;
+
 typedef struct s_lstfd
 {
 	char			*name;
@@ -52,21 +60,20 @@ typedef struct s_lstfd
 
 typedef struct	s_infopars
 {
-	int		spe; // 1 = file, 2 = redirection, 3 = cmd, 4 = pipe, 5 = process_and, 6 = process_or
+	int		spe; // 1 = file, 2 = redirection, 3 = cmd, 4 = pipe, 5 = process_and, 6 = process_or, 7 = variable env.
 	char	*str;
 	// pour le parsing attribuer token
+	struct s_infopars	*next;
+	struct s_infopars	*attatch_to;
 }	t_infopars;
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
-	bool			proc_or;
-	bool			proc_and;
-	bool			proc_def;
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
 	t_lstfd			*lst_fd;
-	struct s_lstcmd	*def_next;
+	struct s_lstcmd	*def_next; //pipe
 	struct s_lstcmd	*and_next; // si def a reussis a etre exectuer comme il faut alors continue dans and
 	struct s_lstcmd	*or_next; // si ou existe ne rentre pas si def a reussis a etre exectuer comme il faut
 }	t_lstcmd;
@@ -75,7 +82,8 @@ typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
-	char		**space;
+	t_envlist	*env;
+	char		**str_split;
 	t_lstcmd	*lstcmd;
 	t_infopars	*lst_char;
 }	t_shell;
