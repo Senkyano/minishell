@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:56:55 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 18:28:55 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 21:31:36 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,19 @@ bool	last_cmp(char *str, char *str2)
 {
 	int	i;
 	int	j;
-	int	error;
 
 	i = str_len(str2);
 	j = str_len(str);
-	i--;
-	j--;
-	error = 0;
-	// while (str[j] == str2[i] && str[j] && str2[i])
-	// {
-	// 	if (str[j] != str2[i])
-	// 		return (false);
-	// 	i--;
-	// 	j--;
-	// }
+	if (j < i)
+		return (false);
+	j = j - i;
+	i = 0;
+	while (str[j + i])
+	{
+		if (str[j + i] != str2[i])
+			return (false);
+		i++;
+	}
 	return (true);
 }
 
