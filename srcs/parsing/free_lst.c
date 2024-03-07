@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 12:01:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 13:34:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 13:50:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_and_process(t_lstcmd *lstprocess)
 		lstprocess = curr_and;
 		free_def_process(lstprocess);
 		if (lstprocess->or_next)
-			free_or_process(lstcmd);
+			free_or_process(lstprocess);
 		curr_and = curr_and->and_next;
 	}
 }

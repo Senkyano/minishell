@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 13:37:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 15:14:04 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 void	build_process(char *str, t_shell *bash)
 {
+	// int	i;
+
 	if (!valid_str(str))
 	{
 		printf(CY"Minishell >: "RED"Invalid process\n");
@@ -26,6 +28,7 @@ void	build_process(char *str, t_shell *bash)
 		printf(CY"Minishell >: "RED"Malloc fail\n");
 		return ;
 	}
+	
 }
 
 

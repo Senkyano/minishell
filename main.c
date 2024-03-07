@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:03:05 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/06 17:29:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 15:25:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	main(int argc, const char **argv, const char **env)
 	launch_shell(argc, env);
 	while (1)
 	{
-		write(1, CY"Minishell >: ", 13);
+		// write(1, CY"Minishell >: "RST, 13);
 		str = get_next_line(1);
 		if (valid_str(str))
-			printf("ok\n");
+			print_error("ok\n");
 		else
-			printf("KO\n");
+			print_error("KO\n");
 		free(str);
 	}
 	// cutting((char *)argv[1]);

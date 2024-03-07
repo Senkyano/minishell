@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 13:36:15 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 13:54:56 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
+	int			nbr_path;
 	t_envlist	*env;
 	char		**str_split;
 	t_lstcmd	*lstcmd;
@@ -106,8 +107,6 @@ void		free_or_process(t_lstcmd *lstprocess);
 void		free_and_process(t_lstcmd *lstprocess);
 void		free_strshell(t_infopars *all);
 void		free_shell(t_shell *bash);
-// Cmd
-t_lstcmd	*box_cmd(char *cmd, t_lstfd *fd_cmd, t_shell *bash);
 // In
 void		in_sgquote(char c, t_token *token);
 void		in_doquote(char c, t_token *token);

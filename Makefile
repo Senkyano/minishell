@@ -6,7 +6,7 @@
 #    By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/29 15:04:08 by rihoy             #+#    #+#              #
-#    Updated: 2024/03/05 15:33:47 by rihoy            ###   ########.fr        #
+#    Updated: 2024/03/07 13:49:52 by rihoy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,11 @@ FILE_PARS_C =	$(SRCS)/$(PARS)/condition_launch.c \
 				$(SRCS)/$(PARS)/get_path.c \
 				$(SRCS)/$(PARS)/error_exit.c \
 				$(SRCS)/$(PARS)/get_process.c \
-				$(SRCS)/$(PARS)/check_str.c
+				$(SRCS)/$(PARS)/check_str.c \
+				$(SRCS)/$(PARS)/free_lst.c \
+				$(SRCS)/$(PARS)/free_shell.c \
+				$(SRCS)/$(PARS)/infopars.c \
+				$(SRCS)/$(PARS)/lst_cmd.c
 
 # FILE_MAIN_C = main.c
 

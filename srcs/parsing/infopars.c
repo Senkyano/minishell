@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 11:46:56 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 15:13:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,20 @@
 t_infopars	*diff_strshell(char *str, int i, int spe)
 {
 	int			x;
-	t_infopars	*case;
+	t_infopars	*case_info;
 
-	lib_memset(case, 0, sizeof(case));
-	case->str = malloc((i + 1 * sizeof(char)));
-	if (!case->str)
+	case_info = NULL;
+	lib_memset(case_info, 0, sizeof(case_info));
+	case_info->str = malloc((i + 1 * sizeof(char)));
+	if (!case_info->str)
 		return (NULL);
 	x = -1;
-	case->spe = spe;
+	case_info->spe = spe;
 	while (++x < i)
-		case->str[x] = str[x];
-	case->str[x] = '\0';
-	case->next = NULL;
-	return (case);
+		case_info->str[x] = str[x];
+	case_info->str[x] = '\0';
+	case_info->next = NULL;
+	return (case_info);
 }
 
 void	add_strshell(t_infopars *all, t_infopars *part)
@@ -59,3 +60,14 @@ void	free_strshell(t_infopars *all)
 		curr_all = curr_all->next;
 	}
 }
+
+// void	build_lststr(char **str)
+// {
+// 	int	i;
+	
+// 	i = -1;
+// 	while (str[++i])
+// 	{
+// 		if (str_cmp())
+// 	}
+// }

@@ -6,27 +6,25 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:56:55 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 19:20:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 15:38:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_utils.h"
+#include <stdio.h>
 #include <stdbool.h>
 
 bool	last_cmp(char *str, char *str2)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	j;
 
-	i = str_len(str);
-	j = str_len(str2);
-	if (i < j)
+	i = str_len(str2);
+	j = str_len(str) - i;
+	if (j < 0)
 		return (false);
-	while (--j > 0 && --i > 0)
-	{
-		if (str[i] != str2[j])
-			return (false);
-	}
+	printf("%d\n",i);
+	printf("%d, %c\n",j, str[j]);
 	return (true);
 }
 
