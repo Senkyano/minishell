@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/06 17:46:43 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 13:36:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 #include <sys/types.h>
 
 // colors
-#define BLK "\e[0;90m"
-#define RED "\e[1;31m" // ERROR
-#define GR "\e[1;92m"
-#define Y "\e[1;93m"
-#define BLU "\e[1;94m" //Minishell name
-#define PUR "\e[1;95m"
-#define CY "\e[1;96m"
-#define WH "\e[0;97m"
-#define RST "\e[0m"
+# define BLK "\e[0;90m"
+# define RED "\e[1;31m" // ERROR
+# define GR "\e[1;92m"
+# define Y "\e[1;93m"
+# define BLU "\e[1;94m" //Minishell name
+# define PUR "\e[1;95m"
+# define CY "\e[1;96m"
+# define WH "\e[0;97m"
+# define RST "\e[0m"
 
 typedef struct s_token
 {
@@ -64,7 +64,6 @@ typedef struct	s_infopars
 	char	*str;
 	// pour le parsing attribuer token
 	struct s_infopars	*next;
-	struct s_infopars	*attatch_to;
 }	t_infopars;
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
@@ -93,16 +92,26 @@ void		gestion_exit(char *msg, t_shell *bash);
 bool		valid_str(char *str);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
+// Case
+t_infopars	*diff_strshell(char *str, int i, int spe);
+t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
 // Process add
 void		add_or(t_lstcmd *process_or, t_lstcmd *def_cmd);
 void		add_and(t_lstcmd *process_and, t_lstcmd *def_cmd);
 void		add_default(t_lstcmd *lst_cmd, t_lstcmd *cmd);
+void		add_strshell(t_infopars *all, t_infopars *part);
+// Free process
+void		free_def_process(t_lstcmd *lstcmd);
+void		free_or_process(t_lstcmd *lstprocess);
+void		free_and_process(t_lstcmd *lstprocess);
+void		free_strshell(t_infopars *all);
+void		free_shell(t_shell *bash);
 // Cmd
 t_lstcmd	*box_cmd(char *cmd, t_lstfd *fd_cmd, t_shell *bash);
 // In
-void	in_sgquote(char c, t_token *token);
-void	in_doquote(char c, t_token *token);
-void	in_parsing(char c, t_token *token);
+void		in_sgquote(char c, t_token *token);
+void		in_doquote(char c, t_token *token);
+void		in_parsing(char c, t_token *token);
 
 
 

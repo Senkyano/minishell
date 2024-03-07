@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/06 17:10:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/07 13:37:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	build_process(char *str, t_shell *bash)
 		printf(CY"Minishell >: "RED"Malloc fail\n");
 		return ;
 	}
-	
 }
 
 
