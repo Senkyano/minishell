@@ -1,55 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lib_char.c                                         :+:      :+:    :+:   */
+/*   printf_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 17:15:35 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 12:19:26 by rihoy            ###   ########.fr       */
+/*   Created: 2024/03/08 12:04:02 by rihoy             #+#    #+#             */
+/*   Updated: 2024/03/08 12:49:35 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_utils.h"
 #include <unistd.h>
-#include <stddef.h>
+#include <stdio.h>
 
-size_t	print_c(char c)
+int	printf_error(const char *str, ...)
 {
-	write(1, &c, 1);
-	return (1);
-}
-
-void	print_str(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		print_c(str[i++]);
-}
-
-int	print_error(char *str)
-{
-	size_t	i;
 	int		len;
+	va_list	lst;
 
+	va_start(lst, str);
 	len = 0;
-	i = 0;
-	while (str[i])
-		len += write_fd(str[i++], 2);
-	return (len);
-}
-
-void	print_sent(char **str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
+	if (!str)
+		return (-1);
+	while (*str)
 	{
-		print_str(str[i]);
-		print_str("\n");
-		i++;
+		if (*str == '%')
+		{
+			str++;
+			if (*str == 's')
+				len += print_error(va_arg(lst, char *));
+			else if (*str == 'd')
+				len += nbr_base(va_arg(lst, int), 10);
+			else if (*str == 'x')
+				len += nbr_base(va_arg(lst, int), 16);
+		}
+		else
+			len += write_fd(*str, 2);
+		str++;
 	}
+	va_end(lst);
+	return (len);
 }

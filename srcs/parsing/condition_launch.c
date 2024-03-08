@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:05:03 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/05 16:44:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:22:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	launch_shell(int argc, const char **env)
 {
 	if (argc != 1)
 	{
-		printf(CY"Minishell >: "RED"'argument not require'\n"RST);
+		printf_error(CY"Minishell >: "RED"'argument not require'\n"RST);
 		exit(0);
 	}
 	if (!env | !env[0])
 	{
-		printf(CY"Minishell >: "RED"'environement require'\n"RST);
+		printf_error(CY"Minishell >: "RED"'environement require'\n"RST);
 		exit(0);
 	}
-	printf(BLK"Minishell by "PUR"Yrio "BLK"and"Y" Rihoy"RST"\n");
+	printf_error(BLK"Minishell by "PUR"Yrio "BLK"and"Y" Rihoy"RST"\n");
 }

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 13:54:56 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 15:25:06 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,22 @@ bool		valid_str(char *str);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Case
-t_infopars	*diff_strshell(char *str, int i, int spe);
+t_infopars	*diff_strshell(char *str, int spe);
 t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
 // Process add
-void		add_or(t_lstcmd *process_or, t_lstcmd *def_cmd);
-void		add_and(t_lstcmd *process_and, t_lstcmd *def_cmd);
-void		add_default(t_lstcmd *lst_cmd, t_lstcmd *cmd);
-void		add_strshell(t_infopars *all, t_infopars *part);
+void		build_process(char *str, t_shell *bash);
+void		add_or(t_lstcmd **process_or, t_lstcmd *def_cmd);
+void		add_and(t_lstcmd **process_and, t_lstcmd *def_cmd);
+void		add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd);
+void		add_strshell(t_infopars **all, t_infopars *part);
 // Free process
 void		free_def_process(t_lstcmd *lstcmd);
 void		free_or_process(t_lstcmd *lstprocess);
 void		free_and_process(t_lstcmd *lstprocess);
-void		free_strshell(t_infopars *all);
+void		free_strshell(t_infopars **all);
 void		free_shell(t_shell *bash);
+// Print process
+void		print_strshell(t_infopars *lst);
 // In
 void		in_sgquote(char c, t_token *token);
 void		in_doquote(char c, t_token *token);

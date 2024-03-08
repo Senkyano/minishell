@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_shell.c                                       :+:      :+:    :+:   */
+/*   nbr_base.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/07 13:27:48 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 17:13:51 by rihoy            ###   ########.fr       */
+/*   Created: 2024/03/08 12:36:11 by rihoy             #+#    #+#             */
+/*   Updated: 2024/03/08 12:46:12 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "lib_utils.h"
 
-void	free_shell(t_shell *bash)
+int	nbr_base(long int nbr, int base)
 {
-	if (bash->path)
-		free_split(bash->path);
-	if (bash->str_split)
-		free_split(bash->str_split);
-	if (bash->lstcmd)
-		free_and_process(bash->lstcmd);
-	if (bash->lst_char)
-		free_strshell(&bash->lst_char);
+	char	*bas;
+	int		i;
+
+	i = 0;
+	bas = "0123456789abcdef";
+	if (nbr < 0)
+	{
+		nbr = -nbr;
+		i += write_fd('-', 1);
+	}
+	if (nbr >= base)
+		i += nbr_base(nbr / base, base);
+	i += write_fd(bas[nbr % base], 1);
+	return (i);
 }

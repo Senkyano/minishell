@@ -6,16 +6,16 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 15:16:54 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 14:10:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:21:24 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_utils.h"
 #include <unistd.h>
 
-void	write_fd(char c, int fd)
+int	write_fd(char c, int fd)
 {
-	write(fd, &c, sizeof(char));
+	return (write(fd, &c, sizeof(char)));
 }
 
 void	write_str_fd(char *str, int fd)

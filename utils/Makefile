@@ -6,7 +6,7 @@
 #    By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/29 14:10:52 by rihoy             #+#    #+#              #
-#    Updated: 2024/03/02 21:32:28 by rihoy            ###   ########.fr        #
+#    Updated: 2024/03/08 12:45:28 by rihoy            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,9 @@ FILE_C =	get_next_line.c \
 			lib_srch.c \
 			lib_strdup.c \
 			lib_write.c \
-			lib_set.c
+			lib_set.c \
+			printf_error.c \
+			nbr_base.c
 
 FILE_O =	$(FILE_C:%.c=$(OBJS)/%.o)
 

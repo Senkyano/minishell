@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:38 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/07 13:59:50 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 15:28:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,38 +38,47 @@ t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash)
 	return (new_cmd);
 }
 
-void	add_or(t_lstcmd *process_or, t_lstcmd *def_cmd)
+void	add_or(t_lstcmd **process_or, t_lstcmd *def_cmd)
 {
 	t_lstcmd	*process_cur;
 
-	process_cur = process_or;
-	if (process_or->or_next == NULL)
-		process_or->or_next = def_cmd;
-	while (process_cur->or_next)
-		process_cur = process_cur->or_next;
-	process_cur->or_next = def_cmd;
+	if (!(*process_or))
+		(*process_or) = def_cmd;
+	else
+	{
+		process_cur = (*process_or);
+		while (process_cur->or_next)
+			process_cur = process_cur->or_next;
+		process_cur->or_next = def_cmd;
+	}
 }
 
-void	add_and(t_lstcmd *process_and, t_lstcmd *def_cmd)
+void	add_and(t_lstcmd **process_and, t_lstcmd *def_cmd)
 {
 	t_lstcmd	*process_cur;
 
-	process_cur = process_and;
-	if (process_and->and_next == NULL)
-		process_and->and_next = def_cmd;
-	while (process_cur->and_next)
-		process_cur = process_cur->and_next;
-	process_cur->and_next = def_cmd;
+	if (!(*process_and))
+		(*process_and) = def_cmd;
+	else
+	{
+		process_cur = (*process_and);
+		while (process_cur->and_next)
+			process_cur = process_cur->and_next;
+		process_cur->and_next = def_cmd;
+	}
 }
 
-void	add_default(t_lstcmd *lst_cmd, t_lstcmd *cmd)
+void	add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd)
 {
 	t_lstcmd	*curr_lst;
 
-	curr_lst = lst_cmd;
-	if (lst_cmd->def_next == NULL)
-		lst_cmd->def_next = cmd;
-	while (curr_lst->def_next)
-		curr_lst = curr_lst->def_next;
-	curr_lst->def_next = cmd;
+	if (!(*lst_cmd))
+		(*lst_cmd) = cmd;
+	else
+	{
+		curr_lst = (*lst_cmd);
+		while (curr_lst->def_next)
+			curr_lst = curr_lst->def_next;
+		curr_lst->def_next = cmd;
+	}
 }

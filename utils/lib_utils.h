@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/02 21:38:27 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:44:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 # include <stddef.h>
 # include <stdbool.h>
 
+// Nbr
+int		nbr_base(long int nbr, int base);
 // FD
 void	write_str_fd(char *str, int fd);
-void	write_fd(char c, int fd);
+int		write_fd(char c, int fd);
 // IS
 bool	is_space(char c);
 // CHECK
@@ -27,8 +29,9 @@ bool	str_good(char *str);
 void	print_char(char c, int fd);
 size_t	print_c(char c);
 void	print_str(char *str);
-void	print_error(char *str);
+int		print_error(char *str);
 void	print_sent(char **str);
+int		printf_error(const char *str, ...);
 // LEN
 size_t	str_len(char *str);
 size_t	sent_len(char **sent);
