@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 17:13:38 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 17:33:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,17 @@ void	free_strshell(t_infopars **all)
 		(*all) = (*all)->next;
 		free(curr_all->str);
 		free(curr_all);
+	}
+}
+
+void	print_strshell(t_infopars *lst)
+{
+	t_infopars	*curr;
+
+	curr = lst;
+	while (curr)
+	{
+		printf_error("%s ", curr->str);
+		curr = curr->next;
 	}
 }

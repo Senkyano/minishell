@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:32:43 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 15:25:06 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/08 17:51:37 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ void		print_strshell(t_infopars *lst);
 void		in_sgquote(char c, t_token *token);
 void		in_doquote(char c, t_token *token);
 void		in_parsing(char c, t_token *token);
-
+// split minishell
+int			count_minishell(char *str);
 
 
 // test
