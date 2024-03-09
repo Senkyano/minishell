@@ -6,12 +6,13 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 12:04:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 12:49:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/09 19:20:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_utils.h"
 #include <unistd.h>
+#include <stdarg.h>
 #include <stdio.h>
 
 int	printf_error(const char *str, ...)
