@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 12:44:57 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/10 21:40:58 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*strall_join(char *str1, char *str2);
 // DUP
 char	*lib_strdup(char *str);
 char	*lib_strup(char *str);
+char	*strup_to(char *str, int n);
 //		SENT
 char	**copy_sent(char **sent);
 char	**sentup(char *str);

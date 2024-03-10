@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:46:15 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 14:10:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/10 21:40:18 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,23 @@ char	*lib_strdup(char *str)
 		new_str[i] = str[i];
 	new_str[i] = '\0';
 	free(str);
+	return (new_str);
+}
+
+char	*strup_to(char *str, int n)
+{
+	int		i;
+	char	*new_str;
+
+	if (!str || n < 0)
+		return (NULL);
+	i = -1;
+	new_str = malloc(sizeof(char) * (n + 1));
+	if (!new_str)
+		return (NULL);
+	while (str[++i] && i < n)
+		new_str[i] = str[i];
+	new_str[i] = '\0';
 	return (new_str);
 }
 

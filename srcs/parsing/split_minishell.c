@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/10 14:02:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/10 22:09:32 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,37 @@
 #include "lib_utils.h"
 
 int	skip_space(char *str);
-int	skip_char(char *str, t_token *token);
+int	skip_char(char *str);
+
+char	**split_minishell(char *str)
+{
+	char	**mini_str;
+	int		i;
+	int		nbr;
+
+	mini_str = malloc(sizeof(char *) * (count_minishell(str) + 1));
+	if (!mini_str)
+		return (NULL);
+	i = 0;
+	nbr = 0;
+	while (str[i])
+	{
+		i += skip_space(str + i);
+		if (str[i] != ' ' && str[i] != 11)
+		{
+			mini_str[nbr] = strup_to(str + i, skip_char(str + i));
+			if (!mini_str[nbr++])
+				return (free_split(mini_str), NULL);
+			i += skip_char(str + i);
+		}
+	}
+	mini_str[nbr] = NULL;
+	return (mini_str);
+}
 
 int	count_minishell(char *str)
 {
 	int		mini_count;
-	t_token	token;
 	int		i;
 
 	i = 0;
@@ -27,29 +52,31 @@ int	count_minishell(char *str)
 	while (str[i])
 	{
 		i += skip_space(str + i);
-		if (str[i] != " " || str[i] != 11)
+		if (str[i] != ' ' && str[i] != 11)
 			mini_count++;
-		i += skip_char(str + i, &token);
+		i += skip_char(str + i);
 	}
 	return (mini_count);
 }
 
-int	skip_char(char *str, t_token *token)
+int	skip_char(char *str)
 {
-	int	i;
+	int		i;
+	t_token	token;
 
 	i = 0;
+	lib_memset(&token, 0, sizeof(token));
 	while (str[i] && (str[i] != 32 && str[i] != 11))
 	{
-		in_doquote(str[i], token);
-		in_sgquote(str[i], token);
-		if (token->in_doquote || token->in_sgquote)
+		in_doquote(str[i], &token);
+		in_sgquote(str[i], &token);
+		if (token.in_doquote || token.in_sgquote)
 		{
-			while (token->in_doquote || token->in_sgquote)
+			while (token.in_doquote || token.in_sgquote)
 			{
 				i++;
-				in_doquote(str[i], token);
-				in_sgquote(str[i], token);
+				in_doquote(str[i], &token);
+				in_sgquote(str[i], &token);
 			}
 		}
 		i++;
