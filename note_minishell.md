@@ -511,47 +511,15 @@ expansion :
 
 **Structure fonction main :**
 
-1. malloc env
-2. Readline
-3. Parsing
-4. export variable d'environnement si '=' (Expansion)
+- malloc env
+- Readline
+- Parsing
+- export variable d'environnement si '=' (Expansion)
 
-On aura donc une liste chaine avec toutes les commandes et un 
-attribue pour chaque commande pour son fichier d'entree et son fichier de sortie, il y aura juste egalement des noms d'outfile
-et d'infile, mais il faudra egalemet ajoute un element entre deux
-lorsqu'il y a un ;.
-Sinon, tout ce qui est apres la commande, jusqu'a la prochaine 
-commande ou un symbole sera plus pour etre les arguments de la
-commande.
-En fait pour commencer il faut que j'assigne une liste chaine
-d'exemple avec une builtins, au moins une commande execve, un pipe,
-une redirection.
-Exemple : env | cat > outfile
-Et que pour chacuns des elements de la liste, si c'est une commande.je precise son fd d'entre et de sortie si c'est une commande, ou son nom si c'est juste un fichier.
-Au debut, je fais le pipe avec un builtins et une commande bash
-forcement pour voir si ca marche avec le code de mon pipex un peu
-adapte et j'essaye de faire marcher la commande d'exemple (env | cat > outfile).
-
-Utiliser une fonction gestionnaire qui check les redirections d'entres et les redirections de sorties puis qui 
-check si il y a des pipes et qui lance une fonction multipipe.
-
-- On considere que le premier mot est une commande si il est au debut ou juste apres un pipe et les mots d'apres sont ces arguments jusqu'a ce qu'on atteigne une redirection ou un pipe.
-- Si l'element est une commande je dois checker si la commande est une builtins
-ou est une commande valide de bash (pour l'instant je ne gere pas les chemins
-absolue, et je considere qu'il n'y a pas d'arguments pour les commandes)
-- Si le premier element de la ligne de commande est un '<' le deuxieme est donc
-cense etre un fichier existant et je dois checker que le fichier existe
-
-Je vais d'abord essayer d'executer une commande avec redirection et pipe comme dans le pipex sans builtins 
-et apres integrer les builtins.
-
-5. Si il y a un 
 - check builtin
 - check executable file './'
 - check absolute path cmd or cmd and execute (command exist or right to execute ?)
 - apply redirection and pipe
-
-
 
 <br/>
 

@@ -6,13 +6,13 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 09:46:38 by yrio              #+#    #+#             */
-/*   Updated: 2024/02/21 13:49:58 by yrio             ###   ########.fr       */
+/*   Updated: 2024/02/15 17:08:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../minishell.h"
 
-t_envlist	*lst_new_env(char *str)
+t_envlist	*lst_new(char *str)
 {
 	t_envlist	*new;
 	char		**splitting;
@@ -29,26 +29,6 @@ t_envlist	*lst_new_env(char *str)
 	else
 		new->value = NULL;
 	new->splitting = splitting;
-	new->next = NULL;
-	return (new);
-}
-
-t_cmdline	*new_elem_cmdline(int tmp, char **argv, t_minishell *minishell)
-{
-	t_cmdline	*new;
-	int		fd_error[2];
-
-	new = malloc(sizeof(t_cmdline));
-	if (!new)
-	{	
-		minishell->error_init = 1;
-		//close_minishell(fd_error, minishell);
-	}
-	new->index = tmp;
-	new->elem = argv[tmp];
-	if (new->elem[0] == '<')
-		new->type = 
-	new->path_cmd = 0;
 	new->next = NULL;
 	return (new);
 }

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/02/21 13:13:17 by yrio             ###   ########.fr       */
+/*   Updated: 2024/02/15 07:48:09 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ void	malloc_env(t_minishell *minishell, char **env)
 	tmp = 0;
 	while (env[tmp])
 		tmp++;
-	lst = lst_new_env(env[0]);
+	lst = lst_new(env[0]);
 	lst->index = 0;
 	minishell->lst_envs = lst;
 	tmp2 = 1;
 	while (tmp2 < tmp)
 	{
-		new = lst_new_env(env[tmp2]);
+		new = lst_new(env[tmp2]);
 		new->index = tmp2;
 		lstadd_back(new, lst);
 		tmp2++;
