@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:51:20 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 14:54:00 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/12 18:17:04 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_unset(char **args_split, t_shell *minishell)
 				previous->next = lst_envs->next;
 			else if (!previous)
 				minishell->lst_envs = lst_envs->next;
-			free_split(lst_envs->splitting);
+			lib_free_split(lst_envs->splitting);
 			free(lst_envs);
 			return ;	
 		}

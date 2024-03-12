@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 14:54:00 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/12 18:16:09 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ void	ft_exit(char **args_split)
 		if (error)
 			printf("bash: exit: %d: numeric argument required", exit_code);
 	}
-	free_split(args_split);
+	lib_free_split(args_split);
 	exit(exit_code);
 }

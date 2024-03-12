@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/12 17:44:28 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ static bool	start_process(char *str, t_shell *bash)
 		printf("%s ", bash->str_split[i]);
 		i++;
 	}
-	free_split(bash->str_split);
+	lib_free_split(bash->str_split);
 	return (true);
 }

@@ -1,12 +1,19 @@
 #   NAME
 NAME = minishell
 
+#---------------#
+#	includes
+#---------------#
+UTILS =		utils
+INCLUDES =	includes
+DIR_YANN = 	libft
+
 #--------------------------------------#
 #		Commande
 #-----------------------#
 RM = rm -fr
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -I $(INCLUDES) -I $(UTILS) -I $(DIR_YANN)
 FLAG_READLINE = -lreadline
 
 #--------------------------------------#
@@ -18,10 +25,6 @@ PARS = parsing
 
 BUT = builtins
 TOOLS = tools
-#---------------#
-#	includes
-#---------------#
-INCLUDES =	includes 
 
 #--------------------------------------#
 #       Colors
@@ -39,52 +42,47 @@ RESET = \033[0m
 #--------------------------------------#
 #		File
 #-----------------------#
-PARS_C =	condition_launch.c \
-				get_path.c \
-				error_exit.c \
-				get_process.c \
-				check_str.c \
-				free_lst.c \
-				free_shell.c \
-				infopars.c \
-				lst_cmd.c \
-				split_minishell.c
 
-BUT_C = 		cd.c \
-				echo.c \
-				env.c \
-				exit.c \
-				export.c \
-				pwd.c \
-				unset.c
+PARS_C = 	check_str.c \
+			condition_launch.c \
+			error_exit.c \
+			free_lst.c \
+			free_shell.c \
+			get_cmd.c \
+			get_path.c \
+			get_process.c \
+			infopars.c \
+			lst_cmd.c \
+			split_minishell.c
 
-TOOLS_C = 		lst_utils.c \
-				test_execution.c \
-				utils2_minishell.c \
-				utils_minishell.c
-#				# $(SRCS)/$(TOOLS)/
-#				# $(SRCS)/$(TOOLS)/
-#				# $(SRCS)/$(TOOLS)/
-#				# $(SRCS)/
-#				# $(SRCS)/
+SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
+OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))
 
+BUT_C =		cd.c \
+			echo.c \
+			env.c \
+			exit.c \
+			export.c \
+			pwd.c \
+			unset.c
 
-# FILE_MAIN_C = main.c
+SRC_BUT = $(addprefix $(SRCS)/$(BUT)/, $(BUT_C))
+OBJ_BUT = $(patsubst %.c, $(OBJS)/%.o, $(BUT_C))
 
-SRC =		$(addprefix $(SRCS)/$(PARS)/, $(PARS_C)) \
-			$(addprefix $(SRCS)/$(BUT)/, $(BUT_C)) \
-			$(addprefix $(SRCS)/$(TOOLS)/, $(TOOLS_C))
+TOOL_C =	lst_utils.c \
+			test_execution.c \
+			utils_minishell.c \
+			utils2_minishell.c
 
-OBJ = $(patsubst %.c,%.o,$(SRC))
+SRC_TOOL = $(addprefix $(SRCS)/$(TOOLS)/, $(TOOL_C))
+OBJ_TOOL = $(patsubst %.c, $(OBJS)/%.o, $(TOOL_C))
 
 # **************************** #
 #     LIB                      #
 # **************************** #
-UTILS = utils
 LIB = $(UTILS)/lib.a
 EXTENSION = $(UTILS)/lib.a
 
-DIR_YANN = libft
 LIB_YANN = $(DIR_YANN)/libft.a
 SEC_EXT = $(DIR_YANN)/libft.a
 
@@ -94,8 +92,8 @@ SEC_EXT = $(DIR_YANN)/libft.a
 all : $(NAME)
 	@echo "$(C_G)Compilation Minishell STATUS [OK]$(RESET)"
 
-$(NAME) : $(LIB) $(LIB_YANN) $(OBJ)
-	@$(CC) $(FLAGS) $(FLAG_READLINE) -o $(NAME) main.c -I $(INCLUDES) -I $(UTILS) $(EXTENSION) -I $(DIR_YANN) $(SEC_EXT) $(OBJ)
+$(NAME) : $(LIB) $(LIB_YANN) $(OBJ_PARS) $(OBJ_BUT) $(OBJ_TOOL)
+	@$(CC) $(FLAGS) $(FLAG_READLINE) -o $(NAME) main.c $(OBJ_PARS) $(OBJ_TOOL) $(OBJ_BUT) $(EXTENSION) $(SEC_EXT)
 
 $(LIB_YANN) :
 	@make -C $(DIR_YANN) --silent
@@ -103,9 +101,17 @@ $(LIB_YANN) :
 $(LIB) :
 	@make -C $(UTILS) --silent
 
-$(OBJS)/%.o : $(SRCS)/%.c
+$(OBJS)/%.o : $(SRCS)/$(PARS)/%.c
 	@mkdir -p $(OBJS)
-	@$(CC) $(FLAGS) -c $< -o $@ -I $(INCLUDES) -I $(UTILS) -I $(DIR_YANN)
+	@$(CC) $(FLAGS) -c $< -o $@
+	@echo "$(C_B)loading : $(RESET)$< $(C_G)[OK]$(RESET)"
+
+$(OBJS)/%.o : $(SRCS)/$(BUT)/%.c
+	@$(CC) $(FLAGS) -c $< -o $@
+	@echo "$(C_B)loading : $(RESET)$< $(C_G)[OK]$(RESET)"
+
+$(OBJS)/%.o : $(SRCS)/$(TOOLS)/%.c
+	@$(CC) $(FLAGS) -c $< -o $@
 	@echo "$(C_B)loading : $(RESET)$< $(C_G)[OK]$(RESET)"
 
 clean :

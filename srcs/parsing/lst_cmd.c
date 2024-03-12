@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:38 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/12 17:44:43 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash)
 	{
 		new_cmd->t_path[i] = str_join(bash->path[i], cmd[1]);
 		if (!new_cmd->t_path[i])
-			return (free_split(new_cmd->t_path), NULL);
+			return (lib_free_split(new_cmd->t_path), NULL);
 	}
 	new_cmd->t_path[i] = NULL;
 	new_cmd->lst_fd = fd_cmd;

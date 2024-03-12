@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 12:01:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/12 17:44:02 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	free_def_process(t_lstcmd *lstcmd)
 	while (allcmd)
 	{
 		lstcmd = allcmd;
-		free_split(lstcmd->cmd);
-		free_split(lstcmd->t_path);
+		lib_free_split(lstcmd->cmd);
+		lib_free_split(lstcmd->t_path);
 		if (allcmd->and_next)
 			free_and_process(allcmd);
 		if (allcmd->or_next)

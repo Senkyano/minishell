@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/12 17:44:53 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**split_minishell(char *str)
 		{
 			mini_str[nbr] = strup_to(str + i, skip_char(str + i));
 			if (!mini_str[nbr++])
-				return (free_split(mini_str), NULL);
+				return (lib_free_split(mini_str), NULL);
 			i += skip_char(str + i);
 		}
 	}
