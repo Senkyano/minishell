@@ -6,7 +6,7 @@
 #    By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/10 09:09:09 by yrio              #+#    #+#              #
-#    Updated: 2024/02/19 11:57:43 by yrio             ###   ########.fr        #
+#    Updated: 2024/03/12 09:50:15 by yrio             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,10 @@ FLAG_READLINE = -lreadline
 ARCHIVE = libft/libft.a
 BUILTINS = cd.c env.c unset.c export.c pwd.c echo.c exit.c
 MAIN = main.c
-TOOLS = utils_minishell.c lst_utils.c utils2_minishell.c
+TOOLS = utils_minishell.c lst_utils.c utils2_minishell.c test_execution.c \
+	analysis.c check_str.c condition_launch.c error_exit.c free_lst.c \
+	free_shell.c get_cmd.c get_path.c get_process.c infopars.c lst_cmd.c \
+	skip.c split_minishell.c
 SRC = $(addprefix srcs/builtins/, $(BUILTINS)) \
 		$(addprefix srcs/main/, $(MAIN)) \
 		$(addprefix srcs/tools/, $(TOOLS))

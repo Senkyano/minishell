@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/02/15 16:08:25 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/11 13:05:19 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	no_args(t_envlist *lst_envs)
 	}
 }
 
-int	ft_export(char	**args_split, t_minishell *minishell)
+int	ft_export(char	**args_split, t_shell *minishell)
 {
 	t_envlist	*lst_envs;
 	t_envlist	*new;

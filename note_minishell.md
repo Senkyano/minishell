@@ -17,10 +17,11 @@ Sommaire :
 5. [Application_of_PRECEDENCE_CLIMBING_on_bash_arguments](#partie_5)
 6. [Environment_and_variables](#partie_6)
 7. [Etapes_execution](#partie_7)
-8. [Fonctions_builtins](#partie_8)
-9. [Historique_de_commandes](#partie_9)
-10. [Signaux](#partie_10)
-11. [Errno_et_la_gestion_d_erreur](#partie_11)
+8. [Etapes_developpement_execution](#partie_8)
+9. [Fonctions_builtins](#partie_9)
+10. [Historique_de_commandes](#partie_10)
+11. [Signaux](#partie_11)
+12. [Errno_et_la_gestion_d_erreur](#partie_12)
 
 <br/>
 <br/>
@@ -542,7 +543,7 @@ La fonction read a bien l'air d'avoir un marque-pages integre ! A chaque appel, 
 
 Comme on l'aura peut-etre remarque dans le schema au debut de cet article, les references dans la table commune des fichiers ouverts contient une tete de lecture. Celle-ci controle le decalage entre le debut du fichier et la position actuelle a l'interieur du fichier. Et c'est elle que read incremente a la fin de sa lecture. La tete de lecture est simplement appelee "**offset**" en anglais.
 
-Donc quand on ouvre un fichier, la tete de lecture est typique;ent a 0, ce qui veut dire qu'on se trouve en tout debut de fichier. Quand on lit, disons, 12 caracteres avec read, la tete de lecture est mise a jour a 12. La prochaine fois qu'on accede au descripteur de fichier pour y lire ou meme y ecrire, on commencera depuis la position du debut du fichier decale de la valeur de la tete de lecture, ici donc, au 13e caractere.
+Donc quand on ouvre un fichier, la tete de lecture est typiquement a 0, ce qui veut dire qu'on se trouve en tout debut de fichier. Quand on lit, disons, 12 caracteres avec read, la tete de lecture est mise a jour a 12. La prochaine fois qu'on accede au descripteur de fichier pour y lire ou meme y ecrire, on commencera depuis la position du debut du fichier decale de la valeur de la tete de lecture, ici donc, au 13e caractere.
 
 Notons aussi que malgre son nom, la tete de lecture est aussi la tete d'ecriture : la fonction *write* sera aussi affectee par tout les deplacement de la tete dans le fichier.
 
@@ -610,7 +611,34 @@ Deboguer un programme qui cree des processus fils peut s'averer assez accablant.
 <br/>
 <br/>
 
-Fonctions_builtins <a id="partie_8"></a>
+Etapes_developpement_execution <a id="partie_8"></a>
+----------------------------------------------------
+
+=> En entree : les deux structures "s_lstcmd" et "s_shell".
+
+Juste pour des lignes de commandes sans operateurs && et || imbriques dans des parentheses, les etapes sont elles, imbriquees
+les unes dans les autres :
+
+1. Make children
+
+	2. Loop main processus
+
+		3. Loop check or
+
+			4. Pipe loop
+
+<br/>
+
+Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je test egalement l'argument
+seul car il est possible d'envoyer directement la commande avec son
+bon chemin. La commande a tester avec les chemins correspond au
+premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
+
+<br/>
+<br/>
+<br/>
+
+Fonctions_builtins <a id="partie_9"></a>
 ----------------------------------------
 
 The **built-ins** are a set of useful functions that are needed in the Minishell, they differ in complexity, from the easy ones like ```echo``` to

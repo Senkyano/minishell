@@ -6,13 +6,13 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:51:20 by yrio              #+#    #+#             */
-/*   Updated: 2024/02/19 17:16:49 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/11 14:29:47 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../minishell.h"
 
-void	ft_unset(char **args_split, t_minishell *minishell)
+void	ft_unset(char **args_split, t_shell *minishell)
 {
 	t_envlist	*previous;
 	t_envlist	*lst_envs;

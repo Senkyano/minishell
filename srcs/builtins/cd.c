@@ -6,13 +6,13 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:25:33 by yrio              #+#    #+#             */
-/*   Updated: 2024/02/16 08:58:10 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/11 13:03:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	check_args(char **args_split, t_minishell *minishell)
+int	check_args(char **args_split, t_shell *minishell)
 {
 	if (args_split[1])
 	{
@@ -40,7 +40,7 @@ int	check_args(char **args_split, t_minishell *minishell)
 	return (1);
 }
 
-char	*particular_path(t_minishell *minishell, char *dir_path, int option)
+char	*particular_path(t_shell *minishell, char *dir_path, int option)
 {
 	char	*home_path;
 	char	*prev_path;
@@ -98,7 +98,7 @@ int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split)
 }
 
 void	update_pwds(char *dir_path, char *new_dir_path, \
-					char **args_split, t_minishell *minishell)
+					char **args_split, t_shell *minishell)
 {
 	char		*home_path;
 	t_envlist	*list_envs;	
@@ -126,7 +126,7 @@ void	update_pwds(char *dir_path, char *new_dir_path, \
 	}
 }
 
-void	ft_cd(char **args_split, t_minishell *minishell)
+void	ft_cd(char **args_split, t_shell *minishell)
 {
 	char			*dir_path;
 	char			*dir_path_tmp;
