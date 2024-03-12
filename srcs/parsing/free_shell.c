@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:27:48 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 17:44:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 18:47:34 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,6 @@ void	free_shell(t_shell *bash)
 		free_and_process(bash->lstcmd);
 	if (bash->lst_char)
 		free_strshell(&bash->lst_char);
+	// if (bash->lst_envs)
+		// lstclear(bash->lst_envs);
 }

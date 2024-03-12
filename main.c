@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 18:37:03 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 18:47:40 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ int	main(int argc, char **argv, const char **env)
 {
 	t_shell	minishell;
 
+	// lib_memset(&minishell, 0, sizeof(minishell));
 	launch_shell(argc, env);
 	if (!argv)
 		return 0;
 	malloc_env(&minishell, (char **)env);
 	init_shell(&minishell, (char **)env);
-	lstclear(minishell.lst_envs);
+	// free_shell(&minishell);
 }
 
 // int	main(int argc, char **argv, char **env)
