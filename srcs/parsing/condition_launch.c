@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   condition_launch.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:05:03 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/08 12:22:15 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 16:52:21 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_exec.h"
 #include "lib_utils.h"
 
 void	launch_shell(int argc, const char **env)

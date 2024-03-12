@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:37:52 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 14:10:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:10:21 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	**lib_split(char *str, char *set)
 		{
 			sent[i] = malloc_word(str, set);
 			if (!sent[i++])
-				return (free_split(sent), NULL);
+				return (lib_free_split(sent), NULL);
 		}
 		while (!is_charset(*str, set) && *str)
 			str++;

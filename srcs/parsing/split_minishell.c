@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/10 22:09:32 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_exec.h"
 #include "lib_utils.h"
 
 int	skip_space(char *str);

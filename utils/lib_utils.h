@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/10 21:40:58 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:05:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**sentup_n(char **sent, char *str, size_t n);
 // SPLIT
 char	**lib_split(char *str, char *set);
 // FREE
-void	free_split(char **sent);
+void	lib_free_split(char **sent);
 // SRCH
 int		lib_srch(char *str, char to_find);
 // set

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lib_free.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 22:00:54 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 14:10:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:05:49 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_utils.h"
 #include <stdlib.h>
 
-void	free_split(char **sent)
+void	lib_free_split(char **sent)
 {
 	size_t	i;
 

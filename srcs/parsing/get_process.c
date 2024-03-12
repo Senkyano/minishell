@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/10 22:05:31 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_exec.h"
 #include "lib_utils.h"
 
 static bool	start_process(char *str, t_shell *bash);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_sent.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:33:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/02/29 14:10:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:10:08 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ char	**sentup_n(char **sent, char *str, size_t n)
 	{
 		new_sent[i] = lib_strup(sent[i]);
 		if (new_sent[i] == NULL)
-			return (free_split(new_sent), NULL);
+			return (lib_free_split(new_sent), NULL);
 		i++;
 	}
 	new_sent[i] = lib_strup(str);
 	if (new_sent[i] == NULL)
-		return (free_split(new_sent), NULL);
-	free_split(sent);
+		return (lib_free_split(new_sent), NULL);
+	lib_free_split(sent);
 	return (new_sent);
 }
 
@@ -55,7 +55,7 @@ char	**copy_sent(char **sent)
 	{
 		cp_sent[j] = lib_strup(sent[j]);
 		if (cp_sent[j] == NULL)
-			return (free_split(cp_sent), NULL);
+			return (lib_free_split(cp_sent), NULL);
 		j++;
 	}
 	cp_sent[j] = NULL;
