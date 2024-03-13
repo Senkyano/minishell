@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:05:56 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 18:24:51 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	write_str_fd(char *str, int fd);
 int		write_fd(char c, int fd);
 // IS
 bool	is_space(char c);
+bool	is_num(char c);
+bool	is_char(char c);
 // CHECK
 bool	str_good(char *str);
 // PRINT
@@ -33,7 +35,7 @@ int		print_error(char *str);
 void	print_sent(char **str);
 int		printf_error(const char *str, ...);
 // LEN
-size_t	str_len(char *str);
+int		str_len(char *str);
 size_t	sent_len(char **sent);
 // CMP
 bool	str_cmp(char *str, char *str2);
@@ -45,6 +47,7 @@ char	*str_join(char *str1, char *str2);
 char	*str1_join(char *str1, char *str2);
 char	*str2_join(char *str1, char *str2);
 char	*strall_join(char *str1, char *str2);
+char	*opti_join(char *str1, char *str2);
 // DUP
 char	*lib_strdup(char *str);
 char	*lib_strup(char *str);

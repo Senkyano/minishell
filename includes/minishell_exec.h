@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 11:44:55 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 17:42:12 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ typedef struct s_token
 	bool			in_sgquote;
 	bool			error;
 	int				in_par;
-	bool			process_or;
-	bool			process_and;
+	bool			in_process;
 }	t_token;
 
 typedef struct s_lstfd
@@ -79,6 +78,7 @@ typedef struct	s_infopars
 	char	*str;
 	// pour le parsing attribuer token
 	struct s_infopars	*next;
+	struct s_infopars	*prec;
 }	t_infopars;
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
@@ -112,11 +112,12 @@ void		get_true_path(t_shell *bash, char const **env);
 t_infopars	*diff_strshell(char *str, int spe);
 t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
 // Process add
-void		build_process(char *str, t_shell *bash);
+bool		build_process(char *str, t_shell *bash);
 void		add_or(t_lstcmd **process_or, t_lstcmd *def_cmd);
 void		add_and(t_lstcmd **process_and, t_lstcmd *def_cmd);
 void		add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd);
 void		add_strshell(t_infopars **all, t_infopars *part);
+void		add_btw_strshell(t_infopars *pre, t_infopars *new_lst, t_infopars *next);
 // Free process
 void		free_def_process(t_lstcmd *lstcmd);
 void		free_or_process(t_lstcmd *lstprocess);
@@ -129,11 +130,19 @@ void		print_strshell(t_infopars *lst);
 void		in_sgquote(char c, t_token *token);
 void		in_doquote(char c, t_token *token);
 void		in_parsing(char c, t_token *token);
+void		in_process(char c, t_token *token);
 // split minishell
 int			count_minishell(char *str);
 char		**split_minishell(char *str);
 // test
 int			cutting(char *str, t_lstcmd *base);
+// SKIP
+int			skip_space(char *str);
+int			skip_char(char *str);
+int			skip_not_env(char *str);
+// ENV
+char		*insert_env(char *str, t_shell *bash);
+
 
 
 // char		*ft_strjoin(char const *s1, char const *s2);

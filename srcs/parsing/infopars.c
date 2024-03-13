@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   infopars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 15:29:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,19 @@ t_infopars	*diff_strshell(char *str, int spe)
 	case_info->str[x] = '\0';
 	case_info->next = NULL;
 	return (case_info);
+}
+
+void	add_btw_strshell(t_infopars *pre, t_infopars *new_lst, t_infopars *next)
+{
+	t_infopars	*curr;
+
+	curr = new_lst;
+	pre->next = new_lst;
+	new_lst->prec = pre;
+	while (curr->next)
+		curr = curr->next;
+	next->prec = curr;
+	curr->next = next;
 }
 
 void	add_strshell(t_infopars **all, t_infopars *part)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_str.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:30:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 15:07:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 15:15:53 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	valid_str(char *str)
 	int		i;
 
 	i = -1;
-	if (!str)
+	if (!str || str == 0)
 		return (false);
 	lib_memset(&token, 0, sizeof(token));
 	while (str[++i])
@@ -27,13 +27,22 @@ bool	valid_str(char *str)
 		in_sgquote(str[i], &token);
 		in_doquote(str[i], &token);
 		in_parsing(str[i], &token);
+		in_process(str[i], &token);
 	}
-	if (last_cmp(str, "&&\n") || last_cmp(str, "||\n") || \
-last_cmp(str, "|\n") || last_cmp(str, "&\n") || last_cmp(str, ";\n"))
-		token.error = true;
-	if (!token.in_par && !token.in_doquote && !token.in_sgquote && !token.error)
+	if (!token.in_par && !token.in_doquote && !token.in_sgquote && \
+	!token.error && !token.in_process)
 		return (true);
 	return (false);
+}
+
+void	in_process(char c, t_token *token)
+{
+	if ((c == '|' || c == '&' || c == ';') && !token->in_process && \
+	!token->in_doquote && !token->in_sgquote)
+		token->in_process = true;
+	else if (c != '|' && c != '&' && c != ';' && c != 32 && c != '\n' && \
+	token->in_process)
+		token->in_process = false;
 }
 
 void	in_sgquote(char c, t_token *token)

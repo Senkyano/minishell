@@ -53,7 +53,10 @@ PARS_C = 	check_str.c \
 			get_process.c \
 			infopars.c \
 			lst_cmd.c \
-			split_minishell.c
+			split_minishell.c \
+			analysis.c \
+			skip_part.c \
+			insert_env.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))

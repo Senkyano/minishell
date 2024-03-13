@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 17:44:53 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:39:37 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,39 +57,4 @@ int	count_minishell(char *str)
 		i += skip_char(str + i);
 	}
 	return (mini_count);
-}
-
-int	skip_char(char *str)
-{
-	int		i;
-	t_token	token;
-
-	i = 0;
-	lib_memset(&token, 0, sizeof(token));
-	while (str[i] && (str[i] != 32 && str[i] != 11))
-	{
-		in_doquote(str[i], &token);
-		in_sgquote(str[i], &token);
-		if (token.in_doquote || token.in_sgquote)
-		{
-			while (token.in_doquote || token.in_sgquote)
-			{
-				i++;
-				in_doquote(str[i], &token);
-				in_sgquote(str[i], &token);
-			}
-		}
-		i++;
-	}
-	return (i);
-}
-
-int	skip_space(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && (str[i] == 32 || str[i] == 11))
-		i++;
-	return (i);
 }
