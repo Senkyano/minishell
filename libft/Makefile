@@ -20,7 +20,6 @@ ALL_SRCS = $(SRCS)
 OBJ = $(ALL_SRCS:.c=.o)
 DIR_OBJ = objs_libft
 OBJS = $(addprefix objs_libft/, $(OBJ))
-INC = ./libft.h
 
 ALL_SRCS_BONUS = $(SRCS) $(SRCS_BONUS)
 OBJ_BONUS = $(ALL_SRCS_BONUS:.c=.o)
@@ -37,7 +36,7 @@ $(DIR_OBJ):
 	@mkdir -p $(DIR_OBJ)
 
 $(DIR_OBJ)/%.o: %.c
-	@cc $(FLAGS) -I $(INC) -o $@ -c $<
+	@cc $(FLAGS) -o $@ -c $<
 
 so:
 	@cc -fPIC $(FLAGS) $(SRCS)

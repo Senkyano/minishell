@@ -101,10 +101,10 @@ int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split)
 void	update_pwds(char *dir_path, char *new_dir_path, \
 					char **args_split, t_shell *minishell)
 {
-	char		*home_path;
+	// char		*home_path;
 	t_envlist	*list_envs;	
 
-	home_path = get_value_env(minishell, "HOME");
+	// home_path = get_value_env(minishell, "HOME");
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{

@@ -95,7 +95,7 @@ all : $(NAME)
 	@echo "$(C_G)Compilation Minishell STATUS [OK]$(RESET)"
 
 $(NAME) : $(LIB) $(LIB_YANN) $(OBJ_PARS) $(OBJ_BUT) $(OBJ_TOOL)
-	@$(CC) $(FLAGS) $(FLAG_READLINE) -o $(NAME) main.c $(OBJ_PARS) $(OBJ_TOOL) $(OBJ_BUT) $(EXTENSION) $(SEC_EXT)
+	@$(CC) $(FLAGS) -o $(NAME) main.c $(OBJ_PARS) $(OBJ_TOOL) $(OBJ_BUT) $(EXTENSION) $(SEC_EXT) $(FLAG_READLINE)
 
 $(LIB_YANN) :
 	@make -C $(DIR_YANN) --silent
