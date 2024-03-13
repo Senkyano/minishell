@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:21:18 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 14:54:00 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 13:23:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,6 @@ char	**ft_split_onedel(char const *s, char c)
 	}
 	char_tab[i] = 0;
 	return (char_tab);
-}
-
-int	close_minishell(char **args_split, t_shell *minishell)
-{
-	lstclear(minishell->lst_envs);
-	free_split(args_split);
-	exit(0);
 }
 
 // int		main(void)

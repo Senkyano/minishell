@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 11:44:55 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 13:45:48 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,6 @@ char		**get_paths(char **env);
 char		**free_split(char **char_tab);
 void		malloc_env(t_shell *minishell, const char **env);
 char		**ft_split_onedel(char const *s, char c);
-int			close_minishell(char **args_split, t_shell *minishell);
+char		*check_cmd(char *cmd, char **path_split);
 
 #endif

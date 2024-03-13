@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 09:54:58 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/13 14:06:05 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,3 +103,31 @@ void	malloc_env(t_shell *minishell, const char **env)
 // 'key' et un attribut 'value' dans chaque element de ma liste chaine
 // Pour la key 'DBUS_SESSION_BUS_ADDRESS' de l'environnement il y a deux egal
 // et donc cela pose un probleme avec le split
+
+char	*check_cmd(char *cmd, char **path_split)
+{
+	char	*path_str;
+	int		tmp;
+
+	if (cmd == NULL)
+	{
+		write(2, "Command '' not found\n", 22);
+		return (NULL);
+	}
+	tmp = 0;
+	while (path_split[tmp])
+	{
+		path_str = ft_strjoin_gnl(ft_strjoin(path_split[tmp], "/"), cmd, ft_strlen(cmd));
+		if (access(path_str, F_OK) == 0)
+		{
+			free_split(path_split);
+			return (path_str);
+		}
+		free(path_str);
+		tmp++;
+	}
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found\n", 21);
+	free_split(path_split);
+	return (NULL);
+}
