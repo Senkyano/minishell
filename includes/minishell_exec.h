@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_exec.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 18:27:31 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/13 11:44:55 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,13 @@ char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // int			ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char		**ft_free(char **char_tab, int nb_words);
 
+void		launch_builtins(t_shell *bash);
 void		ft_cd(char **argv, t_shell *minishell);
 void		ft_pwd(void);
 void		ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		ft_echo(char **args_split);
-void		ft_exit(char **args_split);
+void		ft_exit(t_shell *bash);
 
 void		ft_env(t_shell *minishell);
 int			check_env_key(t_shell *minishell, char *str);
@@ -164,10 +165,8 @@ t_envlist	*lst_index(t_envlist *lst, int index);
 void		ls_cmd(void);
 char		**get_paths(char **env);
 char		**free_split(char **char_tab);
-void		malloc_env(t_shell *minishell, char **env);
+void		malloc_env(t_shell *minishell, const char **env);
 char		**ft_split_onedel(char const *s, char c);
 int			close_minishell(char **args_split, t_shell *minishell);
-
-void		init_shell(t_shell *minishell, char **env);
 
 #endif

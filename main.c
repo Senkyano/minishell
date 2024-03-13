@@ -3,89 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 18:47:40 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/13 11:44:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
-#include "minishell_exec.h"
 
-void	launch_builtins(char **args_split, t_shell *minishell)
+void	launch_builtins(t_shell *bash)
 {
-	if (!ft_strcmp(args_split[0], "cd"))
-		ft_cd(args_split, minishell);
-	if (!ft_strcmp(args_split[0], "env"))
-		ft_env(minishell);
-	if (!ft_strcmp(args_split[0], "ls"))
+	if (!ft_strcmp(bash->str_split[0], "cd"))
+		ft_cd(bash->str_split, bash);
+	if (!ft_strcmp(bash->str_split[0], "env"))
+		ft_env(bash);
+	if (!ft_strcmp(bash->str_split[0], "ls"))
 		ls_cmd();
-	if (!ft_strcmp(args_split[0], "pwd"))
+	if (!ft_strcmp(bash->str_split[0], "pwd"))
 		ft_pwd();
-	if (!ft_strcmp(args_split[0], "export"))
-		ft_export(args_split, minishell);
-	if (!ft_strcmp(args_split[0], "unset"))
-		ft_unset(args_split, minishell);
-	if (!ft_strcmp(args_split[0], "echo"))
-		ft_echo(args_split);
-	if (!ft_strcmp(args_split[0], "exit"))
-	{
-		lstclear(minishell->lst_envs);
-		ft_exit(args_split);
-	}
+	if (!ft_strcmp(bash->str_split[0], "export"))
+		ft_export(bash->str_split, bash);
+	if (!ft_strcmp(bash->str_split[0], "unset"))
+		ft_unset(bash->str_split, bash);
+	if (!ft_strcmp(bash->str_split[0], "echo"))
+		ft_echo(bash->str_split);
+	if (!ft_strcmp(bash->str_split[0], "exit"))
+		ft_exit(bash);
 }
 
-void	launch_execution(char **args_split, t_shell *minishell)
+void	launch_execution(char **args_split, t_shell *bash)
 {
 	pid_t	pid;
 	
 	pid = fork();
 	if (pid == -1)
-		close_minishell(args_split, minishell);
+		close_minishell(args_split, bash);
 	if (pid == 0)
-		close_minishell(args_split, minishell);
+		close_minishell(args_split, bash);
 	else
 		wait(NULL);
-	launch_builtins(args_split, minishell);
+	launch_builtins(bash);
 }
 
-int	main(int argc, char **argv, const char **env)
+int	main(int argc, const char **argv, const char **env)
 {
-	t_shell	minishell;
+	t_shell	bash;
 
-	// lib_memset(&minishell, 0, sizeof(minishell));
+	if (argv == NULL)
+		return (1);
+	lib_memset(&bash, 0, sizeof(bash));
+	malloc_env(&bash, env);
 	launch_shell(argc, env);
-	if (!argv)
-		return 0;
-	malloc_env(&minishell, (char **)env);
-	init_shell(&minishell, (char **)env);
-	// free_shell(&minishell);
+	rl_line_buffer = NULL;
+	readline(CY"Minishell >: "RST);
+	while (1)
+	{
+		add_history(rl_line_buffer);
+		if (valid_str(rl_line_buffer))
+		{
+			build_process(rl_line_buffer, &bash);
+			launch_builtins(&bash);
+			lib_free_split(bash.str_split);
+		}
+		else
+			printf_error(RED"-- Feature not include --\n"RST);
+		readline(CY"Minishell >: "RST);
+	}
+	free_shell(&bash);
+	return (0);
 }
-
-// int	main(int argc, char **argv, char **env)
-// {
-// 	t_shell	minishell;
-// 	char		**args_split;
-
-// 	(void)argc;
-// 	(void)argv;
-// 	malloc_env(&minishell, env);
-// 	rl_line_buffer = NULL;
-// 	readline("minishell$ ");
-// 	while (1)
-// 	{
-// 		args_split = ft_split(rl_line_buffer, ' ');
-// 		if (args_split[0])
-// 		{
-// 			launch_builtins(args_split, &minishell);
-// 			add_history(rl_line_buffer);
-// 			free_split(args_split);
-// 		}
-// 		else
-// 			free(args_split);
-// 		readline("minishell$ ");
-// 	}
-// 	lstclear(minishell.lst_envs);
-// 	return (0);
-// }

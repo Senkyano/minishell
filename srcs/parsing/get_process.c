@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/12 17:44:28 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/13 11:12:32 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ static bool	start_process(char *str, t_shell *bash)
 		printf_error(CY"Minishell >: "RED"Malloc fail\n"RST);
 		return (false);
 	}
-	int	i;
+	// int	i;
 
-	i = 0;
-	while (bash->str_split[i])
-	{
-		printf("%s ", bash->str_split[i]);
-		i++;
-	}
-	lib_free_split(bash->str_split);
+	// i = 0;
+	// while (bash->str_split[i])
+	// {
+	// 	printf("%s ", bash->str_split[i]);
+	// 	i++;
+	// }
+	//lib_free_split(bash->str_split);
 	return (true);
 }

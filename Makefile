@@ -70,7 +70,6 @@ SRC_BUT = $(addprefix $(SRCS)/$(BUT)/, $(BUT_C))
 OBJ_BUT = $(patsubst %.c, $(OBJS)/%.o, $(BUT_C))
 
 TOOL_C =	lst_utils.c \
-			test_execution.c \
 			utils_minishell.c \
 			utils2_minishell.c
 
