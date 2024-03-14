@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:39:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/14 14:17:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:26:43 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,12 @@ int	skip_not_env(char *str)
 
 int	name_env(char *str)
 {
-	int	i;
 	int	len;
 
-	i = 0;
 	len = 0;
-	while (str[i] && (is_char(str[i]) || is_num(str[i])))
-	{
-		i++;
+	while (str[len] && (is_char(str[len]) || is_num(str[len])))
 		len++;
-	}
 	return (len);
-}
-
-int	skip_insert_env(char *str, char c)
-{
-	int	i;
-
-	if (c == '$')
-		i = name_env(str + 1);
-	else
-		i = skip_not_env(str);
-	return (i);
 }
 
 int	skip_char(char *str)

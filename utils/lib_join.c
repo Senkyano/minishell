@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:29:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 18:27:44 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:36:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*opti_join(char *str1, char *str2)
 	x = -1;
 	if (!str1)
 	{
-		str1 = lib_strup("\0");
+		str1 = lib_strup("");
 		if (!str1)
 			return (NULL);
 	}

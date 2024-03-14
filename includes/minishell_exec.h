@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/14 14:04:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 15:34:13 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct	s_infopars
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
+	int				index;		// index pour les pipes
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process

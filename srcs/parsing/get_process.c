@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 19:17:03 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 15:43:04 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "lib_utils.h"
 
 static bool	start_process(char *str, t_shell *bash);
-// static bool	lst_shellstr(t_shell *bash);
 
 bool	build_process(char *str, t_shell *bash)
 {
@@ -69,8 +68,7 @@ static bool	start_process(char *str, t_shell *bash)
 	{
 		curr->str = insert_env(curr->str, bash);
 		if (!curr->str)
-			printf_error(RED"KO\n");
-		printf_error("%s\n", curr->str);
+			// si il n'existe supprimer le bloc
 		curr = curr->next;
 	}
 	return (true);
