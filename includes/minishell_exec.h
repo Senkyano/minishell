@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 13:45:48 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/14 15:50:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct	s_infopars
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
+	int				index;	// index pour les pipes
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
@@ -145,7 +146,9 @@ char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // int			ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char		**ft_free(char **char_tab, int nb_words);
 
-void		launch_builtins(t_shell *bash);
+
+//builtins
+int			launch_builtins(char **cmd, t_shell *bash);
 void		ft_cd(char **argv, t_shell *minishell);
 void		ft_pwd(void);
 void		ft_unset(char **args_split, t_shell *minishell);
@@ -157,16 +160,26 @@ void		ft_env(t_shell *minishell);
 int			check_env_key(t_shell *minishell, char *str);
 char		*get_value_env(t_shell *minishell, char *key);
 
+//lst_utils.c
 t_envlist	*lst_new(char *str);
 void		lstadd_back(t_envlist *new, t_envlist *lst);
 void		lstclear(t_envlist *lst);
 t_envlist	*lst_index(t_envlist *lst, int index);
+int			lst_size(t_lstcmd *lstcmd);
 
+
+//utils_minishell.c
 void		ls_cmd(void);
 char		**get_paths(char **env);
 char		**free_split(char **char_tab);
 void		malloc_env(t_shell *minishell, const char **env);
 char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
+int			is_builtins(char **cmd);
+
+void		init_lstcmds(char **argv, t_shell *bash);
+
+//utils_exec.c
+void	exec_child(char *cmd_path, char **cmd, t_shell *bash, char **env);
 
 #endif

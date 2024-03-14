@@ -629,10 +629,31 @@ les unes dans les autres :
 
 <br/>
 
+Pipe loop : 
+
+- Si on est pas dans la premiere commande on lis dans le pipe
+avec un dup2, sinon on lis dans l'entree standard de lecture.
+- Si on n'est pas a la derniere commande on ecris dans le pipe avec
+un dup2, sinon on ecris dans l'entree standard d'ecriture.
+
+En fait, quand je fais un dup2 du fd de lecture standard par rapport
+au fd du pipe, pour le processus suivant il va lire l'argument depuis le pipe, car execve lis par defaut dans le fd de l'entree
+standard mais il a ete transforme par le fd de lecture du pipe.
+
+<br/>
+
 Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je test egalement l'argument
 seul car il est possible d'envoyer directement la commande avec son
 bon chemin. La commande a tester avec les chemins correspond au
 premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
+
+<br/>
+
+Remarques : 
+- Si on fork foire, mais que je suis deja a l'interieur d'un processus enfant,
+il faudra que je gere cette exception, arreter le programme proprement egalement
+dans le processus parent correspondant ? Pour que les autres commandes ne 
+s'executent pas ?
 
 <br/>
 <br/>
@@ -687,6 +708,8 @@ cette fonction.
 - A voir si je suis cense trouver le dossier meme quand j'unset le PWD (mais que
 du coup je ne l'utilise pas) pour aller au fichier suivant, parce que moi j'arrete la fonction cd des que l'une des variables d'environnement comme le 
 'HOME', 'PWD' ou 'OLDPWD' n'est pas defini, mais ce n'est peut-etre pas correct.
+- Dans le cas ou un dossier parent est supprime et qu'on se trouve dans un de ses dossiers fils, il faut revenir a la racine ou le dossier parent a ete cree
+avec la commande "cd .."
 
 <br/>
 
@@ -702,6 +725,11 @@ cela mette un message d'erreur, ca doit juste rien faire.
 l'argument, meme s'il y a un egal je dois renvoyer une erreur (en plus,
 les chiffres ne sont pas autorisees pour l'index 0 de l'argument).
 - Penser a gerer lorsque je met un '==' avec la fonction export : export sfd==wa.
+
+<br/>
+
+- Gerer quand il y a plusieurs variables a ajouter dans l'env avec la commande
+export OK= TRKL= par exemple
 
 <br/>
 

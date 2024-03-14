@@ -71,7 +71,9 @@ OBJ_BUT = $(patsubst %.c, $(OBJS)/%.o, $(BUT_C))
 
 TOOL_C =	lst_utils.c \
 			utils_minishell.c \
-			utils2_minishell.c
+			utils2_minishell.c \
+			test_execution.c \
+			utils_exec.c
 
 SRC_TOOL = $(addprefix $(SRCS)/$(TOOLS)/, $(TOOL_C))
 OBJ_TOOL = $(patsubst %.c, $(OBJS)/%.o, $(TOOL_C))

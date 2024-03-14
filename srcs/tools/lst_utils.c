@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 09:46:38 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 14:54:00 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/14 15:53:44 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,20 @@ t_envlist	*lst_index(t_envlist *lst, int index)
 		lst = lst -> next;
 	}
 	return (NULL);
+}
+
+int	lst_size(t_lstcmd *lstcmd)
+{
+	int	size;
+
+	if (lstcmd == NULL)
+		return (0);
+	size = 0;
+	while (lstcmd)
+	{
+		size++;
+		lstcmd = lstcmd->def_next;
+	}
+	return (size);
 }
 

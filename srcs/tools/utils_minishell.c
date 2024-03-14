@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 14:06:05 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/14 16:46:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*check_cmd(char *cmd, char **path_split)
 		path_str = ft_strjoin_gnl(ft_strjoin(path_split[tmp], "/"), cmd, ft_strlen(cmd));
 		if (access(path_str, F_OK) == 0)
 		{
-			free_split(path_split);
+			//free_split(path_split);
 			return (path_str);
 		}
 		free(path_str);
@@ -128,6 +128,6 @@ char	*check_cmd(char *cmd, char **path_split)
 	}
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": command not found\n", 21);
-	free_split(path_split);
+	//free_split(path_split);
 	return (NULL);
 }
