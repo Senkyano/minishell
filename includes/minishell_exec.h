@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 17:42:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:04:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@
 # define RST "\e[0m"
 
 extern int	g_last_exit_code;
+
+typedef struct s_data_env {
+	char 	*tmp;
+	char	*new_str;
+}	t_denv;
 
 typedef struct t_list {
 	int				index;
@@ -140,6 +145,8 @@ int			cutting(char *str, t_lstcmd *base);
 int			skip_space(char *str);
 int			skip_char(char *str);
 int			skip_not_env(char *str);
+int			name_env(char *str);
+int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
 

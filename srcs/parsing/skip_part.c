@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:39:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 17:20:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:17:35 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	skip_not_env(char *str)
 {
-	int	i;
+	int		i;
 	t_token	token;
 
 	i = 0;
@@ -25,6 +25,32 @@ int	skip_not_env(char *str)
 		in_sgquote(str[i], &token);
 		i++;
 	}
+	return (i);
+}
+
+int	name_env(char *str)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (str[i] && (is_char(str[i]) || is_num(str[i])))
+	{
+		i++;
+		len++;
+	}
+	return (len);
+}
+
+int	skip_insert_env(char *str, char c)
+{
+	int	i;
+
+	if (c == '$')
+		i = name_env(str + 1);
+	else
+		i = skip_not_env(str);
 	return (i);
 }
 
@@ -62,4 +88,3 @@ int	skip_space(char *str)
 		i++;
 	return (i);
 }
-

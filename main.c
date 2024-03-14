@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 17:35:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/14 10:54:29 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ void	launch_builtins(t_shell *bash)
 	// if (!ft_strcmp(bash->str_split[0], "echo"))
 	// 	ft_echo(bash->str_split);
 	if (!ft_strcmp(bash->lst_char->str, "exit"))
-		ft_exit(bash);
+	{
+		// ft_exit(bash);
+		free_shell(bash);
+		exit(0);
+	}
 }
 
 void	launch_execution(char **args_split, t_shell *bash)
