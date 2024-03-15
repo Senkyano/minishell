@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/15 17:00:32 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 19:20:48 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,23 @@ bool	need_cut(char *str)
 	return (true);
 }
 
-// int	next_process(char *str)
-// {
-	
-// }
+int	next_process(char *str)
+{
+	t_token	token;
+	int		i;
+
+	i = -1;
+	lib_memset(&token, 0, sizeof(token));
+	while (str[++i])
+	{
+		in_doquote(str[i], &token);
+		in_sgquote(str[i], &token);
+		if (!token.in_doquote && !token.in_sgquote && \
+		(str[i] == '|' || str[i] == '&'))
+			return (i);
+	}
+	return (i);
+}
 
 // t_infopars	*cut_strshell(char *str)
 // {
@@ -69,7 +82,7 @@ bool	need_cut(char *str)
 // 	i = 0;
 // 	while (str[i])
 // 	{
-		
+// 		//creation de la nouvelle liste
 // 	}
 // 	return (new_lst);
 // }//faire une nouvelle liste grace au char.

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 15:29:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 18:46:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_infopars	*diff_strshell(char *str, int spe)
 		case_info->str[x] = str[x];
 	case_info->str[x] = '\0';
 	case_info->next = NULL;
+	case_info->prec = NULL;
 	return (case_info);
 }
 
@@ -58,6 +59,7 @@ void	add_strshell(t_infopars **all, t_infopars *part)
 		while (curr_all->next != NULL)
 			curr_all = curr_all->next;
 		curr_all->next = part;
+		part->prec = curr_all->next;
 	}
 }
 

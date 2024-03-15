@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:03:39 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/15 16:46:51 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 19:20:14 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr)
 {
-	if (next)
-		pre->next = next;
-	else
-		pre->next = NULL;
-	if (pre)
+	if (next && pre)
+	{
 		next->prec = pre;
-	else
+		pre->next = next;
+	}
+	else if (!next && pre)
+		pre->next = NULL;
+	else if (next && !pre)
 		next->prec = NULL;
 	curr->next = NULL;
 	curr->prec = NULL;
