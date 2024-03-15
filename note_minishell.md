@@ -559,7 +559,7 @@ Il faut faire attention avec *lseek* car cette fonction nous permet de mettre no
 
 **L'interchangeabilite des descripteurs dupliques**
 
-Apres un appel reussi a dup ou dup2, l'ancien et le nouveau descripteurs sont interchangeables : ils font reference au meme fichier dans la table des fichiers ouverts et partagent donc tous ses attributs. Par exe;ple, si on lit avec *read* les premiers caracteres de l'un des descripteurs, la tete de lecture va etre modifiee. Et ce, pour les deux descripteurs de fichier, pas seulement celui avec lequel on a lu.
+Apres un appel reussi a dup ou dup2, l'ancien et le nouveau descripteurs sont interchangeables : ils font reference au meme fichier dans la table des fichiers ouverts et partagent donc tous ses attributs. Par exemple, si on lit avec *read* les premiers caracteres de l'un des descripteurs, la tete de lecture va etre modifiee. Et ce, pour les deux descripteurs de fichier, pas seulement celui avec lequel on a lu.
 
 Pourtant, on a vu precedemment que si l'on rouvrait le meme fichier une deuxieme fois, les deux descripteurs ne se partageaient pas la tete de lecture de cette facon. Alors pourquoi cela fonctionne-t-il differemment pour les descripteurs dupliques ?
 
@@ -636,9 +636,6 @@ avec un dup2, sinon on lis dans l'entree standard de lecture.
 - Si on n'est pas a la derniere commande on ecris dans le pipe avec
 un dup2, sinon on ecris dans l'entree standard d'ecriture.
 
-Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
-pour enlever un argument a la fonction "exec_cmdbash".
-
 <br/>
 
 Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je test egalement l'argument
@@ -653,6 +650,13 @@ Remarques :
 il faudra que je gere cette exception, arreter le programme proprement egalement
 dans le processus parent correspondant ? Pour que les autres commandes ne 
 s'executent pas ?
+- Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
+pour enlever un argument a la fonction "exec_cmdbash".
+- Etant donnee que je fork pour l'instant toutes les builtins, il faudra que je fasse un
+cas special pour exit, car un seul exit ne suffira pas car je serais dans le processus
+enfant de la builtins et donc il faut que j'arrete tout les processus parent, donc la
+fonction builtins est vraiment un cas particulier a tester en amont de la pipe loop a
+mon avis.
 
 <br/>
 <br/>

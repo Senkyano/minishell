@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 12:05:29 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 16:49:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,6 @@ void	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
 {
 	if (struct_cmd->child == 0)
 	{
-		if (struct_cmd->index == 0)
-		{
-			dup2(fd[1], 1);
-			close(fd[1]);
-			close(fd[0]);
-			close(std_out);
-		}
 		if (struct_cmd->index == bash->len_cmds - 1)
 		{
 			dup2(std_out, 1);
@@ -42,7 +35,20 @@ void	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
 			close(fd[0]);
 			close(std_out);
 		}
-		exec_child(cmd_path, struct_cmd->cmd, bash);
+		else
+		{
+			dup2(fd[1], 1);
+			close(fd[1]);
+			close(fd[0]);
+			close(std_out);
+		}
+		if (is_builtins(struct_cmd->cmd))
+		{
+			launch_builtins(std_out, fd, struct_cmd, bash);
+			exit(0);
+		}
+		else
+			exec_child(cmd_path, struct_cmd->cmd, bash);
 	}
 	else
 	{

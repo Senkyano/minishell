@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 11:56:57 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 16:46:09 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ void	init_lstcmds(char **argv, t_shell *bash)
 	bash->lstcmd = lst;
 	new = init_cmd(argv[3], argv[4], 1);
 	lstcmdadd_back(new, lst);
+	new = init_cmd(argv[6], argv[7], 2);
+	lstcmdadd_back(new, lst);
 	free(argv[2]);
+	free(argv[5]);
 	//printf("cmd 1 : |%s|, cmd 2 : |%s|\n", lst->cmd[0], lst->def_next->cmd[0]);
 	//printf("arg 1 : |%s|, arg 2 : |%s|\n", lst->cmd[1], lst->def_next->cmd[1]);
 }

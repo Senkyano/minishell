@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:21:18 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/14 14:23:42 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 12:38:35 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,28 +90,6 @@ char	**ft_split_onedel(char const *s, char c)
 	}
 	char_tab[i] = 0;
 	return (char_tab);
-}
-
-int	is_builtins(char **cmd)
-{
-	if (!ft_strcmp(cmd[0], "cd"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "env"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "ls"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "pwd"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "export"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "unset"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "echo"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "exit"))
-		return (1);
-	else
-		return (0);
 }
 
 // int		main(void)

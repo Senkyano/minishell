@@ -6,34 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 12:06:30 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 16:50:10 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
-
-int	launch_builtins(char **cmd, t_shell *bash)
-{
-	if (!ft_strcmp(cmd[0], "cd"))
-		ft_cd(cmd, bash);
-	else if (!ft_strcmp(cmd[0], "env"))
-		ft_env(bash);
-	else if (!ft_strcmp(cmd[0], "ls"))
-		ls_cmd();
-	else if (!ft_strcmp(cmd[0], "pwd"))
-		ft_pwd();
-	else if (!ft_strcmp(cmd[0], "export"))
-		ft_export(cmd, bash);
-	else if (!ft_strcmp(cmd[0], "unset"))
-		ft_unset(cmd, bash);
-	else if (!ft_strcmp(cmd[0], "echo"))
-		ft_echo(cmd);
-	else if (!ft_strcmp(cmd[0], "exit"))
-		ft_exit(bash);
-	else
-		return (0);
-	return (1);
-}
 
 void	pipe_loop(t_shell *bash)
 {
@@ -49,24 +26,16 @@ void	pipe_loop(t_shell *bash)
 	{
 		if (pipe(fd) == -1)
 			break ;
-		// if (is_builtins(cmds->cmd))
-		// {
-		// 	printf("cmd builtin : |%s|\n", cmds->cmd[0]);
-		// 	dup2(fd[1], 1);
-		// 	close(fd[1]);
-		// 	close(fd[0]);
-		// 	launch_builtins(cmds->cmd, bash);
-		// 	dup2(fd[0], 0);
-		// }
-		// else
-		// {
-		cmd_path = check_cmd(cmds->cmd[0], bash->path);
+		if (!is_builtins(cmds->cmd))
+			cmd_path = check_cmd(cmds->cmd[0], bash->path);
+		else
+			cmd_path = NULL;
 		cmds->child = fork();
 		if (cmds->child == -1)
 			free_shell(bash);
 		exec_cmdbash(std_out, fd, cmd_path, cmds, bash);
-		free(cmd_path);
-		// }
+		if (cmd_path)
+			free(cmd_path);
 		cmds = cmds->def_next;
 	}
 	free_shell(bash);

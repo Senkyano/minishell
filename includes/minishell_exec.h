@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 12:05:55 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 12:36:45 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,15 +150,14 @@ char		**ft_free(char **char_tab, int nb_words);
 
 
 //builtins
-int			launch_builtins(char **cmd, t_shell *bash);
 void		ft_cd(char **argv, t_shell *minishell);
 void		ft_pwd(void);
 void		ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		ft_echo(char **args_split);
 void		ft_exit(t_shell *bash);
-
 void		ft_env(t_shell *minishell);
+
 int			check_env_key(t_shell *minishell, char *str);
 char		*get_value_env(t_shell *minishell, char *key);
 
@@ -169,6 +168,10 @@ void		lstclear(t_envlist *lst);
 t_envlist	*lst_index(t_envlist *lst, int index);
 int			lst_size(t_lstcmd *lstcmd);
 
+//builtins_utils.c
+int			exec_builtins(char **cmd, t_shell *bash);
+int			is_builtins(char **cmd);
+void		launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash);
 
 //utils_minishell.c
 void		ls_cmd(void);
@@ -177,7 +180,6 @@ char		**free_split(char **char_tab);
 void		malloc_env(t_shell *minishell, const char **env);
 char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
-int			is_builtins(char **cmd);
 
 //test_execution.c
 void		init_lstcmds(char **argv, t_shell *bash);

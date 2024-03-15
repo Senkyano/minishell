@@ -73,6 +73,7 @@ TOOL_C =	lst_utils.c \
 			utils_minishell.c \
 			utils2_minishell.c \
 			test_execution.c \
+			builtins_utils.c \
 			utils_exec.c
 
 SRC_TOOL = $(addprefix $(SRCS)/$(TOOLS)/, $(TOOL_C))
