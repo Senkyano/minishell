@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/14 15:43:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:10:52 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static bool	start_process(char *str, t_shell *bash);
 bool	build_process(char *str, t_shell *bash)
 {
 	if (!str_len(str))
+		return (false);
+	if (!valid_token(str))
 		return (false);
 	if (!valid_str(str))
 	{
@@ -62,13 +64,15 @@ static bool	start_process(char *str, t_shell *bash)
 	if (!lst_shellstr(bash))
 		return (false);
 	t_infopars	*curr;
-	
+
 	curr = bash->lst_char;
 	while (curr)
 	{
 		curr->str = insert_env(curr->str, bash);
-		if (!curr->str)
-			// si il n'existe supprimer le bloc
+		if (curr->str)
+			printf_error("%s", curr->str);
+		else if (!curr->str || curr->str[0] == 0)
+			printf_error("! supp !");
 		curr = curr->next;
 	}
 	return (true);

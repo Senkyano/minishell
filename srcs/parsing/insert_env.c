@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/14 14:28:42 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 10:41:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "lib_utils.h"
 
 static char	*env_value(char *str, t_envlist *lst_envs, int i);
-static void	join_tmp(t_denv *x);
+static void	join_tmp(t_data *x);
 
 char	*insert_env(char *str, t_shell *bash)
 {
-	t_denv	x;
+	t_data	x;
 	int		i;
 
 	i = 0;
@@ -45,7 +45,7 @@ char	*insert_env(char *str, t_shell *bash)
 	return (free(str), x.new_str);
 }
 
-static void	join_tmp(t_denv *x)
+static void	join_tmp(t_data *x)
 {
 	if (!x->new_str && x->tmp)
 	{

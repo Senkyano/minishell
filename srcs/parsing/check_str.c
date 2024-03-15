@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:30:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 15:15:53 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:39:28 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	in_process(char c, t_token *token)
 	!token->in_doquote && !token->in_sgquote)
 		token->in_process = true;
 	else if (c != '|' && c != '&' && c != ';' && c != 32 && c != '\n' && \
-	token->in_process)
+	token->in_process && c != ')')
 		token->in_process = false;
 }
 

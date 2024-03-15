@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/14 15:34:13 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:39:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@
 # define RST "\e[0m"
 
 extern int	g_last_exit_code;
-
-typedef struct s_data_env {
-	char 	*tmp;
-	char	*new_str;
-}	t_denv;
 
 typedef struct t_list {
 	int				index;
@@ -108,15 +103,26 @@ typedef struct	s_shell
 	t_lstcmd	*lstcmd;
 	t_infopars	*lst_char;
 }	t_shell;
+
+typedef struct s_data {
+	char 	*tmp;
+	char	*new_str;
+	int		i;
+	t_infopars	*new_lst;
+}	t_data;
+
 // Erreur
 void		launch_shell(int argc, const char **env);
 void		gestion_exit(char *msg, t_shell *bash);
 bool		valid_str(char *str);
+bool		valid_token(char *str);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Case
 t_infopars	*diff_strshell(char *str, int spe);
 t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
+// Process manipulation
+t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr);
 // Process add
 bool		build_process(char *str, t_shell *bash);
 void		add_or(t_lstcmd **process_or, t_lstcmd *def_cmd);
@@ -130,6 +136,7 @@ void		free_or_process(t_lstcmd *lstprocess);
 void		free_and_process(t_lstcmd *lstprocess);
 void		free_strshell(t_infopars **all);
 void		free_shell(t_shell *bash);
+void		free_blockstrshell(t_infopars *selec);
 // Print process
 void		print_strshell(t_infopars *lst);
 // In
