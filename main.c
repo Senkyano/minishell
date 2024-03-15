@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/14 17:04:59 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 10:46:26 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,15 @@ void	exec_cmdbash(int std_out, int *fd, t_lstcmd *struct_cmd, t_shell *bash, cha
 		{
 			dup2(fd[1], 1);
 			close(fd[1]);
+			close(fd[0]);
+			close(std_out);
 		}
 		if (struct_cmd->index == len_cmds - 1)
 		{
-			dup2(fd[0], 0);
 			dup2(std_out, 1);
 			close(fd[1]);
+			close(fd[0]);
+			close(std_out);
 		}
 		exec_child(cmd_path, struct_cmd->cmd, bash, env);
 	}
@@ -67,6 +70,7 @@ void	exec_cmdbash(int std_out, int *fd, t_lstcmd *struct_cmd, t_shell *bash, cha
 		close(fd[1]);
 		close(fd[0]);
 		wait(NULL);
+		free(cmd_path);
 	}
 }
 
@@ -99,7 +103,7 @@ void	pipe_loop(t_shell *bash, char **env)
 	}
 	free_shell(bash);
 	close(std_out);
-	exit(0);
+	//exit(0);
 }
 
 void	launch_execution(t_shell *bash, char **env)
@@ -130,6 +134,7 @@ int	main(int argc, const char **argv, const char **env)
 	args_split = ft_split(argv[1], ' ');
 	init_lstcmds(args_split, &bash);
 	pipe_loop(&bash, (char **)env);
+	free(args_split);
 	(void)argc;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/14 15:50:56 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 10:15:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,9 @@ char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
 int			is_builtins(char **cmd);
 
+//test_execution.c
 void		init_lstcmds(char **argv, t_shell *bash);
+void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
 void	exec_child(char *cmd_path, char **cmd, t_shell *bash, char **env);
