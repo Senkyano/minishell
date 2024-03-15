@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 10:15:56 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 12:05:55 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ typedef struct	s_shell
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
 	int			nbr_path;
+	int			len_cmds;
+	char		**env;
 	t_envlist	*lst_envs;
 	char		**str_split;
 	t_lstcmd	*lstcmd;
@@ -182,6 +184,8 @@ void		init_lstcmds(char **argv, t_shell *bash);
 void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
-void	exec_child(char *cmd_path, char **cmd, t_shell *bash, char **env);
+void	exec_child(char *cmd_path, char **cmd, t_shell *bash);
+void	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
+					t_shell *bash);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 10:46:26 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/15 12:06:30 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,52 +35,15 @@ int	launch_builtins(char **cmd, t_shell *bash)
 	return (1);
 }
 
-void	exec_cmdbash(int std_out, int *fd, t_lstcmd *struct_cmd, t_shell *bash, char **env)
-{
-	char	*cmd_path;
-	int		len_cmds;
-	pid_t	pid;
-
-	cmd_path = check_cmd(struct_cmd->cmd[0], bash->path);
-	len_cmds = lst_size(bash->lstcmd);
-	pid = fork();
-	if (pid == -1)
-		free_shell(bash);
-	if (pid == 0)
-	{
-		if (struct_cmd->index == 0)
-		{
-			dup2(fd[1], 1);
-			close(fd[1]);
-			close(fd[0]);
-			close(std_out);
-		}
-		if (struct_cmd->index == len_cmds - 1)
-		{
-			dup2(std_out, 1);
-			close(fd[1]);
-			close(fd[0]);
-			close(std_out);
-		}
-		exec_child(cmd_path, struct_cmd->cmd, bash, env);
-	}
-	else
-	{
-		dup2(fd[0], 0);
-		close(fd[1]);
-		close(fd[0]);
-		wait(NULL);
-		free(cmd_path);
-	}
-}
-
-void	pipe_loop(t_shell *bash, char **env)
+void	pipe_loop(t_shell *bash)
 {
 	t_lstcmd	*cmds;
+	char		*cmd_path;
 	int			fd[2];
 	int			std_out;
 
 	cmds = bash->lstcmd;
+	bash->len_cmds = lst_size(cmds);
 	std_out = dup(1);
 	while (cmds)
 	{
@@ -97,16 +60,20 @@ void	pipe_loop(t_shell *bash, char **env)
 		// }
 		// else
 		// {
-		exec_cmdbash(std_out, fd, cmds, bash, env);
+		cmd_path = check_cmd(cmds->cmd[0], bash->path);
+		cmds->child = fork();
+		if (cmds->child == -1)
+			free_shell(bash);
+		exec_cmdbash(std_out, fd, cmd_path, cmds, bash);
+		free(cmd_path);
 		// }
 		cmds = cmds->def_next;
 	}
 	free_shell(bash);
 	close(std_out);
-	//exit(0);
 }
 
-void	launch_execution(t_shell *bash, char **env)
+void	launch_execution(t_shell *bash)
 {
 	pid_t		pid;
 
@@ -115,10 +82,13 @@ void	launch_execution(t_shell *bash, char **env)
 		free_shell(bash);
 	if (pid == 0)
 	{
-		pipe_loop(bash, env);
+		pipe_loop(bash);
 	}
 	else
+	{
 		wait(NULL);
+		free_shell(bash);
+	}
 }
 
 int	main(int argc, const char **argv, const char **env)
@@ -130,10 +100,11 @@ int	main(int argc, const char **argv, const char **env)
 		return (1);
 	lib_memset(&bash, 0, sizeof(bash));
 	malloc_env(&bash, env);
+	bash.env = (char **)env;
 	bash.path = get_paths((char **)env);
 	args_split = ft_split(argv[1], ' ');
 	init_lstcmds(args_split, &bash);
-	pipe_loop(&bash, (char **)env);
+	launch_execution(&bash);
 	free(args_split);
 	(void)argc;
 	return (0);

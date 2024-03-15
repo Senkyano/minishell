@@ -636,9 +636,8 @@ avec un dup2, sinon on lis dans l'entree standard de lecture.
 - Si on n'est pas a la derniere commande on ecris dans le pipe avec
 un dup2, sinon on ecris dans l'entree standard d'ecriture.
 
-En fait, quand je fais un dup2 du fd de lecture standard par rapport
-au fd du pipe, pour le processus suivant il va lire l'argument depuis le pipe, car execve lis par defaut dans le fd de l'entree
-standard mais il a ete transforme par le fd de lecture du pipe.
+Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
+pour enlever un argument a la fonction "exec_cmdbash".
 
 <br/>
 
