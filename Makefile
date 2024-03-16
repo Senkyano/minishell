@@ -58,7 +58,8 @@ PARS_C = 	check_str.c \
 			analysis.c \
 			skip_part.c \
 			insert_env.c \
-			check_token.c
+			check_token.c \
+			good_process.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))

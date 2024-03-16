@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/14 10:54:29 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/16 19:13:19 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	main(int argc, const char **argv, const char **env)
 
 	if (argv == NULL)
 		return (1);
+	launch_shell(argc, env);
 	lib_memset(&bash, 0, sizeof(bash));
 	malloc_env(&bash, env);
-	launch_shell(argc, env);
 	rl_line_buffer = NULL;
 	while (1)
 	{
@@ -68,8 +68,8 @@ int	main(int argc, const char **argv, const char **env)
 		{
 			// printf_error(GR"ok\n"RST);
 			launch_builtins(&bash);
-			free_strshell(&bash.lst_char);
 		}
+		free_strshell(&bash.lst_char);
 	}
 	free_shell(&bash);
 	return (0);

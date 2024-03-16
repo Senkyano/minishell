@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 19:22:51 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/16 18:44:42 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_token
 	bool			error;
 	int				in_par;
 	bool			in_process;
+	bool			enter_par;
 }	t_token;
 
 typedef struct s_lstfd
@@ -95,6 +96,7 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 
 typedef struct	s_shell
 {
+	t_token		tok_ge;
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
 	int			nbr_path;
@@ -104,7 +106,8 @@ typedef struct	s_shell
 	t_infopars	*lst_char;
 }	t_shell;
 
-typedef struct s_data {
+typedef struct s_data
+{
 	char 	*tmp;
 	char	*new_str;
 	int		i;
@@ -116,6 +119,7 @@ void		launch_shell(int argc, const char **env);
 void		gestion_exit(char *msg, t_shell *bash);
 bool		valid_str(char *str);
 bool		valid_token(char *str);
+bool		check_process(t_infopars *pars);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Case

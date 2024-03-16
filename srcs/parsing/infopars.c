@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/15 18:46:41 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/16 18:59:47 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	add_strshell(t_infopars **all, t_infopars *part)
 		while (curr_all->next != NULL)
 			curr_all = curr_all->next;
 		curr_all->next = part;
-		part->prec = curr_all->next;
+		part->prec = curr_all;
 	}
 }
 
