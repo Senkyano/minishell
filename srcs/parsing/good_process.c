@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:44:08 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/16 19:08:30 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/16 23:36:29 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	check_bef_par(char *str, t_token *token)
 		in_doquote(str[i], token);
 		in_sgquote(str[i], token);
 		if (str[i + 1] == '(' && str[i] != '|' && str[i] != '&' && \
-		!token->in_doquote && !token->in_sgquote)
+		!token->in_doquote && !token->in_sgquote && str[i] != '(')
 			token->error = true;
 		i++;
 	}
@@ -60,6 +60,6 @@ static void	process_befo(t_infopars *pre, t_token *token)
 	i = str_len(pre->str);
 	i--;
 	if (pre->str[i] != '|' && pre->str[i] != '&' && !token->in_doquote && \
-	!token->in_sgquote)
+	!token->in_sgquote && pre->str[i] != '(')
 		token->error = true;
 }
