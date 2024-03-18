@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/16 19:11:27 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 14:49:58 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,19 @@ static bool	start_process(char *str, t_shell *bash)
 	}
 	if (!lst_shellstr(bash))
 		return (false);
-	if (!check_process(bash->lst_char))
+	if (!check_process(bash->lst_char)) // check process in double parenthese.
 		return (false);
-	// t_infopars	*curr;
+	t_infopars	*curr;
 
-	// curr = bash->lst_char;
-	// while (curr)
-	// {
-	// 	// curr->str = insert_env(curr->str, bash);
-	// 	if (curr->str)
-	// 		printf_error("%s\n", curr->str);
-	// 	else if (!curr->str || curr->str[0] == 0)
-	// 		printf_error("! supp !");
-	// 	curr = curr->next;
-	// }
+	curr = bash->lst_char;
+	while (curr)
+	{
+		// curr->str = insert_env(curr->str, bash);
+		if (curr->str)
+			printf_error("%s\n", curr->str);
+		else if (!curr->str || curr->str[0] == 0)
+			printf_error("! supp !");
+		curr = curr->next;
+	}
 	return (true);
 }

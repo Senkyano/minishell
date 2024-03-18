@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/15 19:20:48 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 17:11:42 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	analysis_shell(t_shell *bash)
 	{
 		if (curr->str && need_cut(curr->str))
 		{
-			// new liste;
+			new_data.new_lst = cut_strshell(curr->str); // prototype
+			add_btw_strshell(curr->prec, new_data.new_lst, curr->next, &curr);
 		}
 		else if (!curr->str || curr->str[0] == 0)
 			curr = supp_blockshell(curr->prec, curr, curr->next);
@@ -74,15 +75,14 @@ int	next_process(char *str)
 	return (i);
 }
 
-// t_infopars	*cut_strshell(char *str)
-// {
-// 	t_infopars	*new_lst;
-// 	int			i;
+t_infopars	*cut_strshell(char *str)
+{
+	t_data		tmp;
 
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		//creation de la nouvelle liste
-// 	}
-// 	return (new_lst);
-// }//faire une nouvelle liste grace au char.
+	lib_memset(&tmp, 0, sizeof(tmp));
+	while (str[tmp.i])
+	{
+		// creation de la nouvelle liste
+	}
+	return (new_lst);
+}//faire une nouvelle liste grace au char.
