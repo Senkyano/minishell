@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 17:08:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 18:44:56 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_token
 
 typedef struct s_lstfd
 {
-	char			*name;
+	// char			*name; pour que se soit bien securiser mais on as pas forcement besoin en realite
 	bool			in_file;
 	bool			out_file;
 	bool			file_here;
@@ -74,7 +74,12 @@ typedef struct s_lstfd
 	struct s_lstfd	*next;
 }	t_lstfd;
 
-typedef struct 
+typedef struct s_lsthere
+{
+	int					fd[2];
+	char				*lim;
+	struct s_lsthere	*next;
+}	t_lsthere;
 
 typedef struct	s_infopars
 {
@@ -129,6 +134,7 @@ void		get_true_path(t_shell *bash, char const **env);
 // Case
 t_infopars	*diff_strshell(char *str, int spe);
 t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
+t_infopars	*cut_strshell(char *str);
 // Process manipulation
 t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr);
 // Process add
@@ -138,7 +144,7 @@ void		add_and(t_lstcmd **process_and, t_lstcmd *def_cmd);
 void		add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd);
 void		add_strshell(t_infopars **all, t_infopars *part);
 void		add_btw_strshell(t_infopars *pre, t_infopars *new_lst, \
-t_infopars *next, t_infopars **old);
+t_infopars *next, t_infopars *old);
 // Free process
 void		free_def_process(t_lstcmd *lstcmd);
 void		free_or_process(t_lstcmd *lstprocess);

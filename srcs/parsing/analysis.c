@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/18 17:11:42 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 19:13:11 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	analysis_shell(t_shell *bash)
 		if (curr->str && need_cut(curr->str))
 		{
 			new_data.new_lst = cut_strshell(curr->str); // prototype
-			add_btw_strshell(curr->prec, new_data.new_lst, curr->next, &curr);
+			add_btw_strshell(curr->prec, new_data.new_lst, curr->next, curr);
 		}
 		else if (!curr->str || curr->str[0] == 0)
 			curr = supp_blockshell(curr->prec, curr, curr->next);
