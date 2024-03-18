@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/16 18:44:42 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 17:08:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,13 @@ typedef struct s_lstfd
 {
 	char			*name;
 	bool			in_file;
-	bool			here_doc;
+	bool			out_file;
+	bool			file_here;
 	int				fd;
 	struct s_lstfd	*next;
 }	t_lstfd;
+
+typedef struct 
 
 typedef struct	s_infopars
 {
@@ -84,6 +87,7 @@ typedef struct	s_infopars
 
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
+	int				error;		// pour des cas specifique
 	int				index;		// index pour les pipes
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
@@ -133,7 +137,8 @@ void		add_or(t_lstcmd **process_or, t_lstcmd *def_cmd);
 void		add_and(t_lstcmd **process_and, t_lstcmd *def_cmd);
 void		add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd);
 void		add_strshell(t_infopars **all, t_infopars *part);
-void		add_btw_strshell(t_infopars *pre, t_infopars *new_lst, t_infopars *next);
+void		add_btw_strshell(t_infopars *pre, t_infopars *new_lst, \
+t_infopars *next, t_infopars **old);
 // Free process
 void		free_def_process(t_lstcmd *lstcmd);
 void		free_or_process(t_lstcmd *lstprocess);
