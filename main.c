@@ -6,18 +6,21 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 16:50:10 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/18 16:01:16 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 
-void	pipe_loop(t_shell *bash)
+int	g_last_exit_code;
+
+int	pipe_loop(t_shell *bash)
 {
 	t_lstcmd	*cmds;
 	char		*cmd_path;
 	int			fd[2];
 	int			std_out;
+	int			exit_status;
 
 	cmds = bash->lstcmd;
 	bash->len_cmds = lst_size(cmds);
@@ -33,13 +36,38 @@ void	pipe_loop(t_shell *bash)
 		cmds->child = fork();
 		if (cmds->child == -1)
 			free_shell(bash);
-		exec_cmdbash(std_out, fd, cmd_path, cmds, bash);
+		exit_status = exec_cmdbash(std_out, fd, cmd_path, cmds, bash);
 		if (cmd_path)
 			free(cmd_path);
+		if (exit_status == 1)
+			break ;
 		cmds = cmds->def_next;
 	}
-	free_shell(bash);
 	close(std_out);
+	return (exit_status);
+}
+
+void	or_loop(t_shell *bash)
+{
+	pid_t	pid;
+	int		exit_status;
+	
+	pid = fork();
+	if (pid == -1)
+		free_shell(bash);
+	if (pid == 0)
+	{
+		exit_status = -1;
+		while (bash->lstcmd && exit_status != 0)
+		{
+			exit_status = pipe_loop(bash);
+			bash->lstcmd = bash->lstcmd->or_next;
+		}
+		free_shell(bash);
+		exit(0);
+	}
+	else
+		wait(NULL);
 }
 
 void	launch_execution(t_shell *bash)
@@ -51,7 +79,8 @@ void	launch_execution(t_shell *bash)
 		free_shell(bash);
 	if (pid == 0)
 	{
-		pipe_loop(bash);
+		or_loop(bash);
+		exit(0);
 	}
 	else
 	{
@@ -67,6 +96,7 @@ int	main(int argc, const char **argv, const char **env)
 
 	if (argv == NULL)
 		return (1);
+	g_last_exit_code = 0;
 	lib_memset(&bash, 0, sizeof(bash));
 	malloc_env(&bash, env);
 	bash.env = (char **)env;

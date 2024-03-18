@@ -154,7 +154,8 @@ http://sdz.tdct.org/sdz/arcourir-les-dossiers-avec-dirent-h.html
 
 **strerror** : La fonction 'strerror' renvoie une chaine decrivant le 
 code d'erreur passe en argument errnum.
-perror : La fonction 'perror' affiche un message sur la sortie
+
+**perror** : La fonction 'perror' affiche un message sur la sortie
 d'erreur standard, decrivant la derniere erreur rencontree durant
 un appel systeme ou une fonction de bibliotheque. La chaine de 
 caracteres contient generalement le nom de la fonction ou s'est 
@@ -322,6 +323,10 @@ BASH_PARSING_technique->PRECEDENCE_CLIMBING <a id="partie_4"></a>
 
 **Useful article** : 
 https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing
+
+Fichier excel avec tout les cas possibles d'erreurs :
+
+https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit#gid=0
 
 L'objectif fondamental de l'algorithme est le suivant : traiter une 
 expression comme un ensemble de sous-expressions imbriquées, où 
@@ -645,6 +650,11 @@ premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
 
 <br/>
 
+Redirection : Integrer la gestion des fds dans l'execution en fonction des
+redirection de la ligne de commande.
+
+<br/>
+
 Remarques : 
 - Si on fork foire, mais que je suis deja a l'interieur d'un processus enfant,
 il faudra que je gere cette exception, arreter le programme proprement egalement
@@ -657,6 +667,9 @@ cas special pour exit, car un seul exit ne suffira pas car je serais dans le pro
 enfant de la builtins et donc il faut que j'arrete tout les processus parent, donc la
 fonction builtins est vraiment un cas particulier a tester en amont de la pipe loop a
 mon avis.
+- Pour l'instant, vu que je ne gere aucun cas de parsing, si je met un "echo -n test"
+dans la pipe loop, le dernier argument ("test") ne sera pas pris en compte et la commande
+ne renverra rien car elle interpretera juste "echo -n".
 
 <br/>
 <br/>
@@ -765,7 +778,7 @@ is 2 (putstr_fd).
 <br/>
 <br/>
 
-Historique_de_commandes <a id="partie_9"></a>
+Historique_de_commandes <a id="partie_10"></a>
 ---------------------------------------------
 
 Pour l'instant, lorsque j'appuie sur les fleches ca me fait des 
@@ -782,7 +795,7 @@ fleche du haut et du bas.
 <br/>
 <br/>
 
-Signaux <a id="partie_10"></a>
+Signaux <a id="partie_11"></a>
 -----------------------------
 
 <br/>
@@ -956,7 +969,7 @@ https://www.codequoi.com/envoyer-et-intercepter-un-signal-en-c/
 <br/>
 <br/>
 
-Errno_et_la_gestion_d_erreur <a id="partie_11"></a>
+Errno_et_la_gestion_d_erreur <a id="partie_12"></a>
 --------------------------------------------------------
 
 Lien de l'article : 

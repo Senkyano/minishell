@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 17:08:16 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/18 15:33:40 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,22 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 
 	result = execve(cmd_path, cmd, bash->env);
 	if (result == -1)
-		printf("Error execve\n");
+		g_last_exit_code = 1;
 	free_shell(bash);
-	exit(0);
+	exit(1);
 }
 
-void	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
+int	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
 					t_shell *bash)
 {
+	int	status;
+
 	if (struct_cmd->child == 0)
 	{
 		if (struct_cmd->index == bash->len_cmds - 1)
+		{
 			dup2(std_out, 1);
+		}
 		else
 			dup2(fd[1], 1);
 		close(fd[1]);
@@ -48,7 +52,9 @@ void	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
 		dup2(fd[0], 0);
 		close(fd[1]);
 		close(fd[0]);
-		wait(NULL);
+		waitpid(struct_cmd->child, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
+			return (1);
 	}
+	return (0);
 }
-

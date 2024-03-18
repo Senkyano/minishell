@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 16:46:09 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/18 16:13:13 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,75 @@ void	lstcmdadd_back(t_lstcmd *new, t_lstcmd *lst)
 	tmp->def_next = new;
 }
 
+void	lstcmdadd_back_or(t_lstcmd *new, t_lstcmd *lst)
+{
+	t_lstcmd	*tmp;
+
+	tmp = lst;
+	while (tmp->or_next != NULL)
+	{
+		tmp = tmp->or_next;
+	}
+	tmp->or_next = new;
+}
+
 void	init_lstcmds(char **argv, t_shell *bash)
 {
 	t_lstcmd	*new;
 	t_lstcmd	*lst;
 
+	lst = init_cmd(argv[0], argv[1], 0);
+	bash->lstcmd = lst;
+	new = init_cmd(argv[3], argv[4], 1); // quand c'est avec un "ou" il faut remettre
+	// l'index a 0 pour la premiere commande de l'autre processus
+	lstcmdadd_back(new, lst);
+	new = init_cmd(argv[6], argv[7], 2);
+	lstcmdadd_back(new, lst); // lorsqu'on ajoute un pipe entre deux
+	// element, mais qu'il y a eu un "ou" avant, il faut avancer a l'element 
+	// "or_next" suivant
+	// quand il y a un "ou" dans le 2e processus on le met le "or_next" sur 
+	// le premier element du premier processus
+	free(argv[2]);
+	free(argv[5]);
+	// printf("cmd 1 : |%s|, cmd 2 : |%s|\n", lst->cmd[0], lst->or_next->cmd[0]);
+	// printf("arg 1 : |%s|, arg 2 : |%s|\n", lst->cmd[1], lst->or_next->cmd[1]);
+}
+
+/*
+Test 1 : ./minishell "cat supp.supp | bdz vs || echo test"
+Initialisation : 
+	lst = init_cmd(argv[0], argv[1], 0);
+	bash->lstcmd = lst;
+	new = init_cmd(argv[3], argv[4], 1);
+	lstcmdadd_back(new, lst);
+	new = init_cmd(argv[6], argv[7], 0);
+	lstcmdadd_back_or(new, lst);
+	free(argv[2]);
+	free(argv[5]);
+
+Test 2 : ./minishell "ersgb ebs || echo test | wc -l"
+Initialisation : 
+	lst = init_cmd(argv[0], argv[1], 0);
+	bash->lstcmd = lst;
+	new = init_cmd(argv[3], argv[4], 0);
+	lstcmdadd_back_or(new, lst);
+	new = init_cmd(argv[6], argv[7], 1);
+	lstcmdadd_back(new, lst->or_next);
+	free(argv[2]);
+	free(argv[5]);
+
+Test 3 : ./minishell "ersgb ebs || ewdf test || cat supp.supp"
+Initialisation :
+	lst = init_cmd(argv[0], argv[1], 0);
+	bash->lstcmd = lst;
+	new = init_cmd(argv[3], argv[4], 0);
+	lstcmdadd_back_or(new, lst);
+	new = init_cmd(argv[6], argv[7], 0);
+	lstcmdadd_back_or(new, lst);
+	free(argv[2]);
+	free(argv[5]);
+
+Test 4 : ./minishell "cat supp.supp | wc -l | wc -l"
 	lst = init_cmd(argv[0], argv[1], 0);
 	bash->lstcmd = lst;
 	new = init_cmd(argv[3], argv[4], 1);
@@ -58,9 +122,8 @@ void	init_lstcmds(char **argv, t_shell *bash)
 	lstcmdadd_back(new, lst);
 	free(argv[2]);
 	free(argv[5]);
-	//printf("cmd 1 : |%s|, cmd 2 : |%s|\n", lst->cmd[0], lst->def_next->cmd[0]);
-	//printf("arg 1 : |%s|, arg 2 : |%s|\n", lst->cmd[1], lst->def_next->cmd[1]);
-}
+*/
+
 
 void	free_lstcmds(t_shell *bash)
 {
