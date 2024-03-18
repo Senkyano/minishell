@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/18 19:13:11 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 22:56:05 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,31 @@ t_infopars	*cut_strshell(char *str)
 	lib_memset(&tmp, 0, sizeof(tmp));
 	while (str[tmp.i])
 	{
-		// creation de la nouvelle liste
+		in_doquote(str[tmp.i], &tmp.token);
+		in_sgquote(str[tmp.i], &tmp.token);
+		if (str[tmp.i] == '|' || str[tmp.i] == '&')
+			// malloc dans un bloc le process
+		if (str[tmp.i] != '|' && str[tmp.i] != '&')
+		{
+			tmp.new_str = strup_to(str + tmp.i, next_process(str + tmp.i));
+			if (!tmp.new_str)
+			{
+				if (tmp.new_lst)
+					free_strshell(tmp.new_lst);
+				return (printf_error(RED"-- Malloc fail --\n"RST), NULL);
+			}
+			tmp.tmp_box = diff_strshell(tmp.new_str, 1);
+			if (!tmp.tmp_box)
+			{
+				if (tmp.new_lst)
+					free_strshell(tmp.new_lst);
+				return (free(tmp.new_str), printf_error(RED ERR_MAL RST), NULL);
+			}
+			free(tmp.new_str);
+			tmp.new_str = NULL;
+			add_strshell(&tmp.new_lst, tmp.tmp_box);
+			tmp.i = next_process(str + tmp.i);
+		}
 	}
-	return (new_lst);
+	return (tmp.new_lst);
 }//faire une nouvelle liste grace au char.

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 18:44:56 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/18 22:55:12 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define CY "\e[1;96m"
 # define WH "\e[0;97m"
 # define RST "\e[0m"
+# define ERR_MAL "-- Malloc failed --\n"
 
 extern int	g_last_exit_code;
 
@@ -117,10 +118,12 @@ typedef struct	s_shell
 
 typedef struct s_data
 {
-	char 	*tmp;
-	char	*new_str;
-	int		i;
+	char 		*tmp;
+	char		*new_str;
+	int			i;
 	t_infopars	*new_lst;
+	t_token		token;
+	t_infopars	*tmp_box;
 }	t_data;
 
 // Erreur
