@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/18 22:56:05 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/19 17:07:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,14 @@ void	analysis_shell(t_shell *bash)
 	{
 		if (curr->str && need_cut(curr->str))
 		{
-			new_data.new_lst = cut_strshell(curr->str); // prototype
-			add_btw_strshell(curr->prec, new_data.new_lst, curr->next, curr);
+			new_data.new_lst = cut_boxshell(curr->str);
+			if (!new_data.new_lst)
+				return ;
+			add_btw_boxshell(curr->prec, new_data.new_lst, curr->next, &curr);
+			bash->lst_char = first_boxshell(curr);
 		}
 		else if (!curr->str || curr->str[0] == 0)
-			curr = supp_blockshell(curr->prec, curr, curr->next);
+			curr = supp_blockshell(curr->prec, curr->next, curr);
 		curr = curr->next;
 	}
 }
@@ -75,38 +78,39 @@ int	next_process(char *str)
 	return (i);
 }
 
-t_infopars	*cut_strshell(char *str)
+t_infopars	*cut_boxshell(char *str)
 {
 	t_data		tmp;
+	t_token		token;
 
+	lib_memset(&token, 0, sizeof(token));
 	lib_memset(&tmp, 0, sizeof(tmp));
 	while (str[tmp.i])
 	{
-		in_doquote(str[tmp.i], &tmp.token);
-		in_sgquote(str[tmp.i], &tmp.token);
-		if (str[tmp.i] == '|' || str[tmp.i] == '&')
-			// malloc dans un bloc le process
 		if (str[tmp.i] != '|' && str[tmp.i] != '&')
 		{
 			tmp.new_str = strup_to(str + tmp.i, next_process(str + tmp.i));
 			if (!tmp.new_str)
 			{
 				if (tmp.new_lst)
-					free_strshell(tmp.new_lst);
-				return (printf_error(RED"-- Malloc fail --\n"RST), NULL);
+					free_boxshell(&tmp.new_lst);
+				return (NULL);
 			}
-			tmp.tmp_box = diff_strshell(tmp.new_str, 1);
-			if (!tmp.tmp_box)
-			{
-				if (tmp.new_lst)
-					free_strshell(tmp.new_lst);
-				return (free(tmp.new_str), printf_error(RED ERR_MAL RST), NULL);
-			}
+			tmp.tmp_box = diff_boxshell(tmp.new_str, 1);
 			free(tmp.new_str);
 			tmp.new_str = NULL;
-			add_strshell(&tmp.new_lst, tmp.tmp_box);
-			tmp.i = next_process(str + tmp.i);
+			if (!tmp.tmp_box)
+			{
+				free(tmp.new_str);
+				if (tmp.new_lst)
+					free_boxshell(&tmp.new_lst);
+				return (NULL);
+			}
+			add_boxshell(&tmp.new_lst, tmp.tmp_box);
+			tmp.i += next_process(str + tmp.i);
 		}
+		else if (str[tmp.i] == '|' || str[tmp.i] == '&')
+			tmp.i++; // add les pipes et && puis les redirections
 	}
 	return (tmp.new_lst);
 }//faire une nouvelle liste grace au char.

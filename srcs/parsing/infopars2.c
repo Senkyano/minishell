@@ -6,13 +6,14 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:03:39 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/15 19:20:14 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/19 17:02:46 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 
-t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr)
+t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, \
+t_infopars *curr)
 {
 	if (next && pre)
 	{
@@ -34,4 +35,14 @@ void	free_blockstrshell(t_infopars *selec)
 	if (!selec->str || selec->str[0] == 0)
 		free(selec->str);
 	free(selec);
+}
+
+t_infopars	*first_boxshell(t_infopars *last)
+{
+	t_infopars	*curr;
+
+	curr = last;
+	while (curr->prec)
+		curr = curr->prec;
+	return (curr);
 }

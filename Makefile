@@ -56,6 +56,7 @@ PARS_C = 	check_str.c \
 			lst_cmd.c \
 			split_minishell.c \
 			analysis.c \
+			utils_analysis.c \
 			skip_part.c \
 			insert_env.c \
 			check_token.c \

@@ -6,14 +6,14 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/18 18:44:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/19 16:31:55 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 #include "lib_utils.h"
 
-t_infopars	*diff_strshell(char *str, int spe)
+t_infopars	*diff_boxshell(char *str, int spe)
 {
 	int			x;
 	t_infopars	*case_info;
@@ -34,23 +34,31 @@ t_infopars	*diff_strshell(char *str, int spe)
 	return (case_info);
 }
 
-void	add_btw_strshell(t_infopars *pre, t_infopars *new_lst, \
-t_infopars *next, t_infopars *old)
+void	add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
+t_infopars *next, t_infopars **old)
 {
 	t_infopars	*curr;
 
+	if (pre)
+	{
+		pre->next = new_lst;
+		new_lst->prec = pre;
+	}
 	curr = new_lst;
-	pre->next = new_lst;
-	new_lst->prec = pre;
 	while (curr->next)
 		curr = curr->next;
-	next->prec = curr;
-	curr->next = next;
-	free_blockstrshell(old);
-	old = curr;
+	if (next)
+	{
+		curr->next = next;
+		next->prec = curr;
+	}
+	(*old)->next = NULL;
+	(*old)->prec = NULL;
+	free_blockstrshell((*old));
+	(*old) = curr;
 }
 
-void	add_strshell(t_infopars **all, t_infopars *part)
+void	add_boxshell(t_infopars **all, t_infopars *part)
 {
 	t_infopars	*curr_all;
 
@@ -66,7 +74,7 @@ void	add_strshell(t_infopars **all, t_infopars *part)
 	}
 }
 
-void	free_strshell(t_infopars **all)
+void	free_boxshell(t_infopars **all)
 {
 	t_infopars	*curr_all;
 
@@ -80,7 +88,7 @@ void	free_strshell(t_infopars **all)
 	}
 }
 
-void	print_strshell(t_infopars *lst)
+void	print_boxshell(t_infopars *lst)
 {
 	t_infopars	*curr;
 

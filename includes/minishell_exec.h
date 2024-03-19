@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 22:55:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/19 16:58:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ typedef struct s_data
 	char		*new_str;
 	int			i;
 	t_infopars	*new_lst;
-	t_token		token;
 	t_infopars	*tmp_box;
 }	t_data;
 
@@ -135,9 +134,10 @@ bool		check_process(t_infopars *pars);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Case
-t_infopars	*diff_strshell(char *str, int spe);
+t_infopars	*diff_boxshell(char *str, int spe);
 t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
-t_infopars	*cut_strshell(char *str);
+t_infopars	*cut_boxshell(char *str);
+t_infopars	*first_boxshell(t_infopars *last);
 // Process manipulation
 t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr);
 // Process add
@@ -145,14 +145,14 @@ bool		build_process(char *str, t_shell *bash);
 void		add_or(t_lstcmd **process_or, t_lstcmd *def_cmd);
 void		add_and(t_lstcmd **process_and, t_lstcmd *def_cmd);
 void		add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd);
-void		add_strshell(t_infopars **all, t_infopars *part);
-void		add_btw_strshell(t_infopars *pre, t_infopars *new_lst, \
-t_infopars *next, t_infopars *old);
+void		add_boxshell(t_infopars **all, t_infopars *part);
+void		add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
+t_infopars *next, t_infopars **old);
 // Free process
 void		free_def_process(t_lstcmd *lstcmd);
 void		free_or_process(t_lstcmd *lstprocess);
 void		free_and_process(t_lstcmd *lstprocess);
-void		free_strshell(t_infopars **all);
+void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
 // Print process
@@ -175,6 +175,20 @@ int			name_env(char *str);
 int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
+// DOMAINE Analysis
+void		analysis_shell(t_shell *bash);
+bool		malloc_proc(t_data *tmp, char *str);
+int			next_process(char *str);
+
+
+
+
+
+
+
+
+
+
 
 
 

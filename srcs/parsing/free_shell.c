@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:27:48 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 11:45:29 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/19 16:59:47 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_shell(t_shell *bash)
 	if (bash->lstcmd)
 		free_and_process(bash->lstcmd);
 	if (bash->lst_char)
-		free_strshell(&bash->lst_char);
+		free_boxshell(&bash->lst_char);
 	if (bash->lst_envs)
 		lstclear(bash->lst_envs);
 }

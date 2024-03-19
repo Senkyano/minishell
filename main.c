@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/16 19:13:19 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/19 16:59:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	main(int argc, const char **argv, const char **env)
 			// printf_error(GR"ok\n"RST);
 			launch_builtins(&bash);
 		}
-		free_strshell(&bash.lst_char);
+		free_boxshell(&bash.lst_char);
 	}
 	free_shell(&bash);
 	return (0);

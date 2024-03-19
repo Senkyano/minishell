@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:42:19 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/18 14:37:34 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/19 17:05:58 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,19 @@ int	insepct_token(char *str, t_token *token)
 	int	i;
 
 	i = skip_space(str + 1);
-	if (!token->in_doquote && !token->in_sgquote && str[0] == '|' && str[1] == '|' 
-	&& str[2] == '|')
+	if (!token->in_doquote && !token->in_sgquote && str[0] == '|' && \
+	str[1] == '|' && str[2] == '|')
 		token->error = true;
-	if (!token->in_doquote && !token->in_sgquote && str[0] == '|' && 
+	if (!token->in_doquote && !token->in_sgquote && str[0] == '|' && \
 	(str[i + 1] == '|' || str[i + 1] == '&') && i > 0)
 		token->error = true;
-	if (!token->in_doquote && !token->in_sgquote && str[0] == '(' && 
+	if (!token->in_doquote && !token->in_sgquote && str[0] == '(' && \
 	(str[i + 1] == '|' || str[i + 1] == '&'))
 		token->error = true;
-	if (!token->in_doquote && !token->in_sgquote && (str[0] == '|' || 
+	if (!token->in_doquote && !token->in_sgquote && (str[0] == '|' || \
 	str[0] == '&') && str[i + 1] == ')')
 		token->error = true;
-	if (!token->in_doquote && !token->in_sgquote && ((str[0] == '&' && 
+	if (!token->in_doquote && !token->in_sgquote && ((str[0] == '&' && \
 	str[1] == '|') || (str[0] == '|' && str[1] == '&')))
 		token->error = true;
 	if (!token->in_doquote && !token->in_sgquote && str[0] == '&' && \
@@ -83,7 +83,7 @@ int	insepct_token(char *str, t_token *token)
 		return (1 + i);
 	else if (!token->in_doquote && !token->in_sgquote && str[0] == '&' && \
 	str[1] == '&' && str[2] == '&')
-		token->error =true;
+		token->error = true;
 	return (i);
 }
 
