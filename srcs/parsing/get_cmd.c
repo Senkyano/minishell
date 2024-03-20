@@ -6,9 +6,9 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:05:13 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/19 17:02:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "minishell.h"
 #include "lib_utils.h"

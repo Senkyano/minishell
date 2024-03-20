@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   analysis.c                                         :+:      :+:    :+:   */
+/*   lst_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/19 17:07:15 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 19:13:38 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "minishell.h"
 #include "lib_utils.h"
 
 static bool	need_cut(char *str);
 
-void	analysis_shell(t_shell *bash)
+void	listing_split(t_shell *bash)
 {
 	t_data		new_data;
 	t_infopars	*curr;
@@ -51,8 +51,7 @@ bool	need_cut(char *str)
 	{
 		in_doquote(str[i], &token);
 		in_sgquote(str[i], &token);
-		if (!token.in_doquote && !token.in_sgquote && (str[i] == '|' || \
-		str[i] == '&'))
+		if (!token.in_doquote && !token.in_sgquote && is_operator(str[i]))
 			nbr_cmd++;
 	}
 	if (nbr_cmd == 1)
@@ -72,7 +71,7 @@ int	next_process(char *str)
 		in_doquote(str[i], &token);
 		in_sgquote(str[i], &token);
 		if (!token.in_doquote && !token.in_sgquote && \
-		(str[i] == '|' || str[i] == '&'))
+		is_operator(str[i]))
 			return (i);
 	}
 	return (i);
@@ -87,30 +86,16 @@ t_infopars	*cut_boxshell(char *str)
 	lib_memset(&tmp, 0, sizeof(tmp));
 	while (str[tmp.i])
 	{
-		if (str[tmp.i] != '|' && str[tmp.i] != '&')
+		if (!is_operator(str[tmp.i]))
 		{
-			tmp.new_str = strup_to(str + tmp.i, next_process(str + tmp.i));
-			if (!tmp.new_str)
-			{
-				if (tmp.new_lst)
-					free_boxshell(&tmp.new_lst);
+			if (!box_str(&tmp, str + tmp.i))
 				return (NULL);
-			}
-			tmp.tmp_box = diff_boxshell(tmp.new_str, 1);
-			free(tmp.new_str);
-			tmp.new_str = NULL;
-			if (!tmp.tmp_box)
-			{
-				free(tmp.new_str);
-				if (tmp.new_lst)
-					free_boxshell(&tmp.new_lst);
-				return (NULL);
-			}
-			add_boxshell(&tmp.new_lst, tmp.tmp_box);
-			tmp.i += next_process(str + tmp.i);
 		}
-		else if (str[tmp.i] == '|' || str[tmp.i] == '&')
-			tmp.i++; // add les pipes et && puis les redirections
+		else if (is_operator(str[tmp.i]))
+		{
+			if (!box_process(&tmp, str + tmp.i))
+				return (NULL);
+		}
 	}
 	return (tmp.new_lst);
-}//faire une nouvelle liste grace au char.
+}

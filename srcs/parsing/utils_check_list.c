@@ -1,39 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_str.c                                        :+:      :+:    :+:   */
+/*   utils_check_list.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 13:30:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/15 19:23:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "minishell.h"
 #include "lib_utils.h"
-
-bool	valid_str(char *str)
-{
-	t_token	token;
-	int		i;
-
-	i = -1;
-	if (!str || str == 0)
-		return (false);
-	lib_memset(&token, 0, sizeof(token));
-	while (str[++i])
-	{
-		in_sgquote(str[i], &token);
-		in_doquote(str[i], &token);
-		in_parsing(str[i], &token);
-		in_process(str[i], &token);
-	}
-	if (!token.in_par && !token.in_doquote && !token.in_sgquote && \
-	!token.error && !token.in_process)
-		return (true);
-	return (false);
-}
 
 void	in_process(char c, t_token *token)
 {

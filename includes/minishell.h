@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_exec.h                                   :+:      :+:    :+:   */
+/*   minishell.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/19 16:58:57 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:28:26 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_lsthere
 
 typedef struct	s_infopars
 {
-	int		spe; // 1 = file, 2 = redirection, 3 = cmd, 4 = pipe, 5 = process_and, 6 = process_or, 7 = variable env.
+	int		spe;  //5 = process_and
 	char	*str;
 	// pour le parsing attribuer token
 	struct s_infopars	*next;
@@ -128,8 +128,7 @@ typedef struct s_data
 // Erreur
 void		launch_shell(int argc, const char **env);
 void		gestion_exit(char *msg, t_shell *bash);
-bool		valid_str(char *str);
-bool		valid_token(char *str);
+bool		check_lst_split(t_shell *bash);
 bool		check_process(t_infopars *pars);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
@@ -176,18 +175,16 @@ int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
 // DOMAINE Analysis
-void		analysis_shell(t_shell *bash);
+void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);
 int			next_process(char *str);
-
-
-
-
-
-
-
-
-
+bool		box_process(t_data *tmp, char *str);
+bool		is_operator(char c);
+bool		box_str(t_data *tmp, char *str);
+// Utils check libs_split
+bool	finish_quote(char *str, t_token *token);
+bool	after_operator(t_infopars *curr, t_infopars *next);
+bool	good_operator(char *str);
 
 
 

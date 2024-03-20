@@ -6,24 +6,19 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/19 16:32:38 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 19:14:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "minishell.h"
 #include "lib_utils.h"
 
 static bool	start_process(char *str, t_shell *bash);
 
 bool	build_process(char *str, t_shell *bash)
 {
-	if (!str_len(str) || !valid_token(str))
+	if (!str_len(str))
 		return (false);
-	if (!valid_str(str))
-	{
-		printf_error(RED"-- Feature not include --\n"RST);
-		return (false);
-	}
 	if (!start_process(str, bash))
 		return (false);
 	return (true);
@@ -59,11 +54,11 @@ static bool	start_process(char *str, t_shell *bash)
 		printf_error(RED"Malloc fail\n"RST);
 		return (false);
 	}
-	if (!lst_shellstr(bash))
+	if (bash->str_split[0][0] == 0 || !lst_shellstr(bash))
 		return (false);
-	if (!check_process(bash->lst_char)) // check process in double parenthese.
+	listing_split(bash);
+	if (!check_lst_split(bash))
 		return (false);
-	analysis_shell(bash);
 	t_infopars	*curr;
 
 	curr = bash->lst_char;

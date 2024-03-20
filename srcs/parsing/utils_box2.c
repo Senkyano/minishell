@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   infopars2.c                                        :+:      :+:    :+:   */
+/*   utils_box2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:03:39 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/19 17:02:46 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 18:17:04 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "minishell.h"
 
 t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, \
 t_infopars *curr)
@@ -24,15 +24,20 @@ t_infopars *curr)
 		pre->next = NULL;
 	else if (next && !pre)
 		next->prec = NULL;
-	curr->next = NULL;
-	curr->prec = NULL;
-	free_blockstrshell(curr);
-	return (pre);
+	if (curr)
+	{
+		curr->next = NULL;
+		curr->prec = NULL;
+		free_blockstrshell(curr);
+	}
+	if (pre)
+		return (pre);
+	return (NULL);
 }
 
 void	free_blockstrshell(t_infopars *selec)
 {
-	if (!selec->str || selec->str[0] == 0)
+	if (selec->str || selec->str[0] == 0)
 		free(selec->str);
 	free(selec);
 }

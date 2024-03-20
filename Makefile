@@ -43,24 +43,24 @@ RESET = \033[0m
 #		File
 #-----------------------#
 
-PARS_C = 	check_str.c \
-			condition_launch.c \
+PARS_C =	condition_launch.c \
 			error_exit.c \
 			free_lst.c \
 			free_shell.c \
 			get_cmd.c \
 			get_path.c \
 			get_process.c \
-			infopars.c \
-			infopars2.c \
 			lst_cmd.c \
 			split_minishell.c \
-			analysis.c \
-			utils_analysis.c \
 			skip_part.c \
 			insert_env.c \
-			check_token.c \
-			good_process.c
+			utils_lst_split.c \
+			utils_box.c \
+			utils_box2.c \
+			lst_split.c \
+			utils_check_list.c \
+			check_lst_split.c \
+			utils_check_list_split.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))

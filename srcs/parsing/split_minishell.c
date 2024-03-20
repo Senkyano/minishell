@@ -6,11 +6,11 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 15:39:37 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/20 17:43:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_exec.h"
+#include "minishell.h"
 #include "lib_utils.h"
 
 int	skip_space(char *str);
@@ -30,7 +30,7 @@ char	**split_minishell(char *str)
 	while (str[i])
 	{
 		i += skip_space(str + i);
-		if (str[i] != ' ' && str[i] != 11)
+		if (str[i] != ' ' && str[i] != 9)
 		{
 			mini_str[nbr] = strup_to(str + i, skip_char(str + i));
 			if (!mini_str[nbr++])
@@ -52,7 +52,7 @@ int	count_minishell(char *str)
 	while (str[i])
 	{
 		i += skip_space(str + i);
-		if (str[i] != ' ' && str[i] != 11)
+		if (str[i] != ' ' && str[i] != 9)
 			mini_count++;
 		i += skip_char(str + i);
 	}
