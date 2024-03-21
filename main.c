@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 16:01:16 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/21 12:53:53 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_last_exit_code;
 
-int	pipe_loop(t_shell *bash)
+int	pipe_loop(t_tree *tree, t_shell *bash)
 {
 	t_lstcmd	*cmds;
 	char		*cmd_path;
@@ -22,7 +22,7 @@ int	pipe_loop(t_shell *bash)
 	int			std_out;
 	int			exit_status;
 
-	cmds = bash->lstcmd;
+	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
 	std_out = dup(1);
 	while (cmds)
@@ -47,63 +47,37 @@ int	pipe_loop(t_shell *bash)
 	return (exit_status);
 }
 
-void	or_loop(t_shell *bash)
+int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 {
-	pid_t	pid;
-	int		exit_status;
-	
-	pid = fork();
-	if (pid == -1)
-		free_shell(bash);
-	if (pid == 0)
-	{
-		exit_status = -1;
-		while (bash->lstcmd && exit_status != 0)
-		{
-			exit_status = pipe_loop(bash);
-			bash->lstcmd = bash->lstcmd->or_next;
-		}
-		free_shell(bash);
-		exit(0);
-	}
-	else
-		wait(NULL);
-}
-
-void	launch_execution(t_shell *bash)
-{
-	pid_t		pid;
-
-	pid = fork();
-	if (pid == -1)
-		free_shell(bash);
-	if (pid == 0)
-	{
-		or_loop(bash);
-		exit(0);
-	}
-	else
-	{
-		wait(NULL);
-		free_shell(bash);
-	}
+	if (tree->left_child)
+		ft_tree_exec(tree->left_child, bash, env, exit_status);
+	if (tree->type == OPERATOR_AND && *exit_status == 0)
+		ft_tree_exec(tree->right_child, bash, env, exit_status);
+	if (tree->type == OPERATOR_OR && *exit_status != 0)
+		ft_tree_exec(tree->right_child, bash, env, exit_status);
+	if (tree->type == LST_CMD)
+		*exit_status = pipe_loop(tree, bash);
+	return (*exit_status);
 }
 
 int	main(int argc, const char **argv, const char **env)
 {
 	char	**args_split;
 	t_shell	bash;
+	int	exit_status;
 
 	if (argv == NULL)
 		return (1);
 	g_last_exit_code = 0;
 	lib_memset(&bash, 0, sizeof(bash));
 	malloc_env(&bash, env);
+	bash.tree = NULL;
 	bash.env = (char **)env;
 	bash.path = get_paths((char **)env);
 	args_split = ft_split(argv[1], ' ');
-	init_lstcmds(args_split, &bash);
-	launch_execution(&bash);
+	init_tree(args_split, &bash);
+	exit_status = 0;
+	ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
 	free(args_split);
 	(void)argc;
 	return (0);

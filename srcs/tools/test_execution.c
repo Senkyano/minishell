@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 16:13:13 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/21 14:25:43 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,92 @@ void	lstcmdadd_back_or(t_lstcmd *new, t_lstcmd *lst)
 	tmp->or_next = new;
 }
 
-void	init_lstcmds(char **argv, t_shell *bash)
+void	lstcmdadd_back_and(t_lstcmd *new, t_lstcmd *lst)
 {
-	t_lstcmd	*new;
-	t_lstcmd	*lst;
+	t_lstcmd	*tmp;
 
-	lst = init_cmd(argv[0], argv[1], 0);
-	bash->lstcmd = lst;
-	new = init_cmd(argv[3], argv[4], 1); // quand c'est avec un "ou" il faut remettre
-	// l'index a 0 pour la premiere commande de l'autre processus
-	lstcmdadd_back(new, lst);
-	new = init_cmd(argv[6], argv[7], 2);
-	lstcmdadd_back(new, lst); // lorsqu'on ajoute un pipe entre deux
-	// element, mais qu'il y a eu un "ou" avant, il faut avancer a l'element 
-	// "or_next" suivant
-	// quand il y a un "ou" dans le 2e processus on le met le "or_next" sur 
-	// le premier element du premier processus
-	free(argv[2]);
-	free(argv[5]);
-	// printf("cmd 1 : |%s|, cmd 2 : |%s|\n", lst->cmd[0], lst->or_next->cmd[0]);
-	// printf("arg 1 : |%s|, arg 2 : |%s|\n", lst->cmd[1], lst->or_next->cmd[1]);
+	tmp = lst;
+	while (tmp->and_next != NULL)
+	{
+		tmp = tmp->and_next;
+	}
+	tmp->and_next = new;
 }
+
+t_tree	*new_tree_elem(t_lstcmd *cmds, int op)
+{
+	t_tree	*new;
+	new = malloc(sizeof(t_tree));
+	if (op)
+		new->type = op;
+	else
+		new->type = LST_CMD;
+	new->parent = NULL;
+	new->left_child = NULL;
+	new->right_child = NULL;
+	if (cmds)
+		new->lst_cmd = cmds;
+	else
+		new->lst_cmd = NULL;
+	return (new);
+}
+
+void	init_tree(char **argv, t_shell *bash)
+{
+	t_tree		*tree;
+	t_tree		*new1;
+	t_tree		*new2;
+	t_tree		*new3;
+	t_tree		*new4;
+	t_tree		*new5;
+	t_tree		*new6;
+	t_tree		*new7;
+	t_tree		*new8;
+	t_tree		*new9;
+	t_tree		*new10;
+	t_lstcmd	*cmd1;
+	t_lstcmd	*cmd2;
+	t_lstcmd	*cmd3;
+	t_lstcmd	*cmd4;
+	t_lstcmd	*cmd5;
+	t_lstcmd	*cmd6;
+
+	cmd1 = init_cmd(argv[0], argv[1], 0);
+	cmd2 = init_cmd(argv[3], argv[4], 0);
+	cmd3 = init_cmd(argv[6], argv[7], 0);
+	cmd4 = init_cmd(argv[9], argv[10], 0);
+	cmd5 = init_cmd(argv[12], argv[13], 0);
+	cmd6 = init_cmd(argv[15], argv[16], 0);
+	tree = new_tree_elem(0, OPERATOR_AND);
+	new1 = new_tree_elem(0, OPERATOR_OR);
+	new2 = new_tree_elem(0, OPERATOR_OR);
+	new3 = new_tree_elem(0, OPERATOR_AND);
+	new4 = new_tree_elem(cmd1, 0);
+	new5 = new_tree_elem(0, OPERATOR_AND);
+	new6 = new_tree_elem(cmd2, 0);
+	new7 = new_tree_elem(cmd3, 0);
+	new8 = new_tree_elem(cmd4, 0);
+	new9 = new_tree_elem(cmd5, 0);
+	new10 = new_tree_elem(cmd6, 0);
+	
+	tree->left_child = new1;
+	tree->right_child = new2;
+	new1->left_child = new3;
+	new1->right_child = new8;
+	new2->left_child = new9;
+	new2->right_child = new10;
+	new3->left_child = new4;
+	new3->right_child = new5;
+	new5->left_child = new6;
+	new5->right_child = new7;
+
+	bash->tree = tree;
+
+	// printf("operator type : %d - %d\n", tree->type, \
+	// 	tree->left_child->type);
+}
+
+
 
 /*
 Test 1 : ./minishell "cat supp.supp | bdz vs || echo test"
@@ -122,6 +187,36 @@ Test 4 : ./minishell "cat supp.supp | wc -l | wc -l"
 	lstcmdadd_back(new, lst);
 	free(argv[2]);
 	free(argv[5]);
+
+Test 5 : ./minishell "lSDZXs -a || cat supp.supp | wc -l  && echo ok
+	t_tree		*tree;
+	t_tree		*new1;
+	t_tree		*new2;
+	t_tree		*new3;
+	t_tree		*new4;
+	t_lstcmd	*cmd1;
+	t_lstcmd	*cmd2;
+	t_lstcmd	*cmd3;
+	t_lstcmd	*cmd4;
+
+	cmd1 = init_cmd(argv[0], argv[1], 0);
+	cmd2 = init_cmd(argv[3], argv[4], 0);
+	cmd3 = init_cmd(argv[6], argv[7], 1);
+	lstcmdadd_back(cmd3, cmd2);
+	cmd4 = init_cmd(argv[9], argv[10], 0);
+	tree = new_tree_elem(0, OPERATOR_AND);
+	new1 = new_tree_elem(0, OPERATOR_OR);
+	new2 = new_tree_elem(cmd1, 0);
+	new3 = new_tree_elem(cmd2, 0);
+	new4 = new_tree_elem(cmd4, 0);
+	
+	tree->left_child = new1;
+	tree->right_child = new4;
+	new1->left_child = new2;
+	new1->right_child = new3;
+
+	bash->tree = tree;
+
 */
 
 

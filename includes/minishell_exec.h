@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 14:44:24 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/21 11:26:58 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@
 # define CY "\e[1;96m"
 # define WH "\e[0;97m"
 # define RST "\e[0m"
+
+# define OPERATOR_AND 1
+# define OPERATOR_OR 2
+# define LST_CMD 3
 
 extern int	g_last_exit_code;
 
@@ -93,6 +97,15 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	struct s_lstcmd	*or_next; // si ou existe ne rentre pas si def a reussis a etre exectuer comme il faut
 }	t_lstcmd;
 
+typedef	struct s_tree
+{
+	int				type;
+	struct s_tree	*parent;
+	struct s_tree	*left_child;
+	struct s_tree	*right_child;
+	t_lstcmd		*lst_cmd;
+}					t_tree;
+
 typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
@@ -104,7 +117,9 @@ typedef struct	s_shell
 	char		**str_split;
 	t_lstcmd	*lstcmd;
 	t_infopars	*lst_char;
+	t_tree		*tree;
 }	t_shell;
+
 // Erreur
 void		launch_shell(int argc, const char **env);
 void		gestion_exit(char *msg, t_shell *bash);
@@ -182,7 +197,7 @@ char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
 
 //test_execution.c
-void		init_lstcmds(char **argv, t_shell *bash);
+void		init_tree(char **argv, t_shell *bash);
 void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
