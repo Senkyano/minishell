@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/20 19:13:38 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/21 18:07:42 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ bool	need_cut(char *str)
 	{
 		in_doquote(str[i], &token);
 		in_sgquote(str[i], &token);
-		if (!token.in_doquote && !token.in_sgquote && is_operator(str[i]))
+		if (!token.in_doquote && !token.in_sgquote && (is_operator(str[i]) \
+		|| str[i] == '(' || str[i] == ')' || is_redirection(str[i])))
 			nbr_cmd++;
 	}
 	if (nbr_cmd == 1)
@@ -71,7 +72,7 @@ int	next_process(char *str)
 		in_doquote(str[i], &token);
 		in_sgquote(str[i], &token);
 		if (!token.in_doquote && !token.in_sgquote && \
-		is_operator(str[i]))
+		(is_operator(str[i]) || str[i] == '(' || str[i] == ')'))
 			return (i);
 	}
 	return (i);
@@ -86,12 +87,13 @@ t_infopars	*cut_boxshell(char *str)
 	lib_memset(&tmp, 0, sizeof(tmp));
 	while (str[tmp.i])
 	{
-		if (!is_operator(str[tmp.i]))
+		if (!is_operator(str[tmp.i]) && str[tmp.i] != '(' && str[tmp.i] != ')')
 		{
 			if (!box_str(&tmp, str + tmp.i))
 				return (NULL);
 		}
-		else if (is_operator(str[tmp.i]))
+		else if (is_operator(str[tmp.i]) || str[tmp.i] == '(' || \
+		str[tmp.i] == ')')
 		{
 			if (!box_process(&tmp, str + tmp.i))
 				return (NULL);

@@ -56,13 +56,13 @@ typedef struct t_list {
 
 typedef struct s_token
 {
-	bool			in_cmd;
 	bool			in_doquote;
 	bool			in_sgquote;
 	bool			error;
-	int				in_par;
-	bool			in_process;
-	bool			enter_par;
+	int				in_pars;
+	int				out_pars;
+	bool			d_in_pars;
+	bool			d_out_pars;
 }	t_token;
 
 typedef struct s_lstfd
@@ -95,14 +95,23 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 {
 	int				error;		// pour des cas specifique
 	int				index;		// index pour les pipes
+	int				max_index;
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
-	t_lstfd			*lst_fd;
-	struct s_lstcmd	*def_next; //pipe
-	struct s_lstcmd	*and_next; // si def a reussis a etre exectuer comme il faut alors continue dans and
-	struct s_lstcmd	*or_next; // si ou existe ne rentre pas si def a reussis a etre exectuer comme il faut
+	int				in_file;
+	int				out_file;
+	struct s_lstcmd	*lst_cmd; //pipe
 }	t_lstcmd;
+
+typedef	struct s_tree
+{
+	int				type;
+	struct s_tree	*parent;
+	struct s_tree	*left_child;
+	struct s_tree	*right_child;
+	t_lstcmd		*lst_cmd;
+}	t_tree;
 
 typedef struct	s_shell
 {
@@ -112,7 +121,7 @@ typedef struct	s_shell
 	int			nbr_path;
 	t_envlist	*lst_envs;
 	char		**str_split;
-	t_lstcmd	*lstcmd;
+	t_tree		*tree;
 	t_infopars	*lst_char;
 }	t_shell;
 
@@ -130,6 +139,7 @@ void		launch_shell(int argc, const char **env);
 void		gestion_exit(char *msg, t_shell *bash);
 bool		check_lst_split(t_shell *bash);
 bool		check_process(t_infopars *pars);
+bool		in_feature(t_infopars *curr, t_shell *bash);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Case
@@ -141,16 +151,10 @@ t_infopars	*first_boxshell(t_infopars *last);
 t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr);
 // Process add
 bool		build_process(char *str, t_shell *bash);
-void		add_or(t_lstcmd **process_or, t_lstcmd *def_cmd);
-void		add_and(t_lstcmd **process_and, t_lstcmd *def_cmd);
-void		add_default(t_lstcmd **lst_cmd, t_lstcmd *cmd);
 void		add_boxshell(t_infopars **all, t_infopars *part);
 void		add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
 t_infopars *next, t_infopars **old);
 // Free process
-void		free_def_process(t_lstcmd *lstcmd);
-void		free_or_process(t_lstcmd *lstprocess);
-void		free_and_process(t_lstcmd *lstprocess);
 void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
@@ -159,8 +163,7 @@ void		print_strshell(t_infopars *lst);
 // In
 void		in_sgquote(char c, t_token *token);
 void		in_doquote(char c, t_token *token);
-void		in_parsing(char c, t_token *token);
-void		in_process(char c, t_token *token);
+bool		check_pars(t_infopars *curr, t_token *token, t_shell *bash);
 // split minishell
 int			count_minishell(char *str);
 char		**split_minishell(char *str);
@@ -180,12 +183,14 @@ bool		malloc_proc(t_data *tmp, char *str);
 int			next_process(char *str);
 bool		box_process(t_data *tmp, char *str);
 bool		is_operator(char c);
+bool	is_redirection(char c);
 bool		box_str(t_data *tmp, char *str);
 // Utils check libs_split
-bool	finish_quote(char *str, t_token *token);
-bool	after_operator(t_infopars *curr, t_infopars *next);
-bool	good_operator(char *str);
-
+bool	finish_quote(char *str, t_token *token, t_shell *bash);
+bool	after_operator(t_infopars *pre, t_infopars *curr, t_infopars *next, \
+t_shell *bash);
+bool	good_operator(char *str, t_shell *bash);
+bool	before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
 
 
 

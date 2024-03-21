@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 17:54:37 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/21 13:34:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	main(int argc, const char **argv, const char **env)
 		add_history(rl_line_buffer);
 		if (build_process(rl_line_buffer, &bash))
 		{
+			printf_error(GR" Valid STR\n"RST);
 			// printf_error(GR"ok\n"RST);
 			launch_builtins(&bash);
 		}

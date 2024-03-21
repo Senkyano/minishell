@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:47:11 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/20 17:47:14 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/21 17:01:40 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static int	skip_operateur(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!is_operator(str[i]) || str[i] != str[0])
+		if ((!is_operator(str[i]) && str[i] != '(' && str[i] != ')' && \
+		is_redirection(str[i])) || str[i] != str[0])
 			return (i);
 		i++;
 	}
@@ -76,8 +77,14 @@ static int	skip_operateur(char *str)
 
 bool	is_operator(char c)
 {
-	if (c == '|' || c == '&' || c == '>' || c == '<' || c == ')' \
-	|| c == '(' || c == ';')
+	if (c == '|' || c == '&' || c == ';')
+		return (true);
+	return (false);
+}
+
+bool	is_redirection(char c)
+{
+	if (c == '>' || c == '<')
 		return (true);
 	return (false);
 }
