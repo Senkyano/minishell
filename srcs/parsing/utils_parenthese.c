@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 18:40:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/22 15:20:33 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/22 23:02:51 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	check_pars(t_infopars *curr, t_token *token, t_shell *bash)
 	if (curr->str[0] == '(')
 	{
 		token->in_pars += str_len(curr->str);
-		if (str_len(curr->str) > 1 || (curr->prec && curr->prec->str[0] == '('))
+		if ((str_len(curr->str) > 1 || (curr->prec && curr->prec->str[0] == '(')))
 			token->d_in_pars = true;
 	}
 	else if (curr->str[0] == ')')
@@ -31,6 +31,17 @@ bool	check_pars(t_infopars *curr, t_token *token, t_shell *bash)
 		token->out_pars += str_len(curr->str);
 		if (str_len(curr->str) > 1 || (curr->prec && curr->prec->str[0] == ')'))
 			token->d_out_pars = true;
+	}
+	if ((token->in_pars == token->out_pars - 1) || (token->in_pars - 1 == token->out_pars))
+	{
+		token->d_in_pars = false;
+		token->d_out_pars = false;
+	}
+	if (token->d_out_pars && token->d_in_pars)
+	{
+		printf_error(RED" -- Unexpected token '%s' --\n", curr->prec->str);
+		bash->exit_status = 2;
+		return (false);
 	}
 	return (true);
 }
