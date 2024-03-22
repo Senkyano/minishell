@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/13 11:44:30 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/22 16:26:53 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	is_digit(char *arg)
 	return (1);
 }
 
-void	ft_exit(t_shell *bash)
+void	ft_exit(t_tree *tree, t_shell *bash)
 {	
 	int	exit_code;
 	int error;
@@ -70,21 +70,20 @@ void	ft_exit(t_shell *bash)
 
 	error = 0;
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	if (!bash->str_split[1])
+	if (!tree->lst_cmd->cmd[1])
 		exit_code = 0;
-	if (bash->str_split[1] && bash->str_split[2])
+	if (tree->lst_cmd->cmd[1] && tree->lst_cmd->cmd[2])
 		return (ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO));
-	else if (bash->str_split[1])
+	else if (tree->lst_cmd->cmd[1])
 	{
-		bash->str_split[1][ft_strlen(bash->str_split[1]) - 1] = '\0';
 		tmp = 0;
-		while (bash->str_split[1][tmp] == ' ')
+		while (tree->lst_cmd->cmd[1][tmp] == ' ')
 			tmp++;
-		if (!is_digit(bash->str_split[1] + tmp))
-			printf("bash: exit: %s: numeric argument required", bash->str_split[1]);
-		exit_code = ft_atoi_long(bash->str_split[1], &error);
+		if (!is_digit(tree->lst_cmd->cmd[1] + tmp))
+			printf("bash: exit: %s: numeric argument required\n", tree->lst_cmd->cmd[1]);
+		exit_code = ft_atoi_long(tree->lst_cmd->cmd[1], &error);
 		if (error)
-			printf("bash: exit: %d: numeric argument required", exit_code);
+			printf("bash: exit: %d: numeric argument required\n", exit_code);
 	}
 	free_shell(bash);
 	exit(exit_code);

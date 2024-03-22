@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/18 15:33:40 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:04:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,24 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 	if (result == -1)
 		g_last_exit_code = 1;
 	free_shell(bash);
-	exit(1);
+	exit(127);
 }
 
-int	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
-					t_shell *bash)
+int	exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
 	int	status;
 
 	if (struct_cmd->child == 0)
 	{
 		if (struct_cmd->index == bash->len_cmds - 1)
-		{
-			dup2(std_out, 1);
-		}
+			dup2(bash->std_out, 1);
 		else
 			dup2(fd[1], 1);
 		close(fd[1]);
 		close(fd[0]);
-		close(std_out);
+		close(bash->std_out);
 		if (is_builtins(struct_cmd->cmd))
-		{
 			exec_builtins(struct_cmd->cmd, bash);
-			exit(0);
-		}
 		else
 			exec_child(cmd_path, struct_cmd->cmd, bash);
 	}
@@ -53,8 +47,8 @@ int	exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
 		close(fd[1]);
 		close(fd[0]);
 		waitpid(struct_cmd->child, &status, 0);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
-			return (1);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 	}
 	return (0);
 }

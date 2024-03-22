@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/15 16:17:55 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:38:48 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	exec_builtins(char **cmd, t_shell *bash)
 		ft_cd(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "env"))
 		ft_env(bash);
-	else if (!ft_strcmp(cmd[0], "ls"))
-		ls_cmd();
 	else if (!ft_strcmp(cmd[0], "pwd"))
 		ft_pwd();
 	else if (!ft_strcmp(cmd[0], "export"))
@@ -28,10 +26,11 @@ int	exec_builtins(char **cmd, t_shell *bash)
 		ft_unset(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "echo"))
 		ft_echo(cmd);
-	else if (!ft_strcmp(cmd[0], "exit"))
-		ft_exit(bash);
+	// else if (!ft_strcmp(cmd[0], "exit"))
+	// 	ft_exit(bash);
 	else
 		return (0);
+	exit(0);
 	return (1);
 }
 
@@ -40,8 +39,6 @@ int	is_builtins(char **cmd)
 	if (!ft_strcmp(cmd[0], "cd"))
 		return (1);
 	else if (!ft_strcmp(cmd[0], "env"))
-		return (1);
-	else if (!ft_strcmp(cmd[0], "ls"))
 		return (1);
 	else if (!ft_strcmp(cmd[0], "pwd"))
 		return (1);

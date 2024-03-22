@@ -619,7 +619,7 @@ Deboguer un programme qui cree des processus fils peut s'averer assez accablant.
 Etapes_developpement_execution <a id="partie_8"></a>
 ----------------------------------------------------
 
-=> En entree : les deux structures "s_lstcmd" et "s_shell".
+=> En entree : les deux structures "s_tree" et "s_shell".
 
 Juste pour des lignes de commandes sans operateurs && et || imbriques dans des parentheses, les etapes sont elles, imbriquees
 les unes dans les autres :
@@ -643,33 +643,30 @@ un dup2, sinon on ecris dans l'entree standard d'ecriture.
 
 <br/>
 
-Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je test egalement l'argument
-seul car il est possible d'envoyer directement la commande avec son
-bon chemin. La commande a tester avec les chemins correspond au
-premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
+Execution fonctionnelle avec les && et les || :
 
-<br/>
-
-Redirection : Integrer la gestion des fds dans l'execution en fonction des
-redirection de la ligne de commande.
+1. Fonction recursives qui lis un AST en commencant avec la commande la plus a gauche et
+en bas de l'AST
+2. La fonction remonte avec l'exit_status les commandes de gauche de l'arbre et fait la commande de droite de l'operateur en fonction de l'exit status et du type (&& ou ||)
 
 <br/>
 
 Remarques : 
-- Si on fork foire, mais que je suis deja a l'interieur d'un processus enfant,
-il faudra que je gere cette exception, arreter le programme proprement egalement
-dans le processus parent correspondant ? Pour que les autres commandes ne 
-s'executent pas ?
-- Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
-pour enlever un argument a la fonction "exec_cmdbash".
-- Etant donnee que je fork pour l'instant toutes les builtins, il faudra que je fasse un
-cas special pour exit, car un seul exit ne suffira pas car je serais dans le processus
-enfant de la builtins et donc il faut que j'arrete tout les processus parent, donc la
-fonction builtins est vraiment un cas particulier a tester en amont de la pipe loop a
-mon avis.
 - Pour l'instant, vu que je ne gere aucun cas de parsing, si je met un "echo -n test"
 dans la pipe loop, le dernier argument ("test") ne sera pas pris en compte et la commande
 ne renverra rien car elle interpretera juste "echo -n".
+- Redirection : Integrer la gestion des fds dans l'execution en fonction des
+redirection de la ligne de commande.
+
+<br/>
+
+A faire :
+
+- Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
+pour enlever un argument a la fonction "exec_cmdbash".
+- Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je doit tester egalement l'argument seul car il est possible d'envoyer directement la commande avec son bon chemin. La commande a tester avec les chemins correspond au premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
+- Pour l'instant je n'ai que deux types d'exit status : 1 ou 0, mais il faut que je specifie les autres cas d'erreur avec exit_status (127 ...)
+- Il faut que je fasse une fonction pour free l'arbre dans 'free_shell'
 
 <br/>
 <br/>
@@ -688,6 +685,9 @@ Les fonctions ```built-ins``` n'ont pas besoin d'utiliser ```execve``` car elles
 La fonction echo avec l'option '-n' ne renvoie pas de '\n', mais on peut mettre plusieus fois le flag '-n' avec un nombre de n non limite et cela doit quand meme fonction et renvoyer le message de l'argument avec un '\n', mais si dans l'un des flag '-n' il y a un caractere qui n'est pas un 'n' alors la fonction considere que ce flag et tout ce qui suit font partit de l'argument a afficher et renvoie cette chaine avec un '\n' si il y a un
 flag '-n' devant.
 - La commande echo enleve tout les espaces avant et apres l'argument a afficher.
+
+- Lorsque je met l'argument '$?', la commande echo doit recuperer le dernier exit_status
+qui a ete generer et sauvegarder
 
 <br/>
 
@@ -758,20 +758,32 @@ export OK= TRKL= par exemple
 
 <br/>
 
+- Etant donnee que je fork pour l'instant toutes les builtins, il faudra que je fasse un
+cas special pour exit, car un seul exit ne suffira pas car je serais dans le processus
+enfant de la builtins et donc il faut que j'arrete tout les processus parent, donc la
+fonction builtins est vraiment un cas particulier a tester en amont de la pipe loop a
+mon avis.
 - Re-verifier avec d'autres personnes si ma fonction exit est correct
 
 <br/>
 
 Exit status depands of multiple things :
 - If the command work : 0
-- If a command exist and fail cause of the arg : 1
+- If a command exist and fail cause of the arg (env not set, ...) : 1
 - If a command exist and you don't have the permission : 126
-- If a command doesn't exist : 127
+- If a command doesn't exist (command not found) : 127
 - If a signal Kill or interrupte the commande : 127 + signal
-- If error parsing : 2
+- If error parsing (error arguments, too many argument, ) : 2
 
 Exit status come with Error message in your terminal, don't forget that the error fd
 is 2 (putstr_fd).
+
+Differents exit_status pour differentes commande qui on un argument "No such file or
+directory" :
+
+- ./minishell "cat v" -> No such file or directory, exit_status : 1
+- ./minishell "ls v" -> cannot access 'v' : No such file or directory, exit_status : 2
+
 
 
 <br/>

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/21 11:26:58 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/22 16:10:14 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
+	int			std_out;
 	int			nbr_path;
 	int			len_cmds;
 	char		**env;
@@ -170,7 +171,7 @@ void		ft_pwd(void);
 void		ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		ft_echo(char **args_split);
-void		ft_exit(t_shell *bash);
+void		ft_exit(t_tree *tree, t_shell *bash);
 void		ft_env(t_shell *minishell);
 
 int			check_env_key(t_shell *minishell, char *str);
@@ -202,7 +203,6 @@ void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
 void	exec_child(char *cmd_path, char **cmd, t_shell *bash);
-int		exec_cmdbash(int std_out, int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
-					t_shell *bash);
+int		exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 
 #endif

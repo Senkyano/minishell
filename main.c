@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/21 12:53:53 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:47:45 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 	t_lstcmd	*cmds;
 	char		*cmd_path;
 	int			fd[2];
-	int			std_out;
 	int			exit_status;
 
 	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
-	std_out = dup(1);
+	bash->std_out = dup(1);
 	while (cmds)
 	{
 		if (pipe(fd) == -1)
@@ -36,14 +35,14 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 		cmds->child = fork();
 		if (cmds->child == -1)
 			free_shell(bash);
-		exit_status = exec_cmdbash(std_out, fd, cmd_path, cmds, bash);
+		exit_status = exec_cmdbash(fd, cmd_path, cmds, bash);
 		if (cmd_path)
 			free(cmd_path);
 		if (exit_status == 1)
 			break ;
 		cmds = cmds->def_next;
 	}
-	close(std_out);
+	close(bash->std_out);
 	return (exit_status);
 }
 
@@ -56,7 +55,11 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 	if (tree->type == OPERATOR_OR && *exit_status != 0)
 		ft_tree_exec(tree->right_child, bash, env, exit_status);
 	if (tree->type == LST_CMD)
+	{
+		if (!ft_strcmp(tree->lst_cmd->cmd[0], "exit"))
+			ft_exit(tree, bash);
 		*exit_status = pipe_loop(tree, bash);
+	}
 	return (*exit_status);
 }
 
@@ -77,7 +80,8 @@ int	main(int argc, const char **argv, const char **env)
 	args_split = ft_split(argv[1], ' ');
 	init_tree(args_split, &bash);
 	exit_status = 0;
-	ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
+	exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
+	printf("exit_status : %d\n", exit_status);
 	free(args_split);
 	(void)argc;
 	return (0);
