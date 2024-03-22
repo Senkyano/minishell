@@ -63,6 +63,7 @@ typedef struct s_token
 	int				out_pars;
 	bool			d_in_pars;
 	bool			d_out_pars;
+	int				tot_pars;
 }	t_token;
 
 typedef struct s_lstfd
@@ -163,7 +164,6 @@ void		print_strshell(t_infopars *lst);
 // In
 void		in_sgquote(char c, t_token *token);
 void		in_doquote(char c, t_token *token);
-bool		check_pars(t_infopars *curr, t_token *token, t_shell *bash);
 // split minishell
 int			count_minishell(char *str);
 char		**split_minishell(char *str);
@@ -191,6 +191,7 @@ bool	after_operator(t_infopars *pre, t_infopars *curr, t_infopars *next, \
 t_shell *bash);
 bool	good_operator(char *str, t_shell *bash);
 bool	before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
+bool		check_pars(t_infopars *curr, t_token *token, t_shell *bash);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 12:04:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/09 19:20:10 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/22 14:20:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdio.h>
+
+void	choosing(char c, va_list lst, int *len);
 
 int	printf_error(const char *str, ...)
 {
@@ -29,12 +31,7 @@ int	printf_error(const char *str, ...)
 		if (*str == '%')
 		{
 			str++;
-			if (*str == 's')
-				len += print_error(va_arg(lst, char *));
-			else if (*str == 'd')
-				len += nbr_base(va_arg(lst, int), 10);
-			else if (*str == 'x')
-				len += nbr_base(va_arg(lst, int), 16);
+			choosing(*str, lst, &len);
 		}
 		else
 			len += write_fd(*str, 2);
@@ -42,4 +39,16 @@ int	printf_error(const char *str, ...)
 	}
 	va_end(lst);
 	return (len);
+}
+
+void	choosing(char c, va_list lst, int *len)
+{
+	if (c == 's')
+		*len += print_error(va_arg(lst, char *));
+	else if (c == 'd')
+		*len += nbr_base(va_arg(lst, int), 10);
+	else if (c == 'x')
+		*len += nbr_base(va_arg(lst, int), 16);
+	else if (c == 'c')
+		*len += write_fd(va_arg(lst, int), 2);
 }

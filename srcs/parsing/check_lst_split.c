@@ -6,11 +6,13 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:52:58 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/21 18:26:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/22 15:07:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	calcul_pars(t_token *token, t_shell *bash);
 
 bool	check_lst_split(t_shell *bash)
 {
@@ -28,6 +30,26 @@ bool	check_lst_split(t_shell *bash)
 		!check_pars(curr, &token, bash))
 			return (false);
 		curr = curr->next;
+	}
+	if (!calcul_pars(&token, bash))
+		return (false);
+	return (true);
+}
+
+bool	calcul_pars(t_token *token, t_shell *bash)
+{
+	token->tot_pars = token->in_pars - token->out_pars;
+	if (token->tot_pars > 0)
+	{
+		printf_error(RED" -- Feature not Include --\n"RST);
+		bash->exit_status = 2;
+		return (false);
+	}
+	else if (token->tot_pars < 0)
+	{
+		printf_error(RED" -- Unexpected token ')' --\n"RST);
+		bash->exit_status = 2;
+		return (false);
 	}
 	return (true);
 }

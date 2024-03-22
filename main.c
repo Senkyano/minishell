@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/21 13:34:07 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/22 15:16:40 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	main(int argc, const char **argv, const char **env)
 			launch_builtins(&bash);
 		}
 		free_boxshell(&bash.lst_char);
+		// bash.exit_status = 0;
 	}
 	free_shell(&bash);
 	return (0);
