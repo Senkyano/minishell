@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 18:40:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/22 23:02:51 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/24 22:17:00 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,20 @@
 
 bool	good_bef_pars(t_infopars *pre, t_infopars *curr, t_shell *bash);
 bool	good_af_pars(t_infopars *next, t_infopars *curr, t_shell *bash);
+bool	count_out_pars(t_infopars **curr, t_infopars *pre, t_token *token);
+void	count_in_pars(t_infopars **curr, t_token *token);
 
-bool	check_pars(t_infopars *curr, t_token *token, t_shell *bash)
+bool	check_pars(t_infopars **curr, t_token *token, t_shell *bash)
 {
-	if (!good_bef_pars(curr->prec, curr, bash) || \
-	!good_af_pars(curr->next, curr, bash))
+	if (!good_bef_pars((*curr)->prec, (*curr), bash) || \
+	!good_af_pars((*curr)->next, (*curr), bash))
 		return (false);
-	if (curr->str[0] == '(')
+	count_in_pars(curr, token);
+	if (!count_out_pars(curr, (*curr)->prec, token))
+		return (false);
+	if (token->in_pars < token->out_pars)
 	{
-		token->in_pars += str_len(curr->str);
-		if ((str_len(curr->str) > 1 || (curr->prec && curr->prec->str[0] == '(')))
-			token->d_in_pars = true;
-	}
-	else if (curr->str[0] == ')')
-	{
-		token->out_pars += str_len(curr->str);
-		if (str_len(curr->str) > 1 || (curr->prec && curr->prec->str[0] == ')'))
-			token->d_out_pars = true;
-	}
-	if ((token->in_pars == token->out_pars - 1) || (token->in_pars - 1 == token->out_pars))
-	{
-		token->d_in_pars = false;
-		token->d_out_pars = false;
-	}
-	if (token->d_out_pars && token->d_in_pars)
-	{
-		printf_error(RED" -- Unexpected token '%s' --\n", curr->prec->str);
+		printf_error(RED" -- Unexpected token ')' --\n"RST);
 		bash->exit_status = 2;
 		return (false);
 	}
@@ -98,6 +86,52 @@ bool	good_af_pars(t_infopars *next, t_infopars *curr, t_shell *bash)
 		printf_error(RED" -- Unexpected token '%s' --\n", curr->str);
 		bash->exit_status = 2;
 		return (false);
+	}
+	return (true);
+}
+
+void	count_in_pars(t_infopars **curr, t_token *token)
+{
+	if ((*curr)->str[0] == '(')
+	{
+		while ((*curr) && (*curr)->str[0] == '(')
+		{
+			token->in_pars += str_len((*curr)->str);
+			if (str_len((*curr)->str) > 1 || token->in_pars > token->out_pars + 1)
+				token->in_pars_suite = true;
+			else if ((*curr)->prec && (*curr)->prec->str[0] == '(' && (*curr)->str[0] == '(')
+				token->in_pars_suite = true;
+			(*curr) = (*curr)->next;
+		}
+		if (token->in_pars == token->out_pars + 1)
+			token->in_pars_suite = false;
+		printf_error("%d token in\n", token->out_pars_suite);
+	}
+}
+
+bool	count_out_pars(t_infopars **curr, t_infopars *pre, t_token *token)
+{
+	if ((*curr)->str[0] == ')')
+	{
+		while ((*curr) && (*curr)->str[0] == ')')
+		{
+			token->out_pars += str_len((*curr)->str);
+			if (str_len((*curr)->str) > 1)
+				token->out_pars_suite = true;
+			else if ((*curr)->prec && (*curr)->prec->str[0] == ')' && (*curr)->str[0] == ')')
+				token->out_pars_suite = true;
+			if (token->out_pars_suite && token->in_pars_suite)
+			{
+				printf_error(RED" -- Unexpected token '%s' --\n"RST, pre->str);
+				return (false);
+			}
+			(*curr) = (*curr)->next;
+		}
+		if ((*curr) && (*curr)->prec->str[0] == ')' && !is_operator((*curr)->str[0]))
+		{
+			printf_error(RED" -- Unexpected token '%s' --\n"RST, (*curr)->str);
+			return (false);
+		}
 	}
 	return (true);
 }

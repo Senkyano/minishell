@@ -61,8 +61,8 @@ typedef struct s_token
 	bool			error;
 	int				in_pars;
 	int				out_pars;
-	bool			d_in_pars;
-	bool			d_out_pars;
+	bool			in_pars_suite;
+	bool			out_pars_suite;
 	int				tot_pars;
 }	t_token;
 
@@ -191,7 +191,7 @@ bool	after_operator(t_infopars *pre, t_infopars *curr, t_infopars *next, \
 t_shell *bash);
 bool	good_operator(char *str, t_shell *bash);
 bool	before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
-bool		check_pars(t_infopars *curr, t_token *token, t_shell *bash);
+bool		check_pars(t_infopars **curr, t_token *token, t_shell *bash);
 
 
 
