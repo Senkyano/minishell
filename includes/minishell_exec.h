@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/22 16:10:14 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/25 16:50:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void		ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		ft_echo(char **args_split);
 void		ft_exit(t_tree *tree, t_shell *bash);
-void		ft_env(t_shell *minishell);
+int			ft_env(char **args_split, t_shell *minishell);
 
 int			check_env_key(t_shell *minishell, char *str);
 char		*get_value_env(t_shell *minishell, char *key);
@@ -193,7 +193,7 @@ void		launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash);
 void		ls_cmd(void);
 char		**get_paths(char **env);
 char		**free_split(char **char_tab);
-void		malloc_env(t_shell *minishell, const char **env);
+void		malloc_env(t_shell *minishell, char **env);
 char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
 

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 14:54:00 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/25 17:05:30 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,26 @@ char	*get_value_env(t_shell *minishell, char *key)
 	return (NULL);
 }
 
-void	ft_env(t_shell *minishell)
+int	ft_env(char **args_split, t_shell *minishell)
 {
 	t_envlist	*list_envs;
+	int			tmp;
 	
+	if (!minishell->lst_envs)
+	{
+		ft_putstr_fd("bash: env: No such file or directory\n", 2);
+		return (127);
+	}
+	tmp = 1;
+	while (args_split[tmp])
+	{
+		if (ft_strcmp(args_split[tmp], "env"))
+		{
+			ft_printf("env: '%s': No such file or directory\n", args_split[tmp]);
+			return (127);
+		}
+		tmp++;
+	}
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{
@@ -55,4 +71,5 @@ void	ft_env(t_shell *minishell)
 		ft_putchar_fd('\n', 1);
 		list_envs = list_envs->next;
 	}
+	return (0);
 }

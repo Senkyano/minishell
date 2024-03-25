@@ -3,20 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:51:20 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/12 18:17:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/25 15:10:52 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell_exec.h"
+#include "minishell_exec.h"
+
+int	check_unset_path(char **args_split, t_shell *minishell)
+{
+	int	test;
+
+	test = 0;
+	if (!ft_strcmp(args_split[1], "PATH"))
+	{
+		lstclear(minishell->lst_envs);
+		test = 1;
+	}
+	return (test);	
+}
 
 void	ft_unset(char **args_split, t_shell *minishell)
 {
 	t_envlist	*previous;
 	t_envlist	*lst_envs;
 
+	if (check_unset_path(args_split, minishell))
+		return ;
 	previous = NULL;
 	lst_envs = minishell->lst_envs;
 	while (lst_envs)

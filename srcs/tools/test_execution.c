@@ -6,24 +6,28 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/22 11:13:10 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/25 17:02:57 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 
-t_lstcmd	*init_cmd(char *cmd, char *arg, int index)
+t_lstcmd	*init_cmd(char *cmd, char *arg, char *arg2, char *arg3, char *arg4, char *arg5, int index)
 {
 	t_lstcmd *new_cmd;
 	char	**cmd_split;
 
 	new_cmd = malloc(sizeof(t_lstcmd));
-	cmd_split = malloc(3 * sizeof(char *));
+	cmd_split = malloc(7 * sizeof(char *));
 	new_cmd->index = index;
 	new_cmd->cmd = cmd_split;
 	cmd_split[0] = cmd;
 	cmd_split[1] = arg;
-	cmd_split[2] = NULL;
+	cmd_split[2] = arg2;
+	cmd_split[3] = arg3;
+	cmd_split[4] = arg4;
+	cmd_split[5] = arg5;
+	cmd_split[6] = NULL;
 	new_cmd->t_path = NULL;
 	new_cmd->child = -1;
 	new_cmd->lst_fd = NULL;
@@ -92,7 +96,7 @@ void	init_tree(char **argv, t_shell *bash)
 	t_tree		*tree;
 	t_lstcmd	*cmd1;
 
-	cmd1 = init_cmd(argv[0], argv[1], 0);
+	cmd1 = init_cmd(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], 0);
 	tree = new_tree_elem(cmd1, 0);
 
 	bash->tree = tree;
@@ -177,6 +181,8 @@ Test 5 : ./minishell "lSDZXs -a || cat supp.supp | wc -l  && echo ok
 	bash->tree = tree;
 
 Test 6 : ./minishell "echo test && cat supp.supp && echvf evad || echo $? && echo test3 || echo ok"
+cdm : echo test && (cat supp.supp && echvf evad) || echo $? && ((echo test3) || echo ok)
+
 	t_tree		*tree;
 	t_tree		*new1;
 	t_tree		*new2;

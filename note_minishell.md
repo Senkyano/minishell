@@ -784,6 +784,36 @@ directory" :
 - ./minishell "cat v" -> No such file or directory, exit_status : 1
 - ./minishell "ls v" -> cannot access 'v' : No such file or directory, exit_status : 2
 
+Checker apres que le parsing soit ajoutee si la fonction exit gere :
+- exit '666' -> exit, exit_status 154
+- exit '-666' -> exit, exit_status 102
+- exit '+666' -> exit, exit_status 154
+- exit '6'66 -> exit, exit_status 154
+- exit '2'66'32' -> exit, exit_status 8
+- exit "'666'" -> exit, bash: exit: '666': numeric argument required,
+exit_status 2
+- exit '"666"' -> exit, bash: exit: "666": numeric argument required,
+exit_status 2
+- exit '666'"666"666 -> exit, exit_status 170
+- exit +'666'"666"666 -> exit, exit_status 170
+
+<br/>
+
+**unset :**
+
+Lorsque l'on unset le PATH de l'env cela doit supprimer l'env totalement et donc tout
+free totalement la liste chaine et remettre le pointeur de la structure du minishell sur l'env a NULL.
+
+<br/>
+
+**env :**
+
+Lorsque l'env n'est pas defini : le pointeur de la structure du minishell sur l'env est
+assignee a NULL, j'affiche : 'bash: env: No such file or directory'
+
+Lorsque j'envoie 'env ls', je dois appeler la fonction 'exec_child' pour executer le ls a l'interieur
+de ma boucle qui check tout les arguments apres la commande 'env'.
+
 
 
 <br/>

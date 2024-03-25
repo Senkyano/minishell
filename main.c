@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/22 15:47:45 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/25 15:20:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, const char **argv, const char **env)
 		return (1);
 	g_last_exit_code = 0;
 	lib_memset(&bash, 0, sizeof(bash));
-	malloc_env(&bash, env);
+	malloc_env(&bash, (char **)env);
 	bash.tree = NULL;
 	bash.env = (char **)env;
 	bash.path = get_paths((char **)env);
