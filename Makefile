@@ -59,7 +59,8 @@ PARS_C =	condition_launch.c \
 			utils_check_list.c \
 			check_lst_split.c \
 			utils_check_list_split.c \
-			utils_parenthese.c
+			utils_parenthese.c \
+			check_redirection.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))

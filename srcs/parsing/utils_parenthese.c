@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 18:40:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/24 22:17:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/25 16:50:04 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,14 +97,13 @@ void	count_in_pars(t_infopars **curr, t_token *token)
 		while ((*curr) && (*curr)->str[0] == '(')
 		{
 			token->in_pars += str_len((*curr)->str);
-			if (str_len((*curr)->str) > 1 || token->in_pars > token->out_pars + 1)
+			if (str_len((*curr)->str) > 1)
 				token->in_pars_suite = true;
-			else if ((*curr)->prec && (*curr)->prec->str[0] == '(' && (*curr)->str[0] == '(')
+			else if ((*curr)->prec && (*curr)->prec->str[0] == '(' && \
+			(*curr)->str[0] == '(')
 				token->in_pars_suite = true;
 			(*curr) = (*curr)->next;
 		}
-		if (token->in_pars == token->out_pars + 1)
-			token->in_pars_suite = false;
 		printf_error("%d token in\n", token->out_pars_suite);
 	}
 }
@@ -118,7 +117,8 @@ bool	count_out_pars(t_infopars **curr, t_infopars *pre, t_token *token)
 			token->out_pars += str_len((*curr)->str);
 			if (str_len((*curr)->str) > 1)
 				token->out_pars_suite = true;
-			else if ((*curr)->prec && (*curr)->prec->str[0] == ')' && (*curr)->str[0] == ')')
+			else if ((*curr)->prec && (*curr)->prec->str[0] == ')' \
+			&& (*curr)->str[0] == ')')
 				token->out_pars_suite = true;
 			if (token->out_pars_suite && token->in_pars_suite)
 			{
@@ -127,7 +127,8 @@ bool	count_out_pars(t_infopars **curr, t_infopars *pre, t_token *token)
 			}
 			(*curr) = (*curr)->next;
 		}
-		if ((*curr) && (*curr)->prec->str[0] == ')' && !is_operator((*curr)->str[0]))
+		if ((*curr) && (*curr)->prec->str[0] == ')' && \
+		!is_operator((*curr)->str[0]) && token->in_pars_suite)
 		{
 			printf_error(RED" -- Unexpected token '%s' --\n"RST, (*curr)->str);
 			return (false);

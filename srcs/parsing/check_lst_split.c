@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:52:58 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/24 21:57:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/25 16:51:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	check_lst_split(t_shell *bash)
 		!good_operator(curr->str, bash) || !in_feature(curr, bash) || \
 		!before_operator(curr, curr->prec, bash) || \
 		!after_operator(curr->prec, curr, curr->next, bash) || \
-		!check_pars(&curr, &token, bash))
+		!check_pars(&curr, &token, bash) || !check_redirection(curr, bash))
 			return (false);
 		if (curr)
 			curr = curr->next;

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:19:06 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/22 15:30:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/25 16:50:33 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ t_infopars	*cut_boxshell(char *str)
 	lib_memset(&tmp, 0, sizeof(tmp));
 	while (str[tmp.i])
 	{
-		if (!is_operator(str[tmp.i]) && str[tmp.i] != '(' && str[tmp.i] != ')' && \
-		!is_redirection(str[tmp.i]))
+		if (!is_operator(str[tmp.i]) && str[tmp.i] != '(' \
+		&& str[tmp.i] != ')' && !is_redirection(str[tmp.i]))
 		{
 			if (!box_str(&tmp, str + tmp.i))
 				return (NULL);

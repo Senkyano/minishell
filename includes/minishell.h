@@ -148,6 +148,7 @@ t_infopars	*diff_boxshell(char *str, int spe);
 t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
 t_infopars	*cut_boxshell(char *str);
 t_infopars	*first_boxshell(t_infopars *last);
+t_infopars	*last_boxshell(t_infopars *curr);
 // Process manipulation
 t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr);
 // Process add
@@ -192,6 +193,7 @@ t_shell *bash);
 bool	good_operator(char *str, t_shell *bash);
 bool	before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
 bool		check_pars(t_infopars **curr, t_token *token, t_shell *bash);
+bool	check_redirection(t_infopars *curr, t_shell *bash);
 
 
 

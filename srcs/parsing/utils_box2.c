@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:03:39 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/20 18:17:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/25 17:15:34 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,14 @@ t_infopars	*first_boxshell(t_infopars *last)
 	while (curr->prec)
 		curr = curr->prec;
 	return (curr);
+}
+
+t_infopars	*last_boxshell(t_infopars *curr)
+{
+	t_infopars	*last;
+	
+	last = curr;
+	while (last->next)
+		last = last->next;
+	return (last);
 }
