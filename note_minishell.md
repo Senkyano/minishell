@@ -668,6 +668,11 @@ pour enlever un argument a la fonction "exec_cmdbash".
 - Pour l'instant je n'ai que deux types d'exit status : 1 ou 0, mais il faut que je specifie les autres cas d'erreur avec exit_status (127 ...)
 - Il faut que je fasse une fonction pour free l'arbre dans 'free_shell'
 
+Free && Leaks :
+
+Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon initialisation qui rajoute un malloc, alors que tout est bien free dans la fonction
+free_shell sinon.
+
 <br/>
 <br/>
 <br/>

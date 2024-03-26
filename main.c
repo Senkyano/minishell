@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/25 15:20:15 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/26 16:27:32 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 		if (pipe(fd) == -1)
 			break ;
 		if (!is_builtins(cmds->cmd))
+		{
 			cmd_path = check_cmd(cmds->cmd[0], bash->path);
+			if (!cmd_path)
+				return (127);
+		}
 		else
 			cmd_path = NULL;
 		cmds->child = fork();
@@ -65,7 +69,6 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 
 int	main(int argc, const char **argv, const char **env)
 {
-	char	**args_split;
 	t_shell	bash;
 	int	exit_status;
 
@@ -74,15 +77,14 @@ int	main(int argc, const char **argv, const char **env)
 	g_last_exit_code = 0;
 	lib_memset(&bash, 0, sizeof(bash));
 	malloc_env(&bash, (char **)env);
-	bash.tree = NULL;
 	bash.env = (char **)env;
 	bash.path = get_paths((char **)env);
-	args_split = ft_split(argv[1], ' ');
-	init_tree(args_split, &bash);
+	bash.str_split = ft_split(argv[1], ' ');
+	init_tree(bash.str_split, &bash);
 	exit_status = 0;
 	exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
 	printf("exit_status : %d\n", exit_status);
-	free(args_split);
+	free_shell(&bash);
 	(void)argc;
 	return (0);
 }
