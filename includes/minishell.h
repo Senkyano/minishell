@@ -89,9 +89,8 @@ typedef struct s_lsthere
 
 typedef struct	s_infopars
 {
-	int		spe;  //5 = process_and
+	int		spe; // 1 = process // 2 = cmd // 3 = file // 4 = redirections // 5 = pipe
 	char	*str;
-	// pour le parsing attribuer token
 	struct s_infopars	*next;
 	struct s_infopars	*prec;
 }	t_infopars;
@@ -106,7 +105,7 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	pid_t			child;	  // child sous-process
 	int				in_file;
 	int				out_file;
-	struct s_lstcmd	*lst_cmd; //pipe
+	struct s_lstcmd	*next; //pipe
 }	t_lstcmd;
 
 typedef	struct s_tree
@@ -149,7 +148,6 @@ bool		in_feature(t_infopars *curr, t_shell *bash);
 void		get_true_path(t_shell *bash, char const **env);
 // Case
 t_infopars	*diff_boxshell(char *str, int spe);
-t_lstcmd	*box_cmd(char **cmd, t_lstfd *fd_cmd, t_shell *bash);
 t_infopars	*cut_boxshell(char *str);
 t_infopars	*first_boxshell(t_infopars *last);
 t_infopars	*last_boxshell(t_infopars *curr);
@@ -188,16 +186,26 @@ bool		malloc_proc(t_data *tmp, char *str);
 int			next_process(char *str);
 bool		box_process(t_data *tmp, char *str);
 bool		is_operator(char c);
-bool	is_redirection(char c);
+bool		is_redirection(char c);
 bool		box_str(t_data *tmp, char *str);
 // Utils check libs_split
-bool	finish_quote(char *str, t_token *token, t_shell *bash);
-bool	after_operator(t_infopars *pre, t_infopars *curr, t_infopars *next, \
+bool		finish_quote(char *str, t_token *token, t_shell *bash);
+bool		after_operator(t_infopars *pre, t_infopars *curr, t_infopars *next, \
 t_shell *bash);
-bool	good_operator(char *str, t_shell *bash);
-bool	before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
+bool		good_operator(char *str, t_shell *bash);
+bool		before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
 bool		check_pars(t_infopars **curr, t_token *token, t_shell *bash);
-bool	check_redirection(t_infopars *curr, t_shell *bash);
+bool		check_redirection(t_infopars *curr, t_shell *bash);
+void		id_shellst(t_shell *bash);
+// Utils cmd
+
+
+
+
+
+
+
+
 
 
 

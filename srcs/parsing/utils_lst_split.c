@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:47:11 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/22 15:30:50 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/26 20:16:09 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	box_process(t_data *tmp, char *str)
 			free_boxshell(&tmp->new_lst);
 		return (false);
 	}
-	tmp->tmp_box = diff_boxshell(tmp->new_str, 5);
+	tmp->tmp_box = diff_boxshell(tmp->new_str, 0);
 	if (!tmp->tmp_box)
 	{
 		if (tmp->new_lst)

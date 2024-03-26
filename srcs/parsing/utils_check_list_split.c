@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:54:41 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/21 18:04:43 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/26 20:12:48 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,3 @@ bool	before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash)
 	}
 	return (true);
 }
-
-// bool	

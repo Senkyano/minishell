@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:52:58 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/25 16:51:10 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/26 21:44:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,27 @@ bool	check_lst_split(t_shell *bash)
 	return (true);
 }
 
-// bool	calcul_pars(t_token *token, t_shell *bash)
-// {
-// 	token->tot_pars = token->in_pars - token->out_pars;
-// 	if (token->tot_pars > 0)
-// 	{
-// 		printf_error(RED" -- Feature not Include --\n"RST);
-// 		bash->exit_status = 2;
-// 		return (false);
-// 	}
-// 	else if (token->tot_pars < 0)
-// 	{
-// 		printf_error(RED" -- Unexpected token ')' --\n"RST);
-// 		bash->exit_status = 2;
-// 		return (false);
-// 	}
-// 	return (true);
-// }
+void	id_shellst(t_shell *bash)
+{
+	t_infopars	*curr;
+
+	curr = bash->lst_char;
+	while (curr)
+	{
+		if (curr->str[0] == '<' || curr->str[0] == '>')
+			curr->spe = 4;
+		else if (curr->prec && curr->prec->spe == 4)
+			curr->spe = 3;
+		else if (is_operator(curr->str[0]))
+		{
+			if (str_len(curr->str) == 2)
+				curr->spe = 1;
+			else if (str_len(curr->str) == 1)
+				curr->spe = 5;
+		}
+		else if ((!curr->prec || (curr->prec && curr->prec->spe != 4)) && \
+		curr->str[0] != '(' && curr->str[0] != ')')
+			curr->spe = 2;
+		curr = curr->next;
+	}
+}

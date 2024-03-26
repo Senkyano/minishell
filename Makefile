@@ -46,7 +46,7 @@ RESET = \033[0m
 PARS_C =	condition_launch.c \
 			error_exit.c \
 			free_shell.c \
-			get_cmd.c \
+			box_cmd.c \
 			get_path.c \
 			get_process.c \
 			split_minishell.c \

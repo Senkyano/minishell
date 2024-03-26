@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 18:40:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/25 16:50:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/26 20:20:24 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	count_in_pars(t_infopars **curr, t_token *token)
 				token->in_pars_suite = true;
 			(*curr) = (*curr)->next;
 		}
-		printf_error("%d token in\n", token->out_pars_suite);
 	}
 }
 
