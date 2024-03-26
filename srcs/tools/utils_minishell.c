@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/26 16:26:57 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/26 16:50:25 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	*check_cmd(char *cmd, char **path_split)
 		return (NULL);
 	}
 	if (access(cmd, F_OK) == 0)
-		return (cmd);
+		return(ft_strdup(cmd));
 	tmp = 0;
 	while (path_split[tmp])
 	{

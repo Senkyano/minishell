@@ -662,8 +662,17 @@ redirection de la ligne de commande.
 
 A faire :
 
+- integrer la gestion des fds dans l'execution
+- Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell,
+mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le
+merge sera fait
+
+<br/>
+
+fait :
+
 - Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
-pour enlever un argument a la fonction "exec_cmdbash".
+pour enlever un argument a la fonction "exec_cmdbash"
 - Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je doit tester egalement l'argument seul car il est possible d'envoyer directement la commande avec son bon chemin. La commande a tester avec les chemins correspond au premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
 - Pour l'instant je n'ai que deux types d'exit status : 1 ou 0, mais il faut que je specifie les autres cas d'erreur avec exit_status (127 ...)
 - Il faut que je fasse une fonction pour free l'arbre dans 'free_shell'

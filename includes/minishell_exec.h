@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/25 16:50:41 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/26 16:48:57 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ char		**split_minishell(char *str);
 // test
 int			cutting(char *str, t_lstcmd *base);
 
-
+//libft
 // char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // char		*get_next_line(int fd);
@@ -163,6 +163,7 @@ char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // char		**ft_split(char const *s, char c);
 // int			ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char		**ft_free(char **char_tab, int nb_words);
+char		*ft_strdup(char *src);
 
 
 //builtins
