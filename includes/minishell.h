@@ -44,6 +44,10 @@
 # define RST "\e[0m"
 # define ERR_MAL "-- Malloc failed --\n"
 
+# define OPERATOR_AND 1
+# define OPERATOR_OR 2
+# define LST_CMD 3
+
 extern int	g_last_exit_code;
 
 typedef struct t_list {
@@ -107,7 +111,7 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 
 typedef	struct s_tree
 {
-	int				type;
+	int				type; // voir reference dans le def
 	struct s_tree	*parent;
 	struct s_tree	*left_child;
 	struct s_tree	*right_child;
