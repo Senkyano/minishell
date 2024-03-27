@@ -199,7 +199,8 @@ bool		check_redirection(t_infopars *curr, t_shell *bash);
 void		id_shellst(t_shell *bash);
 // Utils cmd
 
-
+// TREE
+bool		need_tree(t_infopars *lst);
 
 
 

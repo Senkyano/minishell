@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/26 20:24:16 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:40:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ static bool	start_process(char *str, t_shell *bash)
 	if (!check_lst_split(bash))
 		return (false);
 	id_shellst(bash);
+	// if (!need_tree(bash->lst_char))
+		
+	// else if (need_tree(bash->lst_char))
+	// {
+	// 	printf_error("need tree\n");
+	// }
 	t_infopars	*last;
 	
 	last = bash->lst_char;
