@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/27 15:40:44 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/27 21:50:30 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ static bool	start_process(char *str, t_shell *bash)
 	// }
 	t_infopars	*last;
 	
-	last = bash->lst_char;
+	last = last_boxshell(bash->lst_char);
 	while (last)
 	{
 		printf_error("%s = ", last->str);
 		printf_error("%d\n", last->spe);
-		last = last->next;
+		last = last->prec;
 	}
 	return (true);
 }
