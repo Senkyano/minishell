@@ -683,6 +683,13 @@ Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon in
 free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a
 echoue...
 
+A faire : 
+
+Gerer ce type de commande ou le processus principal est une boucle de pipe avec des && et
+des || dans des sous-processus de la boucle de pipe :
+
+echo test | (cat supp.supp && (cat supp.supp && cat supp.supp) | grep i) | grep o
+
 <br/>
 <br/>
 <br/>
@@ -819,11 +826,10 @@ exit_status 2
 
 Pas besoin de gerer le 'env ls' car env ne prend pas d'argument selon les consignes du projet Minishell
 
-if (!cmd_path)
-{
-	cmds = cmds->def_next;
-	continue ;
-}
+Remarque : lorsque le exit est dans un pipe, il exit dans l'enfant donc cela ne quitte pas
+le processus principal mais renvoie quand meme l'exit_status, il faut donc que j'ajoute ma
+fonction ft_exit dans 'exec_builtins', mais je la garde quand meme dans ft_tree_exec, au cas
+ou le exit n'est pas integre a un pipe et est dans le processus principal
 
 <br/>
 

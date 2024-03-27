@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/27 16:27:35 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/27 17:03:44 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	exec_builtins(char **cmd, t_shell *bash)
 		ft_unset(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "echo"))
 		ft_echo(cmd);
+	// else if (!ft_strcmp(cmd[0], "exit"))
+	// 	ft_exit(cmd);
 	else
 		return (0);
 	free_shell(bash);

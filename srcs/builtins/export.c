@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/27 16:27:12 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:39:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_export(char	**args_split, t_shell *minishell)
 
 	lst_envs = minishell->lst_envs;
 	if (!args_split[1])
-		return (no_args(lst_envs), 1);
+		return (no_args(lst_envs), 0);
 	if (args_split[1][ft_strlen(args_split[1]) - 1] == '\n')
 		args_split[1][ft_strlen(args_split[1]) - 1] = '\0';
 	if (!parsing_export(args_split))
