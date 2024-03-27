@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/26 16:44:40 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:27:48 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 		{
 			cmd_path = check_cmd(cmds->cmd[0], bash->path);
 			if (!cmd_path)
-				return (127);
+			{
+				exit_status = 127;
+				cmds = cmds->def_next;
+				continue ;
+			}
 		}
 		else
 			cmd_path = NULL;
@@ -42,8 +46,6 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 		exit_status = exec_cmdbash(fd, cmd_path, cmds, bash);
 		if (cmd_path)
 			free(cmd_path);
-		if (exit_status == 1)
-			break ;
 		cmds = cmds->def_next;
 	}
 	close(bash->std_out);

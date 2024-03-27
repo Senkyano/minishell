@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/26 16:48:57 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:06:22 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ typedef	struct s_tree
 	struct s_tree	*parent;
 	struct s_tree	*left_child;
 	struct s_tree	*right_child;
-	t_lstcmd		*lst_cmd;
+	struct s_lstcmd	*lst_cmd;
+	//struct s_tree	*next;
 }					t_tree;
 
 typedef struct	s_shell

@@ -662,7 +662,7 @@ redirection de la ligne de commande.
 
 A faire :
 
-- integrer la gestion des fds dans l'execution
+- integrer la gestion des redirection avec les fds dans l'execution
 - Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell,
 mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le
 merge sera fait
@@ -680,7 +680,8 @@ pour enlever un argument a la fonction "exec_cmdbash"
 Free && Leaks :
 
 Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon initialisation qui rajoute un malloc, alors que tout est bien free dans la fonction
-free_shell sinon.
+free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a
+echoue...
 
 <br/>
 <br/>
@@ -693,6 +694,9 @@ The **built-ins** are a set of useful functions that are needed in the Minishell
 complex ones.
 
 Les fonctions ```built-ins``` n'ont pas besoin d'utiliser ```execve``` car elles sont suffisamment simple pour etre directement implementee. On a donc pas besoin d'utiliser de dupliquer les processus.
+
+Il faut que je renvoie forcement un exit_status pour tout mes builtins pour pouvoir exit 
+avec la bonne valeur au niveau de ma fonction 'exec_builtins'.
 
 **echo :**
 
@@ -760,6 +764,8 @@ les chiffres ne sont pas autorisees pour l'index 0 de l'argument).
 
 - Gerer quand il y a plusieurs variables a ajouter dans l'env avec la commande
 export OK= TRKL= par exemple
+- Lorsque j'execute 'export' mais avec un argument vide : '', la builtins ne doit pas
+marcher et est cense renvoye un exit_status egal a 1.
 
 <br/>
 
@@ -810,6 +816,14 @@ exit_status 2
 exit_status 2
 - exit '666'"666"666 -> exit, exit_status 170
 - exit +'666'"666"666 -> exit, exit_status 170
+
+Pas besoin de gerer le 'env ls' car env ne prend pas d'argument selon les consignes du projet Minishell
+
+if (!cmd_path)
+{
+	cmds = cmds->def_next;
+	continue ;
+}
 
 <br/>
 

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/26 16:44:21 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:33:40 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,57 @@ t_tree	*new_tree_elem(t_lstcmd *cmds, int op)
 void	init_tree(char **argv, t_shell *bash)
 {
 	t_tree		*tree;
-	//t_tree		*new1;
+	t_tree		*new1;
+	t_tree		*new2;
+	t_tree		*new3;
+	t_tree		*new4;
+	t_tree		*new5;
+	t_tree		*new6;
+	t_tree		*new7;
+	t_tree		*new8;
+	t_tree		*new9;
+	t_tree		*new10;
 	t_lstcmd	*cmd1;
+	t_lstcmd	*cmd2;
+	t_lstcmd	*cmd3;
+	t_lstcmd	*cmd4;
+	t_lstcmd	*cmd5;
+	t_lstcmd	*cmd6;
 
 	cmd1 = init_cmd(argv[0], argv[1], 0);
-	tree = new_tree_elem(cmd1, 0);
+	cmd2 = init_cmd(argv[3], argv[4], 0);
+	cmd3 = init_cmd(argv[6], argv[7], 0);
+	cmd4 = init_cmd(argv[9], argv[10], 0);
+	cmd5 = init_cmd(argv[12], argv[13], 0);
+	cmd6 = init_cmd(argv[15], argv[16], 0);
+	tree = new_tree_elem(0, OPERATOR_AND);
+	new1 = new_tree_elem(0, OPERATOR_OR);
+	new2 = new_tree_elem(0, OPERATOR_OR);
+	new3 = new_tree_elem(0, OPERATOR_AND);
+	new4 = new_tree_elem(cmd1, 0);
+	new5 = new_tree_elem(0, OPERATOR_AND);
+	new6 = new_tree_elem(cmd2, 0);
+	new7 = new_tree_elem(cmd3, 0);
+	new8 = new_tree_elem(cmd4, 0);
+	new9 = new_tree_elem(cmd5, 0);
+	new10 = new_tree_elem(cmd6, 0);
+	
+	tree->left_child = new1;
+	tree->right_child = new2;
+	new1->left_child = new3;
+	new1->right_child = new8;
+	new2->left_child = new9;
+	new2->right_child = new10;
+	new3->left_child = new4;
+	new3->right_child = new5;
+	new5->left_child = new6;
+	new5->right_child = new7;
+
+	free(argv[2]);
+	free(argv[5]);
+	free(argv[8]);
+	free(argv[11]);
+	free(argv[14]);
 
 	bash->tree = tree;
 
@@ -150,7 +196,7 @@ Test 4 : ./minishell "cat supp.supp | wc -l | wc -l"
 	tree = new_tree_elem(lst, 0);
 	bash->tree = tree;
 
-Test 5 : ./minishell "lSDZXs -a || cat supp.supp | wc -l  && echo ok
+Test 5 : ./minishell "lSDZXs -a || cat supp.supp | wc -l  && echo ok"
 	t_tree		*tree;
 	t_tree		*new1;
 	t_tree		*new2;
@@ -176,6 +222,10 @@ Test 5 : ./minishell "lSDZXs -a || cat supp.supp | wc -l  && echo ok
 	tree->right_child = new4;
 	new1->left_child = new2;
 	new1->right_child = new3;
+
+	free(argv[2]);
+	free(argv[5]);
+	free(argv[8]);
 
 	bash->tree = tree;
 
@@ -245,6 +295,23 @@ Test 7 : ./minishell "cat supp.supp"
 	tree = new_tree_elem(cmd1, 0);
 
 	bash->tree = tree;
+
+Test 8 : ./minishell "export HOLA=bonjour | cat supp.supp"
+	t_tree		*tree;
+	t_lstcmd	*cmd1;
+	t_lstcmd	*cmd2;
+
+	cmd1 = init_cmd(argv[0], argv[1], 0);
+	cmd2 = init_cmd(argv[3], argv[4], 1);
+	lstcmdadd_back(cmd2, cmd1);
+	tree = new_tree_elem(cmd1, 0);
+
+	free(argv[2]);
+
+	bash->tree = tree;
+
+Test 9 :
+cmd : echo test | cat supp.supp && cat supp.supp && cat supp.supp | grep i | grep o && echo ok
 */
 
 
