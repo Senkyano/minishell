@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:52:58 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/26 21:44:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/28 14:37:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,21 @@ void	id_shellst(t_shell *bash)
 			curr->spe = 2;
 		curr = curr->next;
 	}
+}
+
+bool	sub_shell(t_infopars *lst)
+{
+	t_infopars	*curr;
+
+	curr = lst;
+	while (curr)
+	{
+		if ((curr->spe == 0 && curr->prec && curr->prec->spe == 5) || (curr->next && curr->next->spe == 5 && curr->spe == 0))
+		{
+			printf_error(RED" -- Subshell not include --\n"RST);
+			return (true);
+		}
+		curr = curr->next;
+	}
+	return (false);
 }

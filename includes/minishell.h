@@ -197,6 +197,7 @@ bool		before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
 bool		check_pars(t_infopars **curr, t_token *token, t_shell *bash);
 bool		check_redirection(t_infopars *curr, t_shell *bash);
 void		id_shellst(t_shell *bash);
+bool		sub_shell(t_infopars *lst);
 // Utils cmd
 
 // TREE

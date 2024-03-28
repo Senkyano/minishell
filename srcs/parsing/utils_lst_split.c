@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:47:11 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/26 20:16:09 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/28 14:56:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static int	skip_operateur(char *str)
 		if ((!is_operator(str[i]) && str[i] != '(' && str[i] != ')' && \
 		!is_redirection(str[i])) || str[i] != str[0])
 			return (i);
+		if ((str[i] == '(' || str[i] == ')'))
+			return (1);
 		i++;
 	}
 	return (i);
