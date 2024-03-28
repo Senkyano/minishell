@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/27 16:06:22 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/28 09:29:03 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void		ft_pwd(void);
 void		ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		ft_echo(char **args_split);
-void		ft_exit(t_tree *tree, t_shell *bash);
+void		ft_exit(char **cmd, t_shell *bash);
 int			ft_env(char **args_split, t_shell *minishell);
 
 int			check_env_key(t_shell *minishell, char *str);

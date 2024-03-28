@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/27 16:27:48 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/28 10:34:01 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 		ft_tree_exec(tree->right_child, bash, env, exit_status);
 	if (tree->type == LST_CMD)
 	{
-		if (!ft_strcmp(tree->lst_cmd->cmd[0], "exit"))
-			ft_exit(tree, bash);
+		if (!ft_strcmp(tree->lst_cmd->cmd[0], "exit") && !tree->lst_cmd->def_next)
+			ft_exit(tree->lst_cmd->cmd, bash);
 		*exit_status = pipe_loop(tree, bash);
 	}
 	return (*exit_status);
