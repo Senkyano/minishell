@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/28 10:34:01 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/29 14:41:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
 	bash->std_out = dup(1);
+	bash->std_in = dup(0);
 	while (cmds)
 	{
 		if (pipe(fd) == -1)
@@ -69,9 +70,32 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 	return (*exit_status);
 }
 
+// int	main(int argc, const char **argv, const char **env)
+// {
+// 	t_shell	bash;
+// 	int	exit_status;
+
+// 	if (argv == NULL)
+// 		return (1);
+// 	g_last_exit_code = 0;
+// 	lib_memset(&bash, 0, sizeof(bash));
+// 	malloc_env(&bash, (char **)env);
+// 	bash.env = (char **)env;
+// 	bash.path = get_paths((char **)env);
+// 	bash.str_split = ft_split(argv[1], ' ');
+// 	init_tree(bash.str_split, &bash);
+// 	exit_status = 0;
+// 	exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
+// 	printf("exit_status : %d\n", exit_status);
+// 	free_shell(&bash);
+// 	(void)argc;
+// 	return (0);
+// }
+
 int	main(int argc, const char **argv, const char **env)
 {
 	t_shell	bash;
+	char	*str;
 	int	exit_status;
 
 	if (argv == NULL)
@@ -81,10 +105,28 @@ int	main(int argc, const char **argv, const char **env)
 	malloc_env(&bash, (char **)env);
 	bash.env = (char **)env;
 	bash.path = get_paths((char **)env);
-	bash.str_split = ft_split(argv[1], ' ');
-	init_tree(bash.str_split, &bash);
 	exit_status = 0;
-	exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
+	rl_line_buffer = NULL;
+	while (1)
+	{
+		str = readline(CY"Minishell >: "RST);
+		add_history(str);
+		if (!str)
+		{
+			free_shell(&bash);
+			exit(0);
+		}
+		if (!ft_strcmp(str, "cat supp.supp | wc -l"))
+		{
+			bash.str_split = ft_split(str, ' ');
+			init_tree(bash.str_split, &bash);
+			exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
+			dup2(bash.std_in, 0);
+			close(bash.std_in);
+			free_tree(bash.tree);
+			bash.tree = NULL;
+		}
+	}
 	printf("exit_status : %d\n", exit_status);
 	free_shell(&bash);
 	(void)argc;
@@ -94,11 +136,12 @@ int	main(int argc, const char **argv, const char **env)
 // int	main(int argc, const char **argv, const char **env)
 // {
 // 	t_shell	bash;
+// 	char *str;
 
 // 	if (argv == NULL)
 // 		return (1);
 // 	lib_memset(&bash, 0, sizeof(bash));
-// 	malloc_env(&bash, env);
+// 	//malloc_env(&bash, env);
 // 	bash.path = get_paths((char **)env);
 // 	launch_shell(argc, env);
 // 	rl_line_buffer = NULL;
@@ -106,16 +149,17 @@ int	main(int argc, const char **argv, const char **env)
 // 	while (1)
 // 	{
 // 		add_history(rl_line_buffer);
-// 		if (valid_str(rl_line_buffer))
-// 		{
-// 			build_process(rl_line_buffer, &bash);
-// 			launch_builtins(&bash);
-// 			lib_free_split(bash.str_split);
-// 		}
-// 		else
-// 			printf_error(RED"-- Feature not include --\n"RST);
-// 		readline(CY"Minishell >: "RST);
+// 		// if (valid_str(rl_line_buffer))
+// 		// {
+// 		// 	//build_process(rl_line_buffer, &bash);
+// 		// 	//launch_builtins(&bash);
+// 		// 	//lib_free_split(bash.str_split);
+// 		// }
+// 		// else
+// 		// 	printf_error(RED"-- Feature not include --\n"RST);
+// 		str = readline(CY"Minishell >: "RST);
+// 		printf("str : %s\n", str);
 // 	}
-//	free_shell(&bash);
+// 	free_shell(&bash);
 // 	return (0);
 // }

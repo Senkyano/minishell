@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/28 09:29:03 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/29 11:38:02 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct	s_shell
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
 	int			std_out;
+	int			std_in;
 	int			nbr_path;
 	int			len_cmds;
 	char		**env;
@@ -143,6 +144,7 @@ void		free_or_process(t_lstcmd *lstprocess);
 void		free_and_process(t_lstcmd *lstprocess);
 void		free_strshell(t_infopars **all);
 void		free_shell(t_shell *bash);
+void		free_tree(t_tree *tree);
 // Print process
 void		print_strshell(t_infopars *lst);
 // In

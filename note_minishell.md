@@ -660,12 +660,16 @@ redirection de la ligne de commande.
 
 <br/>
 
-A faire :
+A faire (Pas encore fait) :
 
 - integrer la gestion des redirection avec les fds dans l'execution
 - Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell,
 mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le
 merge sera fait
+- Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en
+meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la
+boucle de wait dans le parent.
+- Ajouter un here_doc comme dans pipex
 
 <br/>
 
@@ -680,8 +684,8 @@ pour enlever un argument a la fonction "exec_cmdbash"
 Free && Leaks :
 
 Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon initialisation qui rajoute un malloc, alors que tout est bien free dans la fonction
-free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a
-echoue...
+free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a echoue...
+Pour tester sans les leaks de la readline : valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell "cat supp.supp | wc -l"
 
 A faire : 
 
@@ -689,6 +693,9 @@ Gerer ce type de commande ou le processus principal est une boucle de pipe avec 
 des || dans des sous-processus de la boucle de pipe :
 
 echo test | (cat supp.supp && (cat supp.supp && cat supp.supp) | grep i) | grep o
+
+- En fait, ce cas particulier n'est pas demande dans minishell car cela demande de gerer
+des 'sub-shell'
 
 <br/>
 <br/>
@@ -831,6 +838,9 @@ le processus principal mais renvoie quand meme l'exit_status, il faut donc que j
 fonction ft_exit dans 'exec_builtins', mais je la garde quand meme dans ft_tree_exec, au cas
 ou le exit n'est pas integre a un pipe et est dans le processus principal
 
+- Il faudra que je mette a jour la variable du dernier exit_status a chaque exit de processus au cas ou j'appelle 'echo $?' dans ma ligne de commande, et pour cela j'utiliserai
+la meme variable global que pour les signaux.
+
 <br/>
 
 **unset :**
@@ -926,7 +936,7 @@ Il est possible de changer l'action par defaut associee a un signal. Toutefois, 
 - 2 - SIGINT (Terminer) -> Interruption du clavier (ctrl-c)
 - 3 - SIGQUIT (Terminer) -> Fin du processus, parfois du clavier (ctrl-\)
 - 4 - SIGILL (Terminer) -> Instruction illegale
-- 5 SIGTRAP (Core) -> Point d'arret rencontre
+- 5 - SIGTRAP (Core) -> Point d'arret rencontre
 - 6 - SIGABRT (Core) -> Arret anormal du processus (fonction *abort*)
 - 7 - SIGBUS (Terminer) -> Erreur de bus
 - 8 - SIGFPE (Core) -> Erreur mathematique virgule flottante
@@ -1023,7 +1033,7 @@ Les signaux sont asynchrones, c'est a dire qu'ils peuvent intervenir a n'importe
 
 Les routines de gestion de signaux sont une forme de programmation concurrente.
 
-Or, comme nous l'avons vu dans un article precedent sur les treads et les mutex, la programmation concurrente peut entrainer d'imprevisibles erreurs qui sont extremement difficiles a deboguer. Pour eviter ce genre d'erreurs, nous devons prendre beaucoup de precautions lors de l'elaboration de nos routines de gestion de signaux pour qu'ils soient aussi surs que possible. Dans cette optique, voici quelques recommendations a garder a l'esprit.
+Or, comme nous l'avons vu dans un article precedent sur les threads et les mutex, la programmation concurrente peut entrainer d'imprevisibles erreurs qui sont extremement difficiles a deboguer. Pour eviter ce genre d'erreurs, nous devons prendre beaucoup de precautions lors de l'elaboration de nos routines de gestion de signaux pour qu'ils soient aussi surs que possible. Dans cette optique, voici quelques recommendations a garder a l'esprit.
 
 1. Garder les routines de gestion aussi simples et courtes que possible
 2. Uniquement utiliser des fonctions sures pour signaux asynchrones dans les routines (le man de signal maintient une liste des fonctions sures qui peuvent etre utilisees dans une routine de gestion de signal).
@@ -1040,6 +1050,23 @@ Pour bloquer un signal, on doit tout d'abord l'ajouter a un ensemble de signaux 
 
 Voir l'article pour plus de detail :
 https://www.codequoi.com/envoyer-et-intercepter-un-signal-en-c/
+
+
+</br>
+
+Remarques :
+
+- La fonction signal (ou sigaction peut etre) c'est comme un 'mlx_hook', on la met dans la
+boucle et elle attend a tout moment un signal, meme quand on est dans un enfant et effectue
+la routine de signal associe.
+- Ctrl+\ va arreter un processus quand on est dans un enfant, exemple : 'cat' et Ctrl+\ va 
+arreter le processus enfant.
+- le Ctrl+D sera effectue au niveau de readline quand la chaine de caractere retournee par la
+readline sera egal a un '\0', alors un exit du processus principale apres avoir tout free.
+- On init la fonction 'signal' avec les routines de signaux pour Ctrl+C et Ctrl+\ avant meme la boucle infini qui affiche le prompt.
+- Avec le Ctrl+C il pourrait y avoir un probleme car si l'on veut arreter le processus en cours
+mais que l'on est dans un enfant, le exit pourrait ne pas etre suffisant (a verifiet et a 
+confirmer)
 
 <br/>
 <br/>

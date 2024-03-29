@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/25 16:42:09 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/29 14:21:04 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 		close(fd[1]);
 		close(fd[0]);
 		close(bash->std_out);
+		close(bash->std_in);
 		if (is_builtins(struct_cmd->cmd))
 			exec_builtins(struct_cmd->cmd, bash);
 		else
