@@ -198,12 +198,12 @@ bool		check_pars(t_infopars **curr, t_token *token, t_shell *bash);
 bool		check_redirection(t_infopars *curr, t_shell *bash);
 void		id_shellst(t_shell *bash);
 bool		sub_shell(t_infopars *lst);
-// Utils cmd
-
+// Utils lst_cmd
+t_lstcmd	*build_cmd(t_infopars *lst);
+t_lstcmd	*create_lstcmd(t_infopars *lst);
+void		free_lstcmd(t_lstcmd *lst);
+void	print_lstcmd(t_lstcmd *lstcmd);
 // TREE
-bool		need_tree(t_infopars *lst);
-
-
 
 
 

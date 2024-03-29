@@ -46,7 +46,6 @@ RESET = \033[0m
 PARS_C =	condition_launch.c \
 			error_exit.c \
 			free_shell.c \
-			box_cmd.c \
 			get_path.c \
 			get_process.c \
 			split_minishell.c \
@@ -60,7 +59,9 @@ PARS_C =	condition_launch.c \
 			check_lst_split.c \
 			utils_check_list_split.c \
 			utils_parenthese.c \
-			check_redirection.c
+			check_redirection.c \
+			creat_cmd.c \
+			create_lstcmd.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))
