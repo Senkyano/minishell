@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:30 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/29 18:35:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/03/30 12:37:47 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_lstcmd	*build_cmd(t_infopars *lst)
 		return (free(info_cmd), NULL);
 	curr = lst;
 	i = 0;
-	while (curr)
+	while (curr && curr->spe != 5 && curr->spe != 1 && curr->spe != 0)
 	{
 		if (curr->spe == 2)
 			info_cmd->cmd[i++] = curr->str;

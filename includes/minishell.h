@@ -204,9 +204,9 @@ t_lstcmd	*create_lstcmd(t_infopars *lst);
 void		free_lstcmd(t_lstcmd *lst);
 void	print_lstcmd(t_lstcmd *lstcmd);
 // TREE
-
-
-
+t_tree	*build_branch(t_infopars *lstchar);
+void	print_branch(t_tree *branch);
+void	free_branch(t_tree *branch);
 
 
 
