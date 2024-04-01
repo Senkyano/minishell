@@ -6,11 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 09:46:38 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 10:17:31 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 14:59:39 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell_exec.h"
+#include "minishell_exec.h"
 
 t_envlist	*lst_new(char *str)
 {
@@ -90,4 +90,3 @@ int	lst_size(t_lstcmd *lstcmd)
 	}
 	return (size);
 }
-

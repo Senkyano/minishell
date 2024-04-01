@@ -6,20 +6,20 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 09:40:07 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 15:03:40 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 
-extern int g_status_code;
+extern int	g_status_code;
 
 void	sigint_handler(int signal)
 {
 	if (signal == 2)
 	{
 		if (g_status_code != IN_CMD)
-			write(2, "^C\n", 3);	
+			write(2, "^C\n", 3);
 		else if (g_status_code == IN_CMD)
 		{
 			write(2, "\n", 1);

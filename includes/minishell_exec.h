@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 11:04:04 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 14:47:42 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,10 @@ void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
 void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
-void		exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		pipe_loop(t_tree *tree, t_shell *bash);
+int			wait_loop(t_tree *tree);
 
 //utils_signal.c
 void		init_signal(void);

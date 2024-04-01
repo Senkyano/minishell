@@ -662,13 +662,13 @@ redirection de la ligne de commande.
 
 A faire (Pas encore fait) :
 
-1. Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la boucle de wait dans le parent.
+1. Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell (mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le merge sera fait), lorsque je lance minishell dans minishell : cela pose des problemes au niveau des signaux, est-ce que c'est demande de gerer les signaux dans des minishells imbriquees ?
 2. Ajouter un here_doc comme dans pipex
 3. integrer la gestion des redirection avec les fds dans l'execution
-4. Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell,
-mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le
-merge sera fait
-5. Tout mettre a la norme
+4. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status
+5. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce
+sera plus simple)
+6. Tout mettre a la norme
 
 <br/>
 
@@ -679,6 +679,7 @@ pour enlever un argument a la fonction "exec_cmdbash"
 - Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je doit tester egalement l'argument seul car il est possible d'envoyer directement la commande avec son bon chemin. La commande a tester avec les chemins correspond au premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
 - Pour l'instant je n'ai que deux types d'exit status : 1 ou 0, mais il faut que je specifie les autres cas d'erreur avec exit_status (127 ...)
 - Il faut que je fasse une fonction pour free l'arbre dans 'free_shell'
+- Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la boucle de wait dans le parent.
 
 Free && Leaks :
 
