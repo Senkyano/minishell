@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 09:14:41 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 11:04:04 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct	s_infopars
 typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
 {
 	int				index;	// index pour les pipes
+	int				available;
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
@@ -191,7 +192,7 @@ char		*get_value_env(t_shell *minishell, char *key);
 t_envlist	*lst_new(char *str);
 void		lstadd_back(t_envlist *new, t_envlist *lst);
 void		lstclear(t_envlist *lst);
-t_envlist	*lst_index(t_envlist *lst, int index);
+t_lstcmd	*lst_index(t_lstcmd *lst, int index);
 int			lst_size(t_lstcmd *lstcmd);
 
 //builtins_utils.c
@@ -208,14 +209,15 @@ char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
 
 //test_execution.c
-void		init_tree(char **argv, t_shell *bash);
+void		init_tree1(char **argv, t_shell *bash);
+void		init_tree2(char **argv, t_shell *bash);
 void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
-void	exec_child(char *cmd_path, char **cmd, t_shell *bash);
-int		exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
+void		exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 
 //utils_signal.c
-void	init_signal(void);
+void		init_signal(void);
 
 #endif

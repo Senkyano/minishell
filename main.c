@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 09:04:12 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 12:30:20 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,15 @@
 
 int	g_status_code;
 
-int	pipe_loop(t_tree *tree, t_shell *bash)
+void	pipe_loop(t_tree *tree, t_shell *bash)
 {
 	t_lstcmd	*cmds;
 	char		*cmd_path;
 	int			fd[2];
-	int			exit_status;
 
 	g_status_code = IN_CMD;
 	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
-	bash->std_out = dup(1);
-	bash->std_in = dup(0);
 	while (cmds)
 	{
 		if (pipe(fd) == -1)
@@ -35,8 +32,10 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 			cmd_path = check_cmd(cmds->cmd[0], bash->path);
 			if (!cmd_path)
 			{
-				exit_status = 127;
+				cmds->available = 0;
 				cmds = cmds->def_next;
+				close(fd[0]);
+				close(fd[1]);
 				continue ;
 			}
 		}
@@ -45,12 +44,34 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 		cmds->child = fork();
 		if (cmds->child == -1)
 			free_shell(bash);
-		exit_status = exec_cmdbash(fd, cmd_path, cmds, bash);
+		exec_cmdbash(fd, cmd_path, cmds, bash);
 		if (cmd_path)
 			free(cmd_path);
 		cmds = cmds->def_next;
 	}
-	close(bash->std_out);
+}
+
+int	wait_loop(t_tree *tree)
+{
+	t_lstcmd	*cmds;
+	int 	status;
+	int 	exit_status;
+
+	cmds = tree->lst_cmd;
+	while (cmds)
+	{
+		if (!lst_index(cmds, cmds->index)->available)
+		{
+			exit_status = 127;
+			cmds = cmds->def_next;
+			continue ;
+		}
+		waitpid(cmds->child, &status, 0);
+		if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
+		cmds = cmds->def_next;
+	}
+	g_status_code = 0;
 	return (exit_status);
 }
 
@@ -66,7 +87,8 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 	{
 		if (!ft_strcmp(tree->lst_cmd->cmd[0], "exit") && !tree->lst_cmd->def_next)
 			ft_exit(tree->lst_cmd->cmd, bash);
-		*exit_status = pipe_loop(tree, bash);
+		pipe_loop(tree, bash);
+		*exit_status = wait_loop(tree);
 	}
 	return (*exit_status);
 }
@@ -82,6 +104,8 @@ int	main(int argc, const char **argv, const char **env)
 	g_status_code = 0;
 	init_signal();
 	lib_memset(&bash, 0, sizeof(bash));
+	bash.std_in = dup(0);
+	bash.std_out = dup(1);
 	malloc_env(&bash, (char **)env);
 	bash.env = (char **)env;
 	bash.path = get_paths((char **)env);
@@ -93,20 +117,20 @@ int	main(int argc, const char **argv, const char **env)
 		add_history(str);
 		if (!str)
 		{
+			close(bash.std_in);
+			close(bash.std_out);
 			free_shell(&bash);
 			exit(0);
 		}
-		if (!ft_strcmp(str, "sleep 3"))
+		if (!ft_strcmp(str, "echo test && cat supp.supp && echvf evad || echo $? && echo test3 || echo ok"))
 		{
 			bash.str_split = ft_split(str, ' ');
-			init_tree(bash.str_split, &bash);
+			init_tree2(bash.str_split, &bash);
 			exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
 			dup2(bash.std_in, 0);
-			close(bash.std_in);
 			free_tree(bash.tree);
 			bash.tree = NULL;
 		}
-		continue ;
 	}
 	printf("exit_status : %d\n", exit_status);
 	free_shell(&bash);

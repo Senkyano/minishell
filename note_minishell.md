@@ -662,14 +662,13 @@ redirection de la ligne de commande.
 
 A faire (Pas encore fait) :
 
-- integrer la gestion des redirection avec les fds dans l'execution
-- Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell,
+1. Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la boucle de wait dans le parent.
+2. Ajouter un here_doc comme dans pipex
+3. integrer la gestion des redirection avec les fds dans l'execution
+4. Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell,
 mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le
 merge sera fait
-- Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en
-meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la
-boucle de wait dans le parent.
-- Ajouter un here_doc comme dans pipex
+5. Tout mettre a la norme
 
 <br/>
 

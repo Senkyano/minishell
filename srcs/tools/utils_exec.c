@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 08:46:28 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 10:40:31 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 	exit(127);
 }
 
-int	exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
+void	exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
-	int	status;
-
 	if (struct_cmd->child == 0)
 	{
 		if (struct_cmd->index == bash->len_cmds - 1)
@@ -45,9 +43,5 @@ int	exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 		dup2(fd[0], 0);
 		close(fd[1]);
 		close(fd[0]);
-		waitpid(struct_cmd->child, &status, 0);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
 	}
-	return (0);
 }
