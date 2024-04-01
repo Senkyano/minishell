@@ -6,13 +6,13 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/29 14:41:15 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 09:04:12 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_exec.h"
 
-int	g_last_exit_code;
+int	g_status_code;
 
 int	pipe_loop(t_tree *tree, t_shell *bash)
 {
@@ -21,6 +21,7 @@ int	pipe_loop(t_tree *tree, t_shell *bash)
 	int			fd[2];
 	int			exit_status;
 
+	g_status_code = IN_CMD;
 	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
 	bash->std_out = dup(1);
@@ -70,6 +71,49 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 	return (*exit_status);
 }
 
+int	main(int argc, const char **argv, const char **env)
+{
+	t_shell	bash;
+	char	*str;
+	int	exit_status;
+
+	if (argv == NULL)
+		return (1);
+	g_status_code = 0;
+	init_signal();
+	lib_memset(&bash, 0, sizeof(bash));
+	malloc_env(&bash, (char **)env);
+	bash.env = (char **)env;
+	bash.path = get_paths((char **)env);
+	exit_status = 0;
+	rl_line_buffer = NULL;
+	while (1)
+	{
+		str = readline(CY"Minishell >: "RST);
+		add_history(str);
+		if (!str)
+		{
+			free_shell(&bash);
+			exit(0);
+		}
+		if (!ft_strcmp(str, "sleep 3"))
+		{
+			bash.str_split = ft_split(str, ' ');
+			init_tree(bash.str_split, &bash);
+			exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
+			dup2(bash.std_in, 0);
+			close(bash.std_in);
+			free_tree(bash.tree);
+			bash.tree = NULL;
+		}
+		continue ;
+	}
+	printf("exit_status : %d\n", exit_status);
+	free_shell(&bash);
+	(void)argc;
+	return (0);
+}
+
 // int	main(int argc, const char **argv, const char **env)
 // {
 // 	t_shell	bash;
@@ -91,47 +135,6 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 // 	(void)argc;
 // 	return (0);
 // }
-
-int	main(int argc, const char **argv, const char **env)
-{
-	t_shell	bash;
-	char	*str;
-	int	exit_status;
-
-	if (argv == NULL)
-		return (1);
-	g_last_exit_code = 0;
-	lib_memset(&bash, 0, sizeof(bash));
-	malloc_env(&bash, (char **)env);
-	bash.env = (char **)env;
-	bash.path = get_paths((char **)env);
-	exit_status = 0;
-	rl_line_buffer = NULL;
-	while (1)
-	{
-		str = readline(CY"Minishell >: "RST);
-		add_history(str);
-		if (!str)
-		{
-			free_shell(&bash);
-			exit(0);
-		}
-		if (!ft_strcmp(str, "cat supp.supp | wc -l"))
-		{
-			bash.str_split = ft_split(str, ' ');
-			init_tree(bash.str_split, &bash);
-			exit_status = ft_tree_exec(bash.tree, &bash, &bash.env, &exit_status);
-			dup2(bash.std_in, 0);
-			close(bash.std_in);
-			free_tree(bash.tree);
-			bash.tree = NULL;
-		}
-	}
-	printf("exit_status : %d\n", exit_status);
-	free_shell(&bash);
-	(void)argc;
-	return (0);
-}
 
 // int	main(int argc, const char **argv, const char **env)
 // {

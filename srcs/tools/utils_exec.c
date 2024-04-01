@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/29 14:21:04 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 08:46:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 	int		result;
 
 	result = execve(cmd_path, cmd, bash->env);
-	if (result == -1)
-		g_last_exit_code = 1;
 	free_shell(bash);
 	exit(127);
 }

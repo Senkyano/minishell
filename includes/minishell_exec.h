@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/29 11:38:02 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 09:14:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include "libft.h"
 # include "lib_utils.h"
 # include "get_next_line.h"
@@ -47,7 +48,12 @@
 # define OPERATOR_OR 2
 # define LST_CMD 3
 
-extern int	g_last_exit_code;
+# define IN_CMD 1
+# define IN_HEREDOC 2
+# define CTRL_C 3
+# define CTRL_BS 4
+
+extern int	g_status_code;
 
 typedef struct t_list {
 	int				index;
@@ -208,5 +214,8 @@ void		free_lstcmds(t_shell *bash);
 //utils_exec.c
 void	exec_child(char *cmd_path, char **cmd, t_shell *bash);
 int		exec_cmdbash(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+
+//utils_signal.c
+void	init_signal(void);
 
 #endif

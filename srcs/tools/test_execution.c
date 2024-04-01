@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/28 14:37:16 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/01 08:00:19 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,9 @@ void	init_tree(char **argv, t_shell *bash)
 {
 	t_tree		*tree;
 	t_lstcmd	*cmd1;
-	t_lstcmd	*cmd2;
 
 	cmd1 = init_cmd(argv[0], argv[1], 0);
-	cmd2 = init_cmd(argv[3], argv[4], 1);
-	lstcmdadd_back(cmd2, cmd1);
 	tree = new_tree_elem(cmd1, 0);
-
-	free(argv[2]);
 
 	bash->tree = tree;
 
