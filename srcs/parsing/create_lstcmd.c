@@ -6,15 +6,15 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/29 18:26:59 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 12:21:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_infopars	*next_pipe(t_infopars *lst);
-static bool	exist_next_pipe(t_infopars *lst);
-static void	add_lstcmd(t_lstcmd **lst_cmd, t_lstcmd *new_cmd);
+static bool			exist_next_pipe(t_infopars *lst);
+static void			add_lstcmd(t_lstcmd **lst_cmd, t_lstcmd *new_cmd);
 
 t_lstcmd	*create_lstcmd(t_infopars *lst)
 {

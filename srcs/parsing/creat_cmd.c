@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:30 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/30 12:37:47 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 12:39:50 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	print_lstcmd(t_lstcmd *lstcmd)
 	curr = lstcmd;
 	while (curr)
 	{
-		printf_error("%s\n",curr->cmd[0]);
+		printf_error("%s\n", curr->cmd[0]);
 		curr = curr->next;
 	}
 }
@@ -56,7 +56,7 @@ static int	size_cmd(t_infopars	*lst)
 {
 	t_infopars	*curr;
 	int			i;
-	
+
 	i = 0;
 	curr = lst;
 	while (curr)
