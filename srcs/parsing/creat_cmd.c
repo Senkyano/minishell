@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:30 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 16:48:29 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:43:24 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	size_cmd(t_infopars	*lst);
 
-t_lstcmd	*build_cmd(t_infopars *lst)
+t_lstcmd	*build_cmd(t_infopars *lst, int index)
 {
 	t_lstcmd	*info_cmd;
 	int			i;
@@ -37,6 +37,8 @@ t_lstcmd	*build_cmd(t_infopars *lst)
 	}
 	info_cmd->cmd[i] = NULL;
 	info_cmd->next = NULL;
+	info_cmd->index = index;
+	info_cmd->available = 1;
 	return (info_cmd);
 }
 

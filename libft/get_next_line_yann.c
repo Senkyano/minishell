@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_yann.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:28:51 by yrio              #+#    #+#             */
-/*   Updated: 2024/02/13 09:16:45 by yrio             ###   ########.fr       */
+/*   Updated: 2024/03/29 11:24:23 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	putbuf(char *line, char *buf)
 	return (to_copy);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line_yann(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
 	char		*line;

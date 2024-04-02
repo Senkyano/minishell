@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:52:58 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 12:16:54 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 18:32:20 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,19 @@ bool	check_lst_split(t_shell *bash)
 		!before_operator(curr, curr->prec, bash) || \
 		!after_operator(curr->prec, curr, curr->next, bash) || \
 		!check_pars(&curr, &token, bash) || !check_redirection(curr, bash))
+		{
+			free_boxshell(&bash->lst_char);
+			bash->lst_char = NULL;
 			return (false);
+		}
 		if (curr)
 			curr = curr->next;
 	}
 	if (token.in_pars > token.out_pars)
 	{
 		printf_error(RED" -- Feature not include --\n"RST);
+		free_boxshell(&bash->lst_char);
+		bash->lst_char = NULL;
 		return (false);
 	}
 	return (true);

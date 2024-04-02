@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:05:37 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	ft_export(char	**args_split, t_shell *minishell)
 
 	lst_envs = minishell->lst_envs;
 	if (!args_split[1])
-		return (no_args(lst_envs), 1);
+		return (no_args(lst_envs), 0);
 	if (args_split[1][ft_strlen(args_split[1]) - 1] == '\n')
 		args_split[1][ft_strlen(args_split[1]) - 1] = '\0';
 	if (!parsing_export(args_split))
-		return (0);
+		return (1);
 	while (lst_envs->next)
 		lst_envs = lst_envs->next;
 	new = lst_new(args_split[1]);
@@ -66,8 +66,8 @@ int	ft_export(char	**args_split, t_shell *minishell)
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", \
 			args_split[1]);
-		return (free_split(new->splitting), free(new), 0);
+		return (free_split(new->splitting), free(new), 1);
 	}
 	lst_envs->next = new;
-	return (1);
+	return (0);
 }

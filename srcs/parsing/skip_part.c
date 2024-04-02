@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:39:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 18:37:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,12 @@ int	skip_char(char *str)
 		in_sgquote(str[i], &token);
 		if (token.in_doquote || token.in_sgquote)
 		{
-			while (token.in_doquote || token.in_sgquote)
+			i++;
+			while ((token.in_doquote || token.in_sgquote) && str[i])
 			{
-				i++;
 				in_doquote(str[i], &token);
 				in_sgquote(str[i], &token);
+				i++;
 			}
 		}
 		i++;

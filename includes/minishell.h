@@ -6,12 +6,12 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:28:26 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 11:45:08 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_EXEC_H
-# define MINISHELL_EXEC_H
+#ifndef minishell_H
+# define minishell_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -29,6 +29,7 @@
 # include <stdbool.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include "libft.h"
 # include "lib_utils.h"
 # include "get_next_line.h"
@@ -48,7 +49,16 @@
 # define OPERATOR_OR 2
 # define LST_CMD 3
 
-extern int	g_last_exit_code;
+# define OPERATOR_AND 1
+# define OPERATOR_OR 2
+# define LST_CMD 3
+
+# define IN_CMD 1
+# define IN_HEREDOC 2
+# define CTRL_C 3
+# define CTRL_BS 4
+
+extern int	g_status_code;
 
 typedef struct t_list {
 	int				index;
@@ -100,6 +110,7 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	int				error;		// pour des cas specifique
 	int				index;		// index pour les pipes
 	int				max_index;
+	int				available;
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
@@ -119,10 +130,13 @@ typedef	struct s_tree
 
 typedef struct	s_shell
 {
-	t_token		tok_ge;
 	int			exit_status; // gestion des erreur
 	char		**path; // True path
+	int			std_out;
+	int			std_in;
 	int			nbr_path;
+	int			len_cmds;
+	char		**env;
 	t_envlist	*lst_envs;
 	char		**str_split;
 	t_tree		*tree;
@@ -162,6 +176,7 @@ t_infopars *next, t_infopars **old);
 void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
+void		free_tree(t_tree *tree);
 // Print process
 void		print_strshell(t_infopars *lst);
 // In
@@ -199,7 +214,7 @@ bool		check_redirection(t_infopars *curr, t_shell *bash);
 void		id_shellst(t_shell *bash);
 bool		sub_shell(t_infopars *lst);
 // Utils lst_cmd
-t_lstcmd	*build_cmd(t_infopars *lst);
+t_lstcmd	*build_cmd(t_infopars *lst, int index);
 t_lstcmd	*create_lstcmd(t_infopars *lst);
 void		free_lstcmd(t_lstcmd *lst);
 void	print_lstcmd(t_lstcmd *lstcmd);
@@ -208,7 +223,7 @@ t_tree	*build_branch(t_infopars *lstchar);
 void	print_branch(t_tree *branch);
 void	free_branch(t_tree *branch);
 bool	build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree);
-void	free_tree(t_tree *main_tree);
+// void	free_tree(t_tree *main_tree);
 void	print_tree(t_tree *main_tree);
 
 
@@ -219,7 +234,7 @@ void	print_tree(t_tree *main_tree);
 
 
 
-
+//libft
 // char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // char		*get_next_line(int fd);
@@ -228,29 +243,56 @@ char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // char		**ft_split(char const *s, char c);
 // int			ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char		**ft_free(char **char_tab, int nb_words);
+char		*ft_strdup(char *src);
 
-void		launch_builtins(t_shell *bash);
+
+//builtins
 void		ft_cd(char **argv, t_shell *minishell);
 void		ft_pwd(void);
 void		ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		ft_echo(char **args_split);
-void		ft_exit(t_shell *bash);
+void		ft_exit(char **cmd, t_shell *bash);
+int			ft_env(char **args_split, t_shell *minishell);
 
-void		ft_env(t_shell *minishell);
 int			check_env_key(t_shell *minishell, char *str);
 char		*get_value_env(t_shell *minishell, char *key);
 
+//lst_utils.c
 t_envlist	*lst_new(char *str);
 void		lstadd_back(t_envlist *new, t_envlist *lst);
 void		lstclear(t_envlist *lst);
-t_envlist	*lst_index(t_envlist *lst, int index);
+t_lstcmd	*lst_index(t_lstcmd *lst, int index);
+int			lst_size(t_lstcmd *lstcmd);
 
+//builtins_utils.c
+int			exec_builtins(char **cmd, t_shell *bash);
+int			is_builtins(char **cmd);
+void		launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash);
+
+//utils_minishell.c
 void		ls_cmd(void);
 char		**get_paths(char **env);
 char		**free_split(char **char_tab);
-void		malloc_env(t_shell *minishell, const char **env);
+void		malloc_env(t_shell *minishell, char **env);
 char		**ft_split_onedel(char const *s, char c);
-int			close_minishell(char **args_split, t_shell *minishell);
+char		*check_cmd(char *cmd, char **path_split);
+
+//test_execution.c
+void		init_tree1(char **argv, t_shell *bash);
+void		init_tree2(char **argv, t_shell *bash);
+void		init_tree3(char **argv, t_shell *bash);
+void		free_lstcmds(t_shell *bash);
+
+//utils_exec.c
+void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
+void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		pipe_loop(t_tree *tree, t_shell *bash);
+int			wait_loop(t_tree *tree);
+
+//utils_signal.c
+void		init_signal(void);
+void		init_signal_child(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 12:21:44 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:40:48 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ t_lstcmd	*create_lstcmd(t_infopars *lst)
 	t_infopars	*curr;
 	t_lstcmd	*tmp_cmd;
 	t_lstcmd	*new_lst;
+	int			i;
 
 	curr = lst;
 	new_lst = NULL;
+	i = 0;
 	while (curr)
 	{
-		tmp_cmd = build_cmd(curr);
+		tmp_cmd = build_cmd(curr, i++);
 		if (!tmp_cmd)
 		{
 			free_lstcmd(new_lst);

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 16:29:29 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 18:04:01 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "lib_utils.h"
 
 static bool	start_process(char *str, t_shell *bash);
+void	free_lstchar(t_infopars *lst_char);
 
 bool	build_process(char *str, t_shell *bash)
 {
@@ -41,7 +42,7 @@ static bool	lst_shellstr(t_shell *bash)
 		}
 		add_boxshell(&bash->lst_char, tmp);
 	}
-	free_split(bash->str_split);
+	lib_free_split(bash->str_split);
 	bash->str_split = NULL;
 	return (true);
 }
@@ -66,11 +67,28 @@ static bool	start_process(char *str, t_shell *bash)
 	t_infopars *curr;
 	curr = last_boxshell(bash->lst_char);
 	build_tree(curr, 0, &bash->tree);
-	print_tree(bash->tree);
-	free_tree(bash->tree);
+	free_lstchar(bash->lst_char);
+	bash->lst_char = NULL;
+	// print_tree(bash->tree);
+	// free_tree(bash->tree);
 	// cmd = build_cmd(bash->lst_char);
 	// free_split(cmd->cmd);
 	// free(cmd->cmd);
 	// free(cmd);
 	return (true);
+}
+
+void	free_lstchar(t_infopars *lst_char)
+{
+	t_infopars	*curr;
+
+	while (lst_char)
+	{
+		curr = lst_char;
+		lst_char = lst_char->next;
+		if (curr->spe != 2)
+			free_blockstrshell(curr);
+		else if (curr->spe == 2)
+			free(curr);
+	}
 }

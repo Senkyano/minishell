@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:21:18 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:11:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,6 @@ char	**ft_split_onedel(char const *s, char c)
 	}
 	char_tab[i] = 0;
 	return (char_tab);
-}
-
-int	close_minishell(char **args_split, t_shell *minishell)
-{
-	lstclear(minishell->lst_envs);
-	free_split(args_split);
-	exit(0);
 }
 
 // int		main(void)

@@ -154,7 +154,8 @@ http://sdz.tdct.org/sdz/arcourir-les-dossiers-avec-dirent-h.html
 
 **strerror** : La fonction 'strerror' renvoie une chaine decrivant le 
 code d'erreur passe en argument errnum.
-perror : La fonction 'perror' affiche un message sur la sortie
+
+**perror** : La fonction 'perror' affiche un message sur la sortie
 d'erreur standard, decrivant la derniere erreur rencontree durant
 un appel systeme ou une fonction de bibliotheque. La chaine de 
 caracteres contient generalement le nom de la fonction ou s'est 
@@ -322,6 +323,10 @@ BASH_PARSING_technique->PRECEDENCE_CLIMBING <a id="partie_4"></a>
 
 **Useful article** : 
 https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing
+
+Fichier excel avec tout les cas possibles d'erreurs :
+
+https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit#gid=0
 
 L'objectif fondamental de l'algorithme est le suivant : traiter une 
 expression comme un ensemble de sous-expressions imbriquées, où 
@@ -559,7 +564,7 @@ Il faut faire attention avec *lseek* car cette fonction nous permet de mettre no
 
 **L'interchangeabilite des descripteurs dupliques**
 
-Apres un appel reussi a dup ou dup2, l'ancien et le nouveau descripteurs sont interchangeables : ils font reference au meme fichier dans la table des fichiers ouverts et partagent donc tous ses attributs. Par exe;ple, si on lit avec *read* les premiers caracteres de l'un des descripteurs, la tete de lecture va etre modifiee. Et ce, pour les deux descripteurs de fichier, pas seulement celui avec lequel on a lu.
+Apres un appel reussi a dup ou dup2, l'ancien et le nouveau descripteurs sont interchangeables : ils font reference au meme fichier dans la table des fichiers ouverts et partagent donc tous ses attributs. Par exemple, si on lit avec *read* les premiers caracteres de l'un des descripteurs, la tete de lecture va etre modifiee. Et ce, pour les deux descripteurs de fichier, pas seulement celui avec lequel on a lu.
 
 Pourtant, on a vu precedemment que si l'on rouvrait le meme fichier une deuxieme fois, les deux descripteurs ne se partageaient pas la tete de lecture de cette facon. Alors pourquoi cela fonctionne-t-il differemment pour les descripteurs dupliques ?
 
@@ -614,7 +619,7 @@ Deboguer un programme qui cree des processus fils peut s'averer assez accablant.
 Etapes_developpement_execution <a id="partie_8"></a>
 ----------------------------------------------------
 
-=> En entree : les deux structures "s_lstcmd" et "s_shell".
+=> En entree : les deux structures "s_tree" et "s_shell".
 
 Juste pour des lignes de commandes sans operateurs && et || imbriques dans des parentheses, les etapes sont elles, imbriquees
 les unes dans les autres :
@@ -629,10 +634,68 @@ les unes dans les autres :
 
 <br/>
 
-Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je test egalement l'argument
-seul car il est possible d'envoyer directement la commande avec son
-bon chemin. La commande a tester avec les chemins correspond au
-premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
+Pipe loop : 
+
+- Si on est pas dans la premiere commande on lis dans le pipe
+avec un dup2, sinon on lis dans l'entree standard de lecture.
+- Si on n'est pas a la derniere commande on ecris dans le pipe avec
+un dup2, sinon on ecris dans l'entree standard d'ecriture.
+
+<br/>
+
+Execution fonctionnelle avec les && et les || :
+
+1. Fonction recursives qui lis un AST en commencant avec la commande la plus a gauche et
+en bas de l'AST
+2. La fonction remonte avec l'exit_status les commandes de gauche de l'arbre et fait la commande de droite de l'operateur en fonction de l'exit status et du type (&& ou ||)
+
+<br/>
+
+Remarques : 
+- Pour l'instant, vu que je ne gere aucun cas de parsing, si je met un "echo -n test"
+dans la pipe loop, le dernier argument ("test") ne sera pas pris en compte et la commande
+ne renverra rien car elle interpretera juste "echo -n".
+- Redirection : Integrer la gestion des fds dans l'execution en fonction des
+redirection de la ligne de commande.
+
+<br/>
+
+A faire (Pas encore fait) :
+
+1. Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell (mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le merge sera fait), lorsque je lance minishell dans minishell : cela pose des problemes au niveau des signaux, est-ce que c'est demande de gerer les signaux dans des minishells imbriquees ?
+2. Ajouter un here_doc comme dans pipex
+3. integrer la gestion des redirection avec les fds dans l'execution
+4. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status
+5. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce
+sera plus simple)
+6. Tout mettre a la norme
+
+<br/>
+
+fait :
+
+- Il faudra que j'ajoute la copie du fd STD_OUT dans la structure t_lstfd
+pour enlever un argument a la fonction "exec_cmdbash"
+- Quand c'est une commande bash, j'itere sur tout les paths de l'env et je les tests tous avec access, mais je doit tester egalement l'argument seul car il est possible d'envoyer directement la commande avec son bon chemin. La commande a tester avec les chemins correspond au premier element de l'attribut 'cmd' de la structure 's_lstcmd'.
+- Pour l'instant je n'ai que deux types d'exit status : 1 ou 0, mais il faut que je specifie les autres cas d'erreur avec exit_status (127 ...)
+- Il faut que je fasse une fonction pour free l'arbre dans 'free_shell'
+- Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la boucle de wait dans le parent.
+
+Free && Leaks :
+
+Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon initialisation qui rajoute un malloc, alors que tout est bien free dans la fonction
+free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a echoue...
+Pour tester sans les leaks de la readline : valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell "cat supp.supp | wc -l"
+
+A faire : 
+
+Gerer ce type de commande ou le processus principal est une boucle de pipe avec des && et
+des || dans des sous-processus de la boucle de pipe :
+
+echo test | (cat supp.supp && (cat supp.supp && cat supp.supp) | grep i) | grep o
+
+- En fait, ce cas particulier n'est pas demande dans minishell car cela demande de gerer
+des 'sub-shell'
 
 <br/>
 <br/>
@@ -646,11 +709,17 @@ complex ones.
 
 Les fonctions ```built-ins``` n'ont pas besoin d'utiliser ```execve``` car elles sont suffisamment simple pour etre directement implementee. On a donc pas besoin d'utiliser de dupliquer les processus.
 
+Il faut que je renvoie forcement un exit_status pour tout mes builtins pour pouvoir exit 
+avec la bonne valeur au niveau de ma fonction 'exec_builtins'.
+
 **echo :**
 
 La fonction echo avec l'option '-n' ne renvoie pas de '\n', mais on peut mettre plusieus fois le flag '-n' avec un nombre de n non limite et cela doit quand meme fonction et renvoyer le message de l'argument avec un '\n', mais si dans l'un des flag '-n' il y a un caractere qui n'est pas un 'n' alors la fonction considere que ce flag et tout ce qui suit font partit de l'argument a afficher et renvoie cette chaine avec un '\n' si il y a un
 flag '-n' devant.
 - La commande echo enleve tout les espaces avant et apres l'argument a afficher.
+
+- Lorsque je met l'argument '$?', la commande echo doit recuperer le dernier exit_status
+qui a ete generer et sauvegarder
 
 <br/>
 
@@ -687,6 +756,8 @@ cette fonction.
 - A voir si je suis cense trouver le dossier meme quand j'unset le PWD (mais que
 du coup je ne l'utilise pas) pour aller au fichier suivant, parce que moi j'arrete la fonction cd des que l'une des variables d'environnement comme le 
 'HOME', 'PWD' ou 'OLDPWD' n'est pas defini, mais ce n'est peut-etre pas correct.
+- Dans le cas ou un dossier parent est supprime et qu'on se trouve dans un de ses dossiers fils, il faut revenir a la racine ou le dossier parent a ete cree
+avec la commande "cd .."
 
 <br/>
 
@@ -705,6 +776,13 @@ les chiffres ne sont pas autorisees pour l'index 0 de l'argument).
 
 <br/>
 
+- Gerer quand il y a plusieurs variables a ajouter dans l'env avec la commande
+export OK= TRKL= par exemple
+- Lorsque j'execute 'export' mais avec un argument vide : '', la builtins ne doit pas
+marcher et est cense renvoye un exit_status egal a 1.
+
+<br/>
+
 **exit :**
 
 - Attention au parsing de ```exit``` : ```a``` ou ```a 1``` ou ```3.14``` : ```exit(2)``` + erreur ```numeric argument required```
@@ -714,27 +792,79 @@ les chiffres ne sont pas autorisees pour l'index 0 de l'argument).
 
 <br/>
 
+- Etant donnee que je fork pour l'instant toutes les builtins, il faudra que je fasse un
+cas special pour exit, car un seul exit ne suffira pas car je serais dans le processus
+enfant de la builtins et donc il faut que j'arrete tout les processus parent, donc la
+fonction builtins est vraiment un cas particulier a tester en amont de la pipe loop a
+mon avis.
 - Re-verifier avec d'autres personnes si ma fonction exit est correct
 
 <br/>
 
 Exit status depands of multiple things :
 - If the command work : 0
-- If a command exist and fail cause of the arg : 1
+- If a command exist and fail cause of the arg (env not set, ...) : 1
 - If a command exist and you don't have the permission : 126
-- If a command doesn't exist : 127
+- If a command doesn't exist (command not found) : 127
 - If a signal Kill or interrupte the commande : 127 + signal
-- If error parsing : 2
+- If error parsing (error arguments, too many argument, ) : 2
 
 Exit status come with Error message in your terminal, don't forget that the error fd
 is 2 (putstr_fd).
 
+Differents exit_status pour differentes commande qui on un argument "No such file or
+directory" :
+
+- ./minishell "cat v" -> No such file or directory, exit_status : 1
+- ./minishell "ls v" -> cannot access 'v' : No such file or directory, exit_status : 2
+
+Checker apres que le parsing soit ajoutee si la fonction exit gere :
+- exit '666' -> exit, exit_status 154
+- exit '-666' -> exit, exit_status 102
+- exit '+666' -> exit, exit_status 154
+- exit '6'66 -> exit, exit_status 154
+- exit '2'66'32' -> exit, exit_status 8
+- exit "'666'" -> exit, bash: exit: '666': numeric argument required,
+exit_status 2
+- exit '"666"' -> exit, bash: exit: "666": numeric argument required,
+exit_status 2
+- exit '666'"666"666 -> exit, exit_status 170
+- exit +'666'"666"666 -> exit, exit_status 170
+
+Pas besoin de gerer le 'env ls' car env ne prend pas d'argument selon les consignes du projet Minishell
+
+Remarque : lorsque le exit est dans un pipe, il exit dans l'enfant donc cela ne quitte pas
+le processus principal mais renvoie quand meme l'exit_status, il faut donc que j'ajoute ma
+fonction ft_exit dans 'exec_builtins', mais je la garde quand meme dans ft_tree_exec, au cas
+ou le exit n'est pas integre a un pipe et est dans le processus principal
+
+- Il faudra que je mette a jour la variable du dernier exit_status a chaque exit de processus au cas ou j'appelle 'echo $?' dans ma ligne de commande, et pour cela j'utiliserai
+la meme variable global que pour les signaux.
+
+<br/>
+
+**unset :**
+
+Lorsque l'on unset le PATH de l'env cela doit supprimer l'env totalement et donc tout
+free totalement la liste chaine et remettre le pointeur de la structure du minishell sur l'env a NULL.
+
+<br/>
+
+**env :**
+
+Lorsque l'env n'est pas defini : le pointeur de la structure du minishell sur l'env est
+assignee a NULL, j'affiche : 'bash: env: No such file or directory'
+
+Lorsque j'envoie 'env ls', je dois appeler la fonction 'exec_child' pour executer le ls a l'interieur
+de ma boucle qui check tout les arguments apres la commande 'env'.
+
+
 
 <br/>
 <br/>
 <br/>
 
-Historique_de_commandes <a id="partie_9"></a>
+Historique_de_commandes <a id="partie_10"></a>
 ---------------------------------------------
 
 Pour l'instant, lorsque j'appuie sur les fleches ca me fait des 
@@ -751,7 +881,7 @@ fleche du haut et du bas.
 <br/>
 <br/>
 
-Signaux <a id="partie_10"></a>
+Signaux <a id="partie_11"></a>
 -----------------------------
 
 <br/>
@@ -806,7 +936,7 @@ Il est possible de changer l'action par defaut associee a un signal. Toutefois, 
 - 2 - SIGINT (Terminer) -> Interruption du clavier (ctrl-c)
 - 3 - SIGQUIT (Terminer) -> Fin du processus, parfois du clavier (ctrl-\)
 - 4 - SIGILL (Terminer) -> Instruction illegale
-- 5 SIGTRAP (Core) -> Point d'arret rencontre
+- 5 - SIGTRAP (Core) -> Point d'arret rencontre
 - 6 - SIGABRT (Core) -> Arret anormal du processus (fonction *abort*)
 - 7 - SIGBUS (Terminer) -> Erreur de bus
 - 8 - SIGFPE (Core) -> Erreur mathematique virgule flottante
@@ -903,7 +1033,7 @@ Les signaux sont asynchrones, c'est a dire qu'ils peuvent intervenir a n'importe
 
 Les routines de gestion de signaux sont une forme de programmation concurrente.
 
-Or, comme nous l'avons vu dans un article precedent sur les treads et les mutex, la programmation concurrente peut entrainer d'imprevisibles erreurs qui sont extremement difficiles a deboguer. Pour eviter ce genre d'erreurs, nous devons prendre beaucoup de precautions lors de l'elaboration de nos routines de gestion de signaux pour qu'ils soient aussi surs que possible. Dans cette optique, voici quelques recommendations a garder a l'esprit.
+Or, comme nous l'avons vu dans un article precedent sur les threads et les mutex, la programmation concurrente peut entrainer d'imprevisibles erreurs qui sont extremement difficiles a deboguer. Pour eviter ce genre d'erreurs, nous devons prendre beaucoup de precautions lors de l'elaboration de nos routines de gestion de signaux pour qu'ils soient aussi surs que possible. Dans cette optique, voici quelques recommendations a garder a l'esprit.
 
 1. Garder les routines de gestion aussi simples et courtes que possible
 2. Uniquement utiliser des fonctions sures pour signaux asynchrones dans les routines (le man de signal maintient une liste des fonctions sures qui peuvent etre utilisees dans une routine de gestion de signal).
@@ -921,11 +1051,28 @@ Pour bloquer un signal, on doit tout d'abord l'ajouter a un ensemble de signaux 
 Voir l'article pour plus de detail :
 https://www.codequoi.com/envoyer-et-intercepter-un-signal-en-c/
 
+
+</br>
+
+Remarques :
+
+- La fonction signal (ou sigaction peut etre) c'est comme un 'mlx_hook', on la met dans la
+boucle et elle attend a tout moment un signal, meme quand on est dans un enfant et effectue
+la routine de signal associe.
+- Ctrl+\ va arreter un processus quand on est dans un enfant, exemple : 'cat' et Ctrl+\ va 
+arreter le processus enfant.
+- le Ctrl+D sera effectue au niveau de readline quand la chaine de caractere retournee par la
+readline sera egal a un '\0', alors un exit du processus principale apres avoir tout free.
+- On init la fonction 'signal' avec les routines de signaux pour Ctrl+C et Ctrl+\ avant meme la boucle infini qui affiche le prompt.
+- Avec le Ctrl+C il pourrait y avoir un probleme car si l'on veut arreter le processus en cours
+mais que l'on est dans un enfant, le exit pourrait ne pas etre suffisant (a verifiet et a 
+confirmer)
+
 <br/>
 <br/>
 <br/>
 
-Errno_et_la_gestion_d_erreur <a id="partie_11"></a>
+Errno_et_la_gestion_d_erreur <a id="partie_12"></a>
 --------------------------------------------------------
 
 Lien de l'article : 

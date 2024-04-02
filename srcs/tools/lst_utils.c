@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 09:46:38 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:14:27 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	lstclear(t_envlist *lst)
 	lst = NULL;
 }
 
-
-t_envlist	*lst_index(t_envlist *lst, int index)
+t_lstcmd	*lst_index(t_lstcmd *lst, int index)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -77,3 +76,17 @@ t_envlist	*lst_index(t_envlist *lst, int index)
 	return (NULL);
 }
 
+int	lst_size(t_lstcmd *lstcmd)
+{
+	int	size;
+
+	if (lstcmd == NULL)
+		return (0);
+	size = 0;
+	while (lstcmd)
+	{
+		size++;
+		lstcmd = lstcmd->next;
+	}
+	return (size);
+}

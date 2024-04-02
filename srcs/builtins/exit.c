@@ -6,15 +6,17 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 17:05:35 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_out_of_range(unsigned long long value, int *error)
+int	check_out_of_range(unsigned long long value, int *error, int neg)
 {
-	if (value > LONG_MAX || value > -(unsigned long)LONG_MIN)
+	if (value > LONG_MAX && neg == 1)
+		*error = 1;
+	else if (neg == -1 && value > (unsigned long long)9223372036854775807 + 1)
 		*error = 1;
 	return (*error);
 }
@@ -39,7 +41,7 @@ long int	ft_atoi_long(const char *str, int *error)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = (result * 10) + (str[i] - 48);
-		if (check_out_of_range(result, error))
+		if (check_out_of_range(result, error, neg))
 			break;
 		i++;
 	}
@@ -62,7 +64,7 @@ int	is_digit(char *arg)
 	return (1);
 }
 
-void	ft_exit(t_shell *bash)
+void	ft_exit(char **cmd, t_shell *bash)
 {	
 	int	exit_code;
 	int error;
@@ -70,21 +72,33 @@ void	ft_exit(t_shell *bash)
 
 	error = 0;
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	if (!bash->str_split[1])
+	if (!cmd[1])
 		exit_code = 0;
-	if (bash->str_split[1] && bash->str_split[2])
-		return (ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO));
-	else if (bash->str_split[1])
+	if (cmd[1])
 	{
-		bash->str_split[1][ft_strlen(bash->str_split[1]) - 1] = '\0';
 		tmp = 0;
-		while (bash->str_split[1][tmp] == ' ')
+		while (cmd[1][tmp] == ' ')
 			tmp++;
-		if (!is_digit(bash->str_split[1] + tmp))
-			printf("bash: exit: %s: numeric argument required", bash->str_split[1]);
-		exit_code = ft_atoi_long(bash->str_split[1], &error);
-		if (error)
-			printf("bash: exit: %d: numeric argument required", exit_code);
+		if (!is_digit(cmd[1] + tmp))
+		{
+			exit_code = 2;
+			error = 1;
+			printf("bash: exit: %s: numeric argument required\n", cmd[1]);
+		}
+		else
+		{
+			exit_code = ft_atoi_long(cmd[1], &error);
+			if (error)
+			{
+				exit_code = 2;
+				printf("bash: exit: %s: numeric argument required\n", cmd[1]);
+			}
+		}
+		if (cmd[1] && cmd[2] && !error)
+		{
+			exit_code = 1;
+			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
+		}
 	}
 	free_shell(bash);
 	exit(exit_code);
