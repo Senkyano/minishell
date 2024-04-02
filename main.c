@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/29 17:27:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/02 16:27:36 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int argc, const char **argv, const char **env)
 	rl_line_buffer = NULL;
 	while (1)
 	{
+		bash.tree = NULL;
 		readline(CY"Minishell >: "RST);
 		add_history(rl_line_buffer);
 		if (build_process(rl_line_buffer, &bash))

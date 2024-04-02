@@ -207,6 +207,15 @@ void	print_lstcmd(t_lstcmd *lstcmd);
 t_tree	*build_branch(t_infopars *lstchar);
 void	print_branch(t_tree *branch);
 void	free_branch(t_tree *branch);
+bool	build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree);
+void	free_tree(t_tree *main_tree);
+void	print_tree(t_tree *main_tree);
+
+
+
+
+
+
 
 
 

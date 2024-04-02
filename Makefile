@@ -62,7 +62,8 @@ PARS_C =	condition_launch.c \
 			check_redirection.c \
 			creat_cmd.c \
 			create_lstcmd.c \
-			build_branch.c
+			build_branch.c \
+			build_tree.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))
