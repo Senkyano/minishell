@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 15:18:14 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/02 11:25:58 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 			write(2, "exit\n", 5);
 			exit(0);
 		}
-		if (!ft_strcmp(str, "echo test && cat supp.supp && echvf evad || echo $? && echo test3 || echo ok"))
+		if (!ft_strcmp(str, "./minishell test"))
 		{
 			bash->str_split = ft_split(str, ' ');
-			init_tree2(bash->str_split, bash);
+			init_tree3(bash->str_split, bash);
 			*exit_status = ft_tree_exec(bash->tree, bash, \
 				&bash->env, exit_status);
 			dup2(bash->std_in, 0);

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:01:00 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 14:47:42 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/02 11:45:08 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ char		*check_cmd(char *cmd, char **path_split);
 //test_execution.c
 void		init_tree1(char **argv, t_shell *bash);
 void		init_tree2(char **argv, t_shell *bash);
+void		init_tree3(char **argv, t_shell *bash);
 void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
@@ -222,5 +223,6 @@ int			wait_loop(t_tree *tree);
 
 //utils_signal.c
 void		init_signal(void);
+void		init_signal_child(void);
 
 #endif

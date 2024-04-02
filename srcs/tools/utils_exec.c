@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 15:00:21 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/02 11:47:03 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
 	if (struct_cmd->child == 0)
 	{
+		init_signal_child();
 		if (struct_cmd->index == bash->len_cmds - 1)
 			dup2(bash->std_out, 1);
 		else

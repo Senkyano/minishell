@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:12:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 14:42:40 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/02 11:25:39 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,16 @@ void	init_tree2(char **argv, t_shell *bash)
 
 	bash->tree = tree;
 }
+void	init_tree3(char **argv, t_shell *bash)
+{
+		t_tree		*tree;
+		t_lstcmd	*cmd1;
 
+		cmd1 = init_cmd(argv[0], argv[1], 0);
+		tree = new_tree_elem(cmd1, 0);
 
+		bash->tree = tree;
+}
 
 /*
 Test 1 : ./minishell "cat supp.supp | bdz vs || echo test"

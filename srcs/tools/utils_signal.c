@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/01 15:03:40 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/02 11:34:12 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ void	sigint_handler(int signal)
 	}
 }
 
+void	sigint_handler_child(int signal)
+{
+	(void)signal;
+}
+
 void	sigquit_handler(int signal)
 {
 	if (signal == 3 && g_status_code == IN_CMD)
@@ -48,9 +53,15 @@ void	sigquit_handler(int signal)
 	}
 }
 
+void	init_signal_child(void)
+{
+	signal(SIGQUIT, sigquit_handler);
+	signal(SIGINT, sigint_handler_child);
+}
+
 void	init_signal(void)
 {
 	rl_catch_signals = 0;
-	signal(SIGQUIT, sigquit_handler);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sigint_handler);
 }
