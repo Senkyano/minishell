@@ -663,7 +663,7 @@ redirection de la ligne de commande.
 A faire (Pas encore fait) :
 
 1. Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell (mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le merge sera fait), lorsque je lance minishell dans minishell : cela pose des problemes au niveau des signaux, est-ce que c'est demande de gerer les signaux dans des minishells imbriquees ?
-2. Ajouter un here_doc comme dans pipex
+2. Gerer le cas avec ./minishell && ./minishell et le double exit (peut etre en mettant	dup2(bash->std_in, 0) a la fin de exit pour pas qu'il evite la readline du prochain fils minishell mais ca ne marche pas pour l'instant), en fait la readline est a null directement, il n'attend pas une entree de l'entree standard dans le deuxieme minishell fils et rentre dans la condition du Ctrl+D
 3. integrer la gestion des redirection avec les fds dans l'execution
 4. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status
 5. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce

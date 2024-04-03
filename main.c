@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 18:42:18 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/03 15:54:22 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ t_shell	init_bash(char **env)
 	t_shell	bash;
 
 	lib_memset(&bash, 0, sizeof(bash));
-	g_status_code = 0;
 	bash.std_in = dup(0);
 	bash.std_out = dup(1);
 	malloc_env(&bash, (char **)env);
@@ -66,7 +65,7 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 			close(bash->std_in);
 			close(bash->std_out);
 			free_shell(bash);
-			write(2, "exit\n", 5);
+			write(2, "exit\n", 6);
 			exit(0);
 		}
 		else
@@ -75,11 +74,14 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 				continue ;
 			// bash->str_split = ft_split(str, ' ');
 			// init_tree2(bash->str_split, bash);
-			*exit_status = ft_tree_exec(bash->tree, bash, \
+			init_signal_ign();
+			bash->exit_status = ft_tree_exec(bash->tree, bash, \
 				&bash->env, exit_status);
+			init_signal();
 			dup2(bash->std_in, 0);
 			free_tree(bash->tree);
 			bash->tree = NULL;
+			g_status_code = 0;
 		}
 	}
 }

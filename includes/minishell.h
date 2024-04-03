@@ -49,10 +49,6 @@
 # define OPERATOR_OR 2
 # define LST_CMD 3
 
-# define OPERATOR_AND 1
-# define OPERATOR_OR 2
-# define LST_CMD 3
-
 # define IN_CMD 1
 # define IN_HEREDOC 2
 # define CTRL_C 3
@@ -294,5 +290,7 @@ int			wait_loop(t_tree *tree);
 //utils_signal.c
 void		init_signal(void);
 void		init_signal_child(void);
+void		init_signal_ign(void);
+int			manage_signal(int status, int exit_status);
 
 #endif
