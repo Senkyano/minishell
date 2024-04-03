@@ -195,6 +195,7 @@ int			name_env(char *str);
 int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
+void		replace_lstchar_env(t_infopars *lst_char, t_shell *bash);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);
@@ -208,11 +209,12 @@ bool		finish_quote(char *str, t_token *token, t_shell *bash);
 bool		after_operator(t_infopars *pre, t_infopars *curr, t_infopars *next, \
 t_shell *bash);
 bool		good_operator(char *str, t_shell *bash);
+bool		good_af_pars2(t_infopars *next, t_infopars *curr, t_shell *bash);
 bool		before_operator(t_infopars *curr, t_infopars *pre, t_shell *bash);
 bool		check_pars(t_infopars **curr, t_token *token, t_shell *bash);
 bool		check_redirection(t_infopars *curr, t_shell *bash);
 void		id_shellst(t_shell *bash);
-bool		sub_shell(t_infopars *lst);
+bool		sub_shell(t_infopars *lst, t_shell *bash);
 // Utils lst_cmd
 t_lstcmd	*build_cmd(t_infopars *lst, int index);
 t_lstcmd	*create_lstcmd(t_infopars *lst);
@@ -222,7 +224,7 @@ void	print_lstcmd(t_lstcmd *lstcmd);
 t_tree	*build_branch(t_infopars *lstchar);
 void	print_branch(t_tree *branch);
 void	free_branch(t_tree *branch);
-bool	build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree);
+t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree);
 // void	free_tree(t_tree *main_tree);
 void	print_tree(t_tree *main_tree);
 

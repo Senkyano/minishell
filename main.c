@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 18:42:18 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/03 15:15:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 {
 	char	*str;
 
+	(void)exit_status;
 	while (1)
 	{
 		str = readline(CY"Minishell >: "RST);

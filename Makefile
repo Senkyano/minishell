@@ -59,6 +59,7 @@ PARS_C =	condition_launch.c \
 			check_lst_split.c \
 			utils_check_list_split.c \
 			utils_parenthese.c \
+			utils_parenthese2.c \
 			check_redirection.c \
 			creat_cmd.c \
 			create_lstcmd.c \
