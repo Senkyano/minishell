@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 18:13:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/04 13:11:49 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 {
-	int		result;
+	// int		result;
 
-	result = execve(cmd_path, cmd, bash->env);
+	/*result =*/ execve(cmd_path, cmd, bash->env);
 	free_shell(bash);
 	exit(127);
 }

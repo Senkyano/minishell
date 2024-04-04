@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:29:42 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/03 16:23:13 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/04 14:02:24 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree)
 	curr = lst_char;
 	curr_tmp = NULL;
 	curr_branch = NULL;
+	printf_error("%d\n", parenthese);
+	if (parenthese == 2)
+		return (NULL);
 	if (exist_next_process(curr, parenthese)) // refaire pour qu'il prend en compte les parenthese
 	{
-		// printf_error("%s\n", curr->str);
 		curr = go_to_process(curr, parenthese);
+		printf_error("%s\n", curr->str);
 		curr_branch = build_branch(curr);
 		if (!(*main_tree))
 			(*main_tree) = curr_branch;
@@ -41,25 +44,29 @@ t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree)
 			return (NULL);
 		if (curr->next->spe == 0)
 		{
+			printf_error("%s\n", curr->next->str);
 			curr = go_last_par(curr, parenthese + 1);
-			curr_tmp = build_tree(curr->prec, parenthese + 1, &curr_branch);
-			// printf_error("%s\n", curr->next->str);
+			printf_error("%s\n", curr->str);
+			// curr_tmp = build_tree(curr->prec, parenthese + 1, &curr_branch);
 		}
 		else if (curr->next->spe != 0 && curr->next->spe != 1)
 			curr_tmp = build_branch(curr->next);
 		if (!curr_tmp)
 			return (NULL);
 		curr_branch->right_child = curr_tmp;
-		curr_tmp->parent = curr_branch;
+		if (curr_tmp != NULL)
+			curr_tmp->parent = curr_branch;
 	}
 	else if (!exist_next_process(curr, parenthese)) // refaire pour qu'il prend en compte les parenthese
 	{
-		// printf_error("%s\n", curr->str);
 		curr = go_to_process(curr, parenthese);
+		printf_error("%s\n", curr->str);
 		if (curr->spe == 0)
 		{
+			printf_error("%s\n", curr->str);
 			curr = go_last_par(curr, parenthese + 1);
-			curr_tmp = build_tree(curr->prec, parenthese + 1, main_tree);
+			printf_error("%s\n", curr->str);
+			// curr_tmp = build_tree(curr->prec, parenthese + 1, main_tree);
 		}
 		else if (curr->spe != 0)
 			curr_tmp = build_branch(curr);
