@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:29:42 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/04 14:02:24 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/05 19:24:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree)
 			(*main_tree)->left_child = curr_branch;
 			curr_branch->parent = (*main_tree);
 		}
-		if (!build_tree(curr->prec, 0, &curr_branch))
+		if (!build_tree(curr->prec, parenthese, &curr_branch))
 			return (NULL);
 		if (curr->next->spe == 0)
 		{
