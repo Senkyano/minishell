@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:29:42 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/05 19:24:10 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/07 19:26:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,55 +25,41 @@ t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree)
 	curr = lst_char;
 	curr_tmp = NULL;
 	curr_branch = NULL;
-	printf_error("%d\n", parenthese);
-	if (parenthese == 2)
-		return (NULL);
-	if (exist_next_process(curr, parenthese)) // refaire pour qu'il prend en compte les parenthese
+	if (exist_next_process(curr, parenthese)) // cherche si il y a un noeud dans la commande
 	{
-		curr = go_to_process(curr, parenthese);
-		printf_error("%s\n", curr->str);
-		curr_branch = build_branch(curr);
-		if (!(*main_tree))
+		curr = go_to_process(curr, parenthese); // direction le noeud dans la commande
+		curr_branch = build_branch(curr); // construire le noeud.
+		if (!curr_branch) // si la curr_branch n'a pas pus etre construite
+			return (NULL);
+		if (!(*main_tree)) // definir si le main_tree est vide ou pas
 			(*main_tree) = curr_branch;
 		else if ((*main_tree))
 		{
 			(*main_tree)->left_child = curr_branch;
 			curr_branch->parent = (*main_tree);
 		}
-		if (!build_tree(curr->prec, parenthese, &curr_branch))
+		if (!build_tree(curr->prec, parenthese, &curr_branch)) // comme on sait que apres le noeud il y a forcement un commande.
 			return (NULL);
-		if (curr->next->spe == 0)
-		{
-			printf_error("%s\n", curr->next->str);
-			curr = go_last_par(curr, parenthese + 1);
-			printf_error("%s\n", curr->str);
-			// curr_tmp = build_tree(curr->prec, parenthese + 1, &curr_branch);
-		}
-		else if (curr->next->spe != 0 && curr->next->spe != 1)
-			curr_tmp = build_branch(curr->next);
-		if (!curr_tmp)
+		if (curr->next->spe != 0)
+			curr_tmp = build_branch(curr->next); // construction de la liste de commande.
+		else if (curr->next->spe == 0) // si il y a une parenthese apres le noeud.
+			curr_tmp = NULL;
+		if (!curr_tmp) // protection
 			return (NULL);
-		curr_branch->right_child = curr_tmp;
-		if (curr_tmp != NULL)
-			curr_tmp->parent = curr_branch;
+		curr_branch->right_child = curr_tmp; // on met dans le noeud de droite.
+		curr_tmp->parent = curr_branch; // on relie la nouvelle branche a son parent.
 	}
-	else if (!exist_next_process(curr, parenthese)) // refaire pour qu'il prend en compte les parenthese
+	else if (!exist_next_process(curr, parenthese)) // cherche si il y a un noeud dans la commande
 	{
-		curr = go_to_process(curr, parenthese);
-		printf_error("%s\n", curr->str);
-		if (curr->spe == 0)
-		{
-			printf_error("%s\n", curr->str);
-			curr = go_last_par(curr, parenthese + 1);
-			printf_error("%s\n", curr->str);
-			// curr_tmp = build_tree(curr->prec, parenthese + 1, main_tree);
-		}
-		else if (curr->spe != 0)
-			curr_tmp = build_branch(curr);
-		if (!curr_tmp)
+		curr = go_to_process(curr, parenthese); // direction aux dernier ou le premier element.
+		if (curr->spe != 0)
+			curr_tmp = build_branch(curr); // construction de la liste de commande.
+		else if (curr->spe == 0) // si il y a une parenthese aux debut de la commande.
+			curr_tmp = NULL;
+		if (!curr_tmp) // protection
 			return (NULL);
-		if (!(*main_tree))
-			(*main_tree) = curr_tmp;
+		if (!(*main_tree)) // rattache la liste de commande aux noeud dans la branche de gauche.
+			(*main_tree) = curr_tmp; // soit elle existe pas et on la place.
 		else if ((*main_tree) && !(*main_tree)->left_child)
 		{
 			(*main_tree)->left_child = curr_tmp;
@@ -81,7 +67,7 @@ t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree)
 		}
 		return (curr_tmp);
 	}
-	return ((*main_tree));
+	return ((*main_tree)); // on retourne le main qui seras le noeud principale de la structure.
 }
 
 void	print_tree(t_tree *main_tree)

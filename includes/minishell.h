@@ -225,9 +225,10 @@ t_tree	*build_branch(t_infopars *lstchar);
 void	print_branch(t_tree *branch);
 void	free_branch(t_tree *branch);
 t_tree	*build_tree(t_infopars *lst_char, int parenthese, t_tree **main_tree);
+
+t_tree	*second_tree(t_infopars	*lstchar, t_tree **parent_branch, int parenthese);
 // void	free_tree(t_tree *main_tree);
 void	print_tree(t_tree *main_tree);
-
 
 
 
