@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:29:42 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/07 21:30:11 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/08 12:58:49 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_tree	*build_tree(t_infopars *lst_char, t_tree **main_tree)
 	if (exist_next_process(curr)) // cherche si il y a un noeud dans la commande
 	{
 		curr = go_to_process(curr); // direction le noeud dans la commande
+		// printf_error("curr noeud = %s\n", curr->str);
 		curr_branch = build_branch(curr); // construire le noeud.
 		if (!curr_branch) // si la curr_branch n'a pas pus etre construite
 			return (NULL);
@@ -46,7 +47,9 @@ t_tree	*build_tree(t_infopars *lst_char, t_tree **main_tree)
 		else if (curr->next->spe == 0) // si il y a une parenthese apres le noeud.
 		{
 			curr = last_in_par(curr->next->next); // va a la fin de la parenthse
+			// printf_error("curr next = %s\n", curr->str);
 			// on rappelle en recursif la fonction build_tree
+			build_tree(curr, &curr_branch);
 		}
 		if (!curr_tmp) // protection
 			return (NULL);
@@ -56,12 +59,14 @@ t_tree	*build_tree(t_infopars *lst_char, t_tree **main_tree)
 	else if (!exist_next_process(curr)) // cherche si il y a un noeud dans la commande
 	{
 		curr = go_to_process(curr); // direction aux dernier ou le premier element.
+		// printf_error("curr gauche = %s\n", curr->str);
 		if (curr->spe != 0)
 			curr_tmp = build_branch(curr); // construction de la liste de commande.
 		else if (curr->spe == 0) // si il y a une parenthese aux debut de la commande.
 		{
 			curr = last_in_par(curr->next); // va a la fin de la parenthse
 			// curr_tmp = //on rappelle en recursif la fonction build_tree
+			curr_tmp = build_tree(curr, main_tree);
 		}
 		if (!curr_tmp) // protection
 			return (NULL);
@@ -70,6 +75,11 @@ t_tree	*build_tree(t_infopars *lst_char, t_tree **main_tree)
 		else if ((*main_tree) && !(*main_tree)->left_child)
 		{
 			(*main_tree)->left_child = curr_tmp;
+			curr_tmp->parent = (*main_tree);
+		}
+		else if ((*main_tree) && (*main_tree)->left_child)
+		{
+			(*main_tree)->right_child = curr_tmp;
 			curr_tmp->parent = (*main_tree);
 		}
 		return (curr_tmp);
@@ -90,7 +100,7 @@ t_infopars	*last_in_par(t_infopars *lst_char)
 			parenthese++;
 		else if (curr->str[0] == ')')
 			parenthese--;
-		if (parenthese == 0 && curr->str[0] == ')')
+		if (parenthese < 0)
 			return (curr->prec);
 		curr = curr->next;
 	}
@@ -102,7 +112,7 @@ t_infopars	*go_to_process(t_infopars *lst_char)
 	int	count_par;
 
 	count_par = 0;
-	while (lst_char->prec && count_par >= 0)
+	while (lst_char->prec)
 	{
 		if (lst_char->spe == 0 && lst_char->str[0] == ')')
 			count_par++;
@@ -110,6 +120,8 @@ t_infopars	*go_to_process(t_infopars *lst_char)
 			count_par--;
 		if (lst_char->spe == 1 && count_par == 0)
 			return (lst_char);
+		else if (count_par < 0)
+			return (lst_char->next);
 		lst_char = lst_char->prec;
 	}
 	return (lst_char);
@@ -128,6 +140,8 @@ bool	exist_next_process(t_infopars *lst_char)
 			count_par--;
 		if (lst_char->spe == 1 && count_par == 0)
 			return (true);
+		else if (count_par < 0)
+			return (false);
 		lst_char = lst_char->prec;
 	}
 	return (false);
