@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/03 15:54:22 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:27:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,14 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
 		ft_tree_exec(tree->right_child, bash, env, exit_status);
 	if (tree->type == LST_CMD)
 	{
-		if (!ft_strcmp(tree->lst_cmd->cmd[0], "exit") && \
-			!tree->lst_cmd->next)
-			ft_exit(tree->lst_cmd->cmd, bash);
-		if (!ft_strcmp(tree->lst_cmd->cmd[0], "cd") && \
-			!tree->lst_cmd->next)
-		{
-			ft_cd(tree->lst_cmd->cmd, bash);
+		if (exec_without_fork(tree, bash))
 			return (0);
+		else
+		{
+			pipe_loop(tree, bash);
+			*exit_status = wait_loop(tree);
+			dup2(bash->std_in, 0);
 		}
-		pipe_loop(tree, bash);
-		*exit_status = wait_loop(tree);
 	}
 	return (*exit_status);
 }
@@ -72,13 +69,12 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 		{
 			if (!build_process(str, bash))
 				continue ;
-			// bash->str_split = ft_split(str, ' ');
-			// init_tree2(bash->str_split, bash);
 			init_signal_ign();
 			bash->exit_status = ft_tree_exec(bash->tree, bash, \
 				&bash->env, exit_status);
 			init_signal();
 			dup2(bash->std_in, 0);
+			printf("exit status : %d\n", bash->exit_status);
 			free_tree(bash->tree);
 			bash->tree = NULL;
 			g_status_code = 0;
@@ -99,8 +95,6 @@ int	main(int argc, const char **argv, const char **env)
 	exit_status = 0;
 	rl_line_buffer = NULL;
 	loop_minishell(&exit_status, &bash);
-	printf("exit_status : %d\n", exit_status);
-	free_shell(&bash);
 	(void)argc;
 	return (0);
 }

@@ -287,6 +287,9 @@ void		ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 void		pipe_loop(t_tree *tree, t_shell *bash);
 int			wait_loop(t_tree *tree);
 
+//utils2_exec.c
+int			exec_without_fork(t_tree *tree, t_shell *bash);
+
 //utils_signal.c
 void		init_signal(void);
 void		init_signal_child(void);

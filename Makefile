@@ -83,9 +83,10 @@ TOOL_C =	lst_utils.c \
 			utils_minishell.c \
 			utils2_minishell.c \
 			test_execution.c \
-			builtins_utils.c \
+			utils_builtins.c \
 			utils_exec.c \
-			utils_signal.c
+			utils_signal.c \
+			utils2_exec.c
 
 SRC_TOOL = $(addprefix $(SRCS)/$(TOOLS)/, $(TOOL_C))
 OBJ_TOOL = $(patsubst %.c, $(OBJS)/%.o, $(TOOL_C))

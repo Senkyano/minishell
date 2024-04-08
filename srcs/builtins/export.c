@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:05:37 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/08 15:19:18 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	parsing_export(char	**args_split)
 		}
 		tmp++;
 	}
-	if (args_split[1] && !ft_strchr(args_split[1], '='))
-		return (0);
 	return (1);
 }
 
@@ -41,7 +39,10 @@ void	no_args(t_envlist *lst_envs)
 {
 	while (lst_envs)
 	{
-		printf("declare -x %s=%s\n", lst_envs->key, lst_envs->value);
+		if (lst_envs->value)
+			printf("declare -x %s=%s\n", lst_envs->key, lst_envs->value);
+		else if (!lst_envs->value)
+			printf("declare -x %s\n", lst_envs->key);
 		lst_envs = lst_envs->next;
 	}
 }
@@ -54,8 +55,6 @@ int	ft_export(char	**args_split, t_shell *minishell)
 	lst_envs = minishell->lst_envs;
 	if (!args_split[1])
 		return (no_args(lst_envs), 0);
-	if (args_split[1][ft_strlen(args_split[1]) - 1] == '\n')
-		args_split[1][ft_strlen(args_split[1]) - 1] = '\0';
 	if (!parsing_export(args_split))
 		return (1);
 	while (lst_envs->next)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:05:32 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/08 15:19:09 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,13 @@ int	ft_env(char **args_split, t_shell *minishell)
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{
-		ft_putstr_fd(list_envs->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putstr_fd(list_envs->value, 1);
-		ft_putchar_fd('\n', 1);
+		if (list_envs->value)
+		{
+			ft_putstr_fd(list_envs->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putstr_fd(list_envs->value, 1);
+			ft_putchar_fd('\n', 1);
+		}
 		list_envs = list_envs->next;
 	}
 	return (0);

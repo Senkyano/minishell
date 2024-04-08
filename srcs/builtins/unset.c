@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:51:20 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:06:19 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/08 10:19:58 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	check_unset_path(char **args_split, t_shell *minishell)
 	if (!ft_strcmp(args_split[1], "PATH"))
 	{
 		lstclear(minishell->lst_envs);
+		minishell->lst_envs = NULL;
 		test = 1;
 	}
 	return (test);	
