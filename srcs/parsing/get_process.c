@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/08 13:26:24 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/08 22:00:00 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ static bool	start_process(char *str, t_shell *bash)
 		return (false);
 	replace_lstchar_env(bash->lst_char, bash);
 	t_infopars *curr;
+
 	curr = last_boxshell(bash->lst_char);
-	build_tree(curr, &bash->tree);
+	// build_tree(curr, &bash->tree);
+	if (!building_tree(&bash->tree, curr))
+		return (false);
 	if (!bash->tree)
 		return (false);
 	free_lstchar(bash->lst_char);
