@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:03:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/09 20:59:53 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 21:03:49 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 	t_tree		*new_branch;
 	t_tree		*lst_cmd;
 
-	if (last_ele->spe == 1) // si c'est un noeud on vas cree le noeud.
+	if (last_ele->spe == 1)
 	{
 		new_branch = build_branch(last_ele);
 		if (!new_branch)
@@ -41,14 +41,13 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 		{
 			curr = last_par(last_ele->next->next);
 			curr = noeud_first(curr);
-			printf_error("curr = %s\n", curr->str);
 			if (!building_tree(&new_branch->right_child, curr))
 				return (false);
 		}
 	}
-	else if (last_ele->spe != 1)// si c'est pas un noeud alors on vas creer la liste de commande.
-	{	// ca represente la partie tout a gauche la premiere liste en dehors des parentheses.
-		if (last_ele->spe != 0) // si il n'y a pas de parenthese on fait le processus classique.
+	else if (last_ele->spe != 1)
+	{
+		if (last_ele->spe != 0)
 		{
 			lst_cmd = build_branch(last_ele);
 			if (!lst_cmd)
