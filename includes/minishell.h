@@ -122,7 +122,7 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 typedef	struct s_tree
 {
 	int				type; // voir reference dans le def
-	struct s_tree	*parent;
+	struct s_tree	*parent; // non necessaire
 	struct s_tree	*left_child;
 	struct s_tree	*right_child;
 	t_lstcmd		*lst_cmd;
