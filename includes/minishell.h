@@ -226,6 +226,7 @@ void	print_branch(t_tree *branch);
 void	free_branch(t_tree *branch);
 t_tree	*build_tree(t_infopars *lst_char, t_tree **main_tree);
 
+t_infopars	*noeud_first(t_infopars *lst_char);
 bool	building_tree(t_tree **curr_tree, t_infopars *last_ele);
 t_tree	*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);

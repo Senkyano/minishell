@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:03:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/09 12:03:01 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 20:59:53 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,55 +22,46 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 	t_tree		*new_branch;
 	t_tree		*lst_cmd;
 
-	curr = noeud_first(last_ele);
-	// printf_error("curr->str = %s\n", curr->prec->str);
-	if (curr->spe == 1) // si c'est un noeud on vas cree le noeud.
+	if (last_ele->spe == 1) // si c'est un noeud on vas cree le noeud.
 	{
-		new_branch = build_branch(curr);
+		new_branch = build_branch(last_ele);
 		if (!new_branch)
 			return (false);
 		if (!(*curr_tree))
 			(*curr_tree) = new_branch;
-		if (more_process(curr))
-			building_tree(&new_branch->left_child, curr->prec);
-		if (curr->next->spe != 0) // construction de la liste de commande de droite.
+		curr = noeud_first(last_ele->prec);
+		if (!building_tree(&new_branch->left_child, curr))
+			return (false);
+		if (last_ele->next->spe != 0)
 		{
-			lst_cmd = build_branch(curr->next);
-			if (!lst_cmd)
+			if (!building_tree(&new_branch->right_child, last_ele->next))
 				return (false);
-			new_branch->right_child = lst_cmd;
 		}
-		else // a refaire
+		else if (last_ele->next->spe == 0)
 		{
-			curr = last_par(curr->next);
-			if (!building_tree(&new_branch->right_child, curr->prec))
+			curr = last_par(last_ele->next->next);
+			curr = noeud_first(curr);
+			printf_error("curr = %s\n", curr->str);
+			if (!building_tree(&new_branch->right_child, curr))
 				return (false);
 		}
 	}
-	else // si c'est pas un noeud alors on vas creer la liste de commande.
+	else if (last_ele->spe != 1)// si c'est pas un noeud alors on vas creer la liste de commande.
 	{	// ca represente la partie tout a gauche la premiere liste en dehors des parentheses.
-		if (curr->spe != 0) // si il n'y a pas de parenthese on fait le processus classique.
+		if (last_ele->spe != 0) // si il n'y a pas de parenthese on fait le processus classique.
 		{
-			lst_cmd = build_branch(curr);
+			lst_cmd = build_branch(last_ele);
 			if (!lst_cmd)
 				return (false);
-			if (!(*curr_tree))
-				(*curr_tree) = lst_cmd;
-			else if ((*curr_tree))
-			{
-				if (!(*curr_tree)->left_child)
-					(*curr_tree)->left_child = lst_cmd;
-				else
-					(*curr_tree)->right_child = lst_cmd;
-			}
+			(*curr_tree) = lst_cmd;
 		}
-		// else // si il y a une parenthse alors on doit refaire un nouveau processus de traitement.
-		// { // a refaire
-		// 	curr = last_par(curr->next);
-		// 	printf_error("curr->str = %s\n", curr->prec->str);
-		// 	if (!building_tree(curr_tree, curr->prec))
-		// 		return (false);
-		// }
+		else if (last_ele->spe == 0 && last_ele->str[0] == '(') 
+		{
+			curr = last_par(last_ele->next);
+			curr = noeud_first(curr);
+			if (!building_tree(curr_tree, curr))
+				return (false);
+		}
 	}
 	return (true);
 }
@@ -91,7 +82,7 @@ bool	more_process(t_infopars *lst_char)
 			else if (curr->str[0] == ')')
 				par++;
 		}
-		if (curr->spe == 1 && par == 0)
+		if (curr->spe == 1 && par <= 0)
 			return (true);
 		curr = curr->prec;
 	}
@@ -101,50 +92,25 @@ bool	more_process(t_infopars *lst_char)
 t_infopars	*last_par(t_infopars *lst_char)
 {
 	t_infopars	*curr;
-	int			par;
-
-	par = 0;
-	curr = lst_char;
-	while (curr->next)
-	{
-		if (curr->spe == 0)
-		{
-			if (curr->str[0] == '(')
-				par++;
-			else if (curr->str[0] == ')')
-				par--;
-		}
-		if (par < 0)
-			return (curr->prec);
-		curr = curr->next;
-	}
-	return (curr);
-}
-
-t_infopars	*noeud_first(t_infopars *lst_char)
-{
-	t_infopars	*curr;
 	t_infopars	*last;
 	int			par;
 
-	curr = lst_char;
 	par = 0;
+	curr = lst_char;
+	last = curr;
 	while (curr)
 	{
 		if (curr->spe == 0)
 		{
 			if (curr->str[0] == '(')
-				par--;
-			else if (curr->str[0] == ')')
 				par++;
+			else if (curr->str[0] == ')')
+				par--;
 		}
-		if (curr->spe == 1 && par == 0)
-			return (curr);
-		else if (par < 0)
-			return (curr->next);
-		if (!curr->prec)
-			last = curr;
-		curr = curr->prec;
+		if (curr->str[0] == ')' && par < 0)
+			return (last);
+		last = curr;
+		curr = curr->next;
 	}
 	return (last);
 }

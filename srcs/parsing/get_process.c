@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/08 22:00:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 20:31:40 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 static bool	start_process(char *str, t_shell *bash);
 void	free_lstchar(t_infopars *lst_char);
+t_infopars	*noeud_first(t_infopars *lst_char);
 
 bool	build_process(char *str, t_shell *bash)
 {
@@ -67,14 +68,45 @@ static bool	start_process(char *str, t_shell *bash)
 	t_infopars *curr;
 
 	curr = last_boxshell(bash->lst_char);
-	// build_tree(curr, &bash->tree);
+	curr = noeud_first(curr);
 	if (!building_tree(&bash->tree, curr))
+	{
+		printf_error(RED"Fail\n"RST);
 		return (false);
+	}
 	if (!bash->tree)
 		return (false);
 	free_lstchar(bash->lst_char);
 	bash->lst_char = NULL;
 	return (true);
+}
+
+t_infopars	*noeud_first(t_infopars *lst_char)
+{
+	t_infopars	*curr;
+	t_infopars	*last;
+	int			par;
+
+	par = 0;
+	curr = lst_char;
+	last = curr;
+	while (curr)
+	{
+		if (curr->spe == 0)
+		{
+			if (curr->str[0] == '(')
+				par--;
+			else if (curr->str[0] == ')')
+				par++;
+		}
+		if (curr->spe == 1 && par == 0)
+			return (curr);
+		else if (par < 0)
+			return (last);
+		last = curr;
+		curr = curr->prec;
+	}
+	return (last);
 }
 
 void	free_lstchar(t_infopars *lst_char)
