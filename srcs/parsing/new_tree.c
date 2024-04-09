@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:03:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/09 10:28:57 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 12:03:01 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 			return (false);
 		if (!(*curr_tree))
 			(*curr_tree) = new_branch;
-		else
-			(*curr_tree)->left_child = new_branch;
 		if (more_process(curr))
-			building_tree(&new_branch, curr->prec);
+			building_tree(&new_branch->left_child, curr->prec);
 		if (curr->next->spe != 0) // construction de la liste de commande de droite.
 		{
 			lst_cmd = build_branch(curr->next);
@@ -42,12 +40,12 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 				return (false);
 			new_branch->right_child = lst_cmd;
 		}
-		// else // a refaire
-		// {
-		// 	curr = last_par(curr->next);
-		// 	if (!building_tree(&new_branch->right_child, curr->prec))
-		// 		return (false);
-		// }
+		else // a refaire
+		{
+			curr = last_par(curr->next);
+			if (!building_tree(&new_branch->right_child, curr->prec))
+				return (false);
+		}
 	}
 	else // si c'est pas un noeud alors on vas creer la liste de commande.
 	{	// ca represente la partie tout a gauche la premiere liste en dehors des parentheses.
