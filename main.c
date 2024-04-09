@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/03 15:15:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 22:13:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,17 @@ int	main(int argc, const char **argv, const char **env)
 	(void)argc;
 	return (0);
 }
+
+// int	main(int argc, char **argv)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (argc == 2)
+// 		i = len_inquote(argv[1]);
+// 	printf_error("i = %d\n", i);
+// 	return (0);
+// }
 
 // int	main(int argc, const char **argv, const char **env)
 // {

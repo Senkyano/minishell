@@ -232,7 +232,8 @@ t_tree	*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);
 void	print_tree(t_tree *main_tree);
 
-
+//test
+int	len_inquote(char *str);
 
 
 
