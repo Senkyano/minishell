@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/09 20:31:40 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 21:07:19 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,23 @@ t_infopars	*noeud_first(t_infopars *lst_char);
 
 bool	build_process(char *str, t_shell *bash)
 {
+	t_infopars	*curr;
+
 	if (!str_len(str))
 		return (false);
 	if (!start_process(str, bash))
 		return (false);
+	curr = last_boxshell(bash->lst_char);
+	curr = noeud_first(curr);
+	if (!building_tree(&bash->tree, curr))
+	{
+		printf_error(RED"Fail\n"RST);
+		return (false);
+	}
+	if (!bash->tree)
+		return (false);
+	free_lstchar(bash->lst_char);
+	bash->lst_char = NULL;
 	return (true);
 }
 
@@ -65,19 +78,6 @@ static bool	start_process(char *str, t_shell *bash)
 	if (sub_shell(bash->lst_char, bash))
 		return (false);
 	replace_lstchar_env(bash->lst_char, bash);
-	t_infopars *curr;
-
-	curr = last_boxshell(bash->lst_char);
-	curr = noeud_first(curr);
-	if (!building_tree(&bash->tree, curr))
-	{
-		printf_error(RED"Fail\n"RST);
-		return (false);
-	}
-	if (!bash->tree)
-		return (false);
-	free_lstchar(bash->lst_char);
-	bash->lst_char = NULL;
 	return (true);
 }
 
