@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:49:31 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/08 10:22:56 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/09 09:30:30 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int	exec_without_fork(t_tree *tree, t_shell *bash)
 	}
 	else if (!ft_strcmp(tree->lst_cmd->cmd[0], "export") && \
 		!tree->lst_cmd->next)
-		return (ft_export(tree->lst_cmd->cmd, bash));
+	{
+		bash->exit_status = ft_export(tree->lst_cmd->cmd, bash);
+		return (1);
+	}
 	return (0);
 }

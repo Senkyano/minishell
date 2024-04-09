@@ -58,6 +58,7 @@ extern int	g_status_code;
 
 typedef struct t_list {
 	int				index;
+	int				display;
 	char			*key;
 	char			*value;
 	char			**splitting;
@@ -255,7 +256,7 @@ int			check_env_key(t_shell *minishell, char *str);
 char		*get_value_env(t_shell *minishell, char *key);
 
 //lst_utils.c
-t_envlist	*lst_new(char *str);
+t_envlist	*lst_new(char *str, int display);
 void		lstadd_back(t_envlist *new, t_envlist *lst);
 void		lstclear(t_envlist *lst);
 t_lstcmd	*lst_index(t_lstcmd *lst, int index);

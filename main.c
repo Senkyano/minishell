@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/08 14:27:15 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/09 09:33:34 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 int	g_status_code;
 
-int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
+int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env)
 {
 	if (tree->left_child)
-		ft_tree_exec(tree->left_child, bash, env, exit_status);
-	if (tree->type == OPERATOR_AND && *exit_status == 0)
-		ft_tree_exec(tree->right_child, bash, env, exit_status);
-	if (tree->type == OPERATOR_OR && *exit_status != 0)
-		ft_tree_exec(tree->right_child, bash, env, exit_status);
+		ft_tree_exec(tree->left_child, bash, env);
+	if (tree->type == OPERATOR_AND && bash->exit_status == 0)
+		ft_tree_exec(tree->right_child, bash, env);
+	if (tree->type == OPERATOR_OR && bash->exit_status != 0)
+		ft_tree_exec(tree->right_child, bash, env);
 	if (tree->type == LST_CMD)
 	{
 		if (exec_without_fork(tree, bash))
-			return (0);
+			return (bash->exit_status);
 		else
 		{
 			pipe_loop(tree, bash);
-			*exit_status = wait_loop(tree);
+			bash->exit_status = wait_loop(tree);
 			dup2(bash->std_in, 0);
 		}
 	}
-	return (*exit_status);
+	return (bash->exit_status);
 }
 
 t_shell	init_bash(char **env)
@@ -49,7 +49,7 @@ t_shell	init_bash(char **env)
 	return (bash);
 }
 
-void	loop_minishell(int *exit_status, t_shell *bash)
+void	loop_minishell(t_shell *bash)
 {
 	char	*str;
 
@@ -70,8 +70,7 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 			if (!build_process(str, bash))
 				continue ;
 			init_signal_ign();
-			bash->exit_status = ft_tree_exec(bash->tree, bash, \
-				&bash->env, exit_status);
+			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
 			init_signal();
 			dup2(bash->std_in, 0);
 			printf("exit status : %d\n", bash->exit_status);
@@ -85,16 +84,15 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 int	main(int argc, const char **argv, const char **env)
 {
 	t_shell	bash;
-	int		exit_status;
 
 	if (argv == NULL)
 		return (1);
 	g_status_code = 0;
 	init_signal();
 	bash = init_bash((char **)env);
-	exit_status = 0;
+	bash.exit_status = 0;
 	rl_line_buffer = NULL;
-	loop_minishell(&exit_status, &bash);
+	loop_minishell(&bash);
 	(void)argc;
 	return (0);
 }

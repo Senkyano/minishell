@@ -699,7 +699,7 @@ Free && Leaks :
 
 Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon initialisation qui rajoute un malloc, alors que tout est bien free dans la fonction
 free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a echoue...
-Pour tester sans les leaks de la readline : valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell "cat supp.supp | wc -l"
+Pour tester sans les leaks de la readline : valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell
 
 - Les fonctions grep et ls leak et ce n'est pas demande de gerer ces leaks
 

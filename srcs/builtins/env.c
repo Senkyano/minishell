@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/08 15:19:09 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/09 14:38:10 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_env(char **args_split, t_shell *minishell)
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{
-		if (list_envs->value)
+		if (list_envs->display)
 		{
 			ft_putstr_fd(list_envs->key, 1);
 			ft_putchar_fd('=', 1);
