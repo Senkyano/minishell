@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:13:16 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 16:20:40 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:14:01 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,9 @@ t_tree	*build_branch(t_infopars *lstchar)
 	return (new_branch);
 }
 
-void	print_branch(t_tree *branch)
-{
-	print_lstcmd(branch->lst_cmd);
-}
-
 void	free_branch(t_tree *branch)
 {
-	if (branch)
-	{
-		if (branch->lst_cmd)
-			free_lstcmd(branch->lst_cmd);
-		free(branch);
-	}
+	if (branch->lst_cmd)
+		free_lstcmd(branch->lst_cmd);
+	free(branch);
 }

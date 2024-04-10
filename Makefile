@@ -66,7 +66,8 @@ PARS_C =	condition_launch.c \
 			build_branch.c \
 			build_tree.c \
 			new_tree.c \
-			gestion_quote.c
+			gestion_quote.c \
+			free_essential.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))

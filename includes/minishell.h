@@ -185,7 +185,6 @@ void		in_doquote(char c, t_token *token);
 // split minishell
 int			count_minishell(char *str);
 char		**split_minishell(char *str);
-// test
 int			cutting(char *str, t_lstcmd *base);
 // SKIP
 int			skip_space(char *str);
@@ -195,7 +194,7 @@ int			name_env(char *str);
 int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
-void		replace_lstchar_env(t_infopars *lst_char, t_shell *bash);
+bool		replace_lstchar_env(t_infopars *lst_char, t_shell *bash);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);
@@ -219,22 +218,23 @@ bool		sub_shell(t_infopars *lst, t_shell *bash);
 t_lstcmd	*build_cmd(t_infopars *lst, int index);
 t_lstcmd	*create_lstcmd(t_infopars *lst);
 void		free_lstcmd(t_lstcmd *lst);
-void	print_lstcmd(t_lstcmd *lstcmd);
+void		print_lstcmd(t_lstcmd *lstcmd);
 // TREE
-t_tree	*build_branch(t_infopars *lstchar);
-void	print_branch(t_tree *branch);
-void	free_branch(t_tree *branch);
-t_tree	*build_tree(t_infopars *lst_char, t_tree **main_tree);
+t_tree		*build_branch(t_infopars *lstchar);
+void		print_branch(t_tree *branch);
+void		free_branch(t_tree *branch);
+t_tree		*build_tree(t_infopars *lst_char, t_tree **main_tree);
 
 t_infopars	*noeud_first(t_infopars *lst_char);
-bool	building_tree(t_tree **curr_tree, t_infopars *last_ele);
-t_tree	*back_parent(t_tree *curr_tree);
+bool		building_tree(t_tree **curr_tree, t_infopars *last_ele);
+t_tree		*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);
-void	print_tree(t_tree *main_tree);
+void		print_tree(t_tree *main_tree);
 
 //test
-int	len_inquote(char *str);
-
+int			len_inquote(char *str);
+bool		suppress_quote(t_infopars *lst_char);
+void		free_essential(t_shell *bash);
 
 
 

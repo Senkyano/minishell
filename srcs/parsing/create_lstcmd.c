@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 17:40:48 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:17:58 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ void	free_lstcmd(t_lstcmd *lst)
 	{
 		curr = lst;
 		lst = lst->next;
+		if (curr->in_file)
+			close(curr->in_file);
+		if (curr->out_file)
+			close(curr->out_file);
 		if (curr->cmd)
 			free(curr->cmd);
 		free(curr);

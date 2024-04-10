@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/03 08:55:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 15:33:03 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static char	*env_value(char *str, t_envlist *lst_envs, int i);
 static void	join_tmp(t_data *x);
 
-void	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
+bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 {
 	t_infopars	*curr;
 
@@ -24,9 +24,14 @@ void	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 	while (curr)
 	{
 		if (curr->spe == 2)
+		{
 			curr->str = insert_env(curr->str, bash);
+			if (!curr->str)
+				return (false);
+		}
 		curr = curr->next;
 	}
+	return (true);
 }
 
 char	*insert_env(char *str, t_shell *bash)

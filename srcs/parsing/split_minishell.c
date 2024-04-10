@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/20 17:43:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 13:43:49 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	**split_minishell(char *str)
 		}
 	}
 	mini_str[nbr] = NULL;
+	free(str);
 	return (mini_str);
 }
 

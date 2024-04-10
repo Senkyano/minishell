@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/09 21:07:19 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 15:56:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,18 @@ bool	build_process(char *str, t_shell *bash)
 	if (!str_len(str))
 		return (false);
 	if (!start_process(str, bash))
+	{
+		free_essential(bash);
 		return (false);
+	}
 	curr = last_boxshell(bash->lst_char);
 	curr = noeud_first(curr);
 	if (!building_tree(&bash->tree, curr))
 	{
-		printf_error(RED"Fail\n"RST);
+		free_essential(bash);
+		printf_error(RED"Building TREE Fail\n"RST);
 		return (false);
 	}
-	if (!bash->tree)
-		return (false);
 	free_lstchar(bash->lst_char);
 	bash->lst_char = NULL;
 	return (true);
@@ -66,6 +68,8 @@ static bool	start_process(char *str, t_shell *bash)
 	bash->str_split = split_minishell(str);
 	if (!bash->str_split)
 	{
+		bash->str_split = NULL;
+		free(str);
 		printf_error(RED"Malloc fail\n"RST);
 		return (false);
 	}
@@ -77,7 +81,10 @@ static bool	start_process(char *str, t_shell *bash)
 	id_shellst(bash);
 	if (sub_shell(bash->lst_char, bash))
 		return (false);
-	replace_lstchar_env(bash->lst_char, bash);
+	if (!replace_lstchar_env(bash->lst_char, bash))
+		return (false);
+	if (!suppress_quote(bash->lst_char))
+		return (false);
 	return (true);
 }
 
