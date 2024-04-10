@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/09 16:20:09 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/10 10:45:16 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	parsing_export(char	**args_split, int index)
 			(splitting_tmp[0][tmp] >= 65 && splitting_tmp[0][tmp] <= 90) || \
 			(splitting_tmp[0][tmp] >= 97 && splitting_tmp[0][tmp] <= 122)) && \
 			splitting_tmp[0][tmp] != '=' && splitting_tmp[0][tmp] != '_') || 
-			splitting_tmp[0][0] == '=' || (splitting_tmp[0][0] >= 48 && \
+			args_split[index][0] == '=' || (splitting_tmp[0][0] >= 48 && \
 			splitting_tmp[0][0] <= 57 && !ft_strchr(splitting_tmp[0], '=')))
 		{
 			printf("minishell: export: `%s': not a valid identifier\n", \
@@ -37,20 +37,6 @@ int	parsing_export(char	**args_split, int index)
 	}
 	free_split(splitting_tmp);
 	return (0);
-}
-
-void	no_args(t_envlist *lst_envs)
-{
-	while (lst_envs)
-	{
-		if (lst_envs->value)
-			printf("declare -x %s=%s\n", lst_envs->key, lst_envs->value);
-		else if (!lst_envs->value && lst_envs->display)
-			printf("declare -x %s=""\n", lst_envs->key);
-		else if (!lst_envs->value && !lst_envs->display)
-			printf("declare -x %s\n", lst_envs->key);
-		lst_envs = lst_envs->next;
-	}
 }
 
 int	test_replace_elem(char **args_split, int tmp, t_shell *bash)
@@ -99,12 +85,26 @@ t_envlist	*add_elem_env(char **args_split, int tmp, t_shell *bash)
 	return (new);
 }
 
-int	ft_export(char	**args_split, t_shell *bash)
+int	exec_export(char **args_split, int tmp, int exit_status, t_shell *bash)
 {
 	t_envlist	*new;
-	int			exit_parsing;
+	
+	if(!test_replace_elem(args_split, tmp, bash))
+	{
+		new = add_elem_env(args_split, tmp, bash);
+		if (!new)
+			exit_status = 1;
+	}
+	return (exit_status);
+}
+
+int	ft_export(char	**args_split, t_shell *bash)
+{
+	int			exit_status;
 	int			tmp;
 
+	if (!bash->lst_envs)
+		return (0);
 	if (!args_split[1])
 		return (no_args(bash->lst_envs), 0);
 	if (args_split[1][0] && args_split[1][0] == '-')
@@ -113,17 +113,14 @@ int	ft_export(char	**args_split, t_shell *bash)
 		return (2);
 	}
 	tmp = 1;
+	exit_status = 0;
 	while (args_split[tmp])
 	{
-		exit_parsing = parsing_export(args_split, tmp);
-		if (exit_parsing)
-			return (exit_parsing);
-		if(test_replace_elem(args_split, tmp, bash))
-			return (0);
-		new = add_elem_env(args_split, tmp, bash);
-		if (!new)
-			return (1);
+		if (parsing_export(args_split, tmp))
+			exit_status = 1;
+		else
+			exit_status = exec_export(args_split, tmp, exit_status, bash);
 		tmp++;
 	}
-	return (0);
+	return (exit_status);
 }

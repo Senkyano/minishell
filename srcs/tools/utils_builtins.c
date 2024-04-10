@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/08 14:10:07 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/10 15:22:23 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	exec_builtins(char **cmd, t_shell *bash)
 	else if (!ft_strcmp(cmd[0], "env"))
 		exit_status = ft_env(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "pwd"))
-		ft_pwd();
+		exit_status = ft_pwd(cmd);
 	else if (!ft_strcmp(cmd[0], "export"))
 		exit_status = ft_export(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "unset"))

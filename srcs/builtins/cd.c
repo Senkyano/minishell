@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:25:33 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 15:50:37 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 
 int	check_args(char **args_split, t_shell *minishell)
 {
-	if (args_split[1])
+	if (args_split[1] && args_split[1][0] && \
+		args_split[1][0] == '-' && args_split[1][1] == '-')
 	{
-		if (args_split[2] && args_split[2][0] != '\n')
-		{
-			ft_putendl_fd("bash: cd: too many arguments", 2);
-			return (0);
-		}
+		printf("bash: cd: -%c: invalid option\n", args_split[1][1]);
+		minishell->exit_status = 2;
+		return (0);
+	}
+	if (args_split[1] && args_split[2] && args_split[2][0] != '\n')
+	{
+		ft_putendl_fd("bash: cd: too many arguments", 2);
+		minishell->exit_status = 1;
+		return (0);
 	}
 	if (!check_env_key(minishell, "PWD"))
 	{
@@ -69,7 +74,7 @@ char	*particular_path(t_shell *minishell, char *dir_path, int option)
 	return (new_dir_path);
 }
 
-int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split)
+int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split, t_shell *minishell)
 {
 	DIR				*rep;
 	struct dirent	*fichierlu;
@@ -87,8 +92,8 @@ int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split)
 			fichierlu = readdir(rep);
 		if (chdir(args_split[1]) != 0)
 		{
-			free(dir_path);
-			return (free(new_dir_path), free(rep), perror("chdir"), 0);
+			minishell->exit_status = 1;
+			return (free(dir_path), free(new_dir_path), free(rep), perror("chdir"), 0);
 		}
 		free(rep);
 	}
@@ -138,10 +143,23 @@ void	ft_cd(char **args_split, t_shell *minishell)
 	dir_path = NULL;
 	dir_path = getcwd(dir_path, PATH_MAX);
 	if (!dir_path)
-		return ;
+	{
+		if (!ft_strcmp(args_split[1], ".."))
+		{
+			printf("chdir: error retrieving current directory: getcwd: \
+cannot access parent directories: No such file or directory\n");
+			minishell->exit_status = 1;
+			return ;
+		}
+		if (minishell->lst_envs)
+		{
+			dir_path = get_value_env(minishell, "PWD");
+			printf("dir_path : %s\n", dir_path);
+		}
+		else
+			return ;
+	}
 	new_dir_path = NULL;
-	if (args_split[1] && args_split[1][ft_strlen(args_split[1]) - 1] == '\n')
-		args_split[1][ft_strlen(args_split[1]) - 1] = '\0';
 	if (!args_split[1] || !args_split[1][0] || (args_split[1][0] == '~' && \
 		!args_split[1][1]))
 		new_dir_path = particular_path(minishell, dir_path, 0);
@@ -158,6 +176,6 @@ void	ft_cd(char **args_split, t_shell *minishell)
 		new_dir_path = ft_strjoin(dir_path_tmp, args_split[1]);
 		free(dir_path_tmp);
 	}
-	if (go_to_folder(dir_path, new_dir_path, args_split))
+	if (go_to_folder(dir_path, new_dir_path, args_split, minishell))
 		update_pwds(dir_path, new_dir_path, args_split, minishell);
 }

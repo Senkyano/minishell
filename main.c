@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/09 09:33:34 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/10 15:46:10 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	loop_minishell(t_shell *bash)
 			if (!build_process(str, bash))
 				continue ;
 			init_signal_ign();
+			bash->exit_status = 0;
 			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
 			init_signal();
 			dup2(bash->std_in, 0);

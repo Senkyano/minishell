@@ -245,9 +245,10 @@ char		*ft_strdup(char *src);
 
 //builtins
 void		ft_cd(char **argv, t_shell *minishell);
-void		ft_pwd(void);
-void		ft_unset(char **args_split, t_shell *minishell);
+int			ft_pwd(char **args_split);
+int			ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
+void		no_args(t_envlist *lst_envs);
 void		ft_echo(char **args_split);
 void		ft_exit(char **cmd, t_shell *bash);
 int			ft_env(char **args_split, t_shell *minishell);

@@ -662,12 +662,17 @@ redirection de la ligne de commande.
 
 A faire (Pas encore fait) :
 
-1. Lorsqu'on fait 'export test', la variable n'apparait pas avec 'env', mais elle apparait lorsque l'on fait seulement 'export' dans les 'declare' 
+1. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce sera plus simple)
+	- unset doit unset plusieurs variables de suite et garder les memes regles de parsing
+	de la fonction, et on doit pouvoir faire 'unset "" HOLA' -> unset le HOLA tout en 
+	renvoyant 1 pour le exit_status
+	- cd /var quitte mon minishell apres avoir supprime a alors que l'on est dans a/b
+	- 'exit 7843 svf' ne doit pas exit mais quand meme mettre le message 'too many arguments' et 'exit gsv 54' doit exit avec le message d'erreur 'numeric argument required'
+	- quand je fais : 'mkdir a a/b', 'cd a/b', 'rm -fr ../../a', 'cd' => le OLDPWD ne recupere pas bien le chemin, il faut que je regarde dans la fonction cd ce qui se passe
 2. integrer la gestion des redirection avec les fds dans l'execution
 3. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status (ajouter une option pour recuperer l'exit
 status et l'afficher avec echo)
-4. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce sera plus simple)
-5. Tout mettre a la norme
+4. Tout mettre a la norme
 
 <br/>
 
@@ -676,6 +681,9 @@ Remarque pour le parsing :
 conserve ? (pas sur dans le fichier csv)
 -  ""''echo hola""'''' que""'' tal""'' -> hola que tal, exit_status = 0
 - re-tester avec le parsing final pour 'echo' a partir de la ligne 111 du fichier csv
+- Rechecker apres la gestion des doubles quotes et expansion : export HOLA="  bonjour  hey  " => bonjour hey$, exit_status = 0, en fait cela se situe au moment de l'expansion
+car les espaces sont conserver dans l'environnement, et ce n'est pas la fonction 'echo'
+qui enleve les espaces.
 
 fait :
 
