@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/11 15:05:02 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 15:08:28 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 	// int		result;
 
 	init_signal_child();
-	result = execve(cmd_path, cmd, bash->env);
+	/*result =*/ execve(cmd_path, cmd, bash->env);
 	free_shell(bash);
 	exit(127);
 }
