@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/08 14:27:08 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/11 11:47:45 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,18 @@ void	exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 	}
 }
 
-void	ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
+char	*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
 	struct_cmd->child = fork();
 	if (struct_cmd->child == -1)
 		free_shell(bash);
 	exec_cmd(fd, cmd_path, struct_cmd, bash);
 	if (cmd_path)
+	{
 		free(cmd_path);
+		cmd_path = NULL;
+	}
+	return (cmd_path);
 }
 
 void	pipe_loop(t_tree *tree, t_shell *bash)
@@ -79,7 +83,7 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 			close(fd[1]);
 		}
 		else
-			ft_fork(fd, cmd_path, cmds, bash);
+			cmd_path = ft_fork(fd, cmd_path, cmds, bash);
 		cmds = cmds->next;
 	}
 }

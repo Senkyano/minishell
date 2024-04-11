@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:25:33 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 15:50:37 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/11 11:58:39 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,18 @@ int	check_args(char **args_split, t_shell *minishell)
 		minishell->exit_status = 2;
 		return (0);
 	}
-	if (args_split[1] && args_split[2] && args_split[2][0] != '\n')
-	{
+	else if (args_split[1] && args_split[2] && args_split[2][0] != '\n')
 		ft_putendl_fd("bash: cd: too many arguments", 2);
-		minishell->exit_status = 1;
-		return (0);
-	}
-	if (!check_env_key(minishell, "PWD"))
-	{
+	else if (!check_env_key(minishell, "PWD"))
 		ft_putendl_fd("minishell : cd: PWD not set", 2);
-		return (0);
-	}
-	if (!check_env_key(minishell, "OLDPWD"))
-	{
+	else if (!check_env_key(minishell, "OLDPWD"))
 		ft_putendl_fd("minishell : cd: OLDPWD not set", 2);
-		return (0);
-	}
-	if (!check_env_key(minishell, "HOME"))
-	{
+	else if (!check_env_key(minishell, "HOME"))
 		ft_putendl_fd("minishell : cd: HOME not set", 2);
-		return (0);
-	}
-	return (1);
+	else
+		return (1);
+	minishell->exit_status = 1;
+	return (0);
 }
 
 char	*particular_path(t_shell *minishell, char *dir_path, int option)
@@ -132,14 +122,14 @@ void	update_pwds(char *dir_path, char *new_dir_path, \
 	}
 }
 
-void	ft_cd(char **args_split, t_shell *minishell)
+int	ft_cd(char **args_split, t_shell *minishell)
 {
 	char			*dir_path;
 	char			*dir_path_tmp;
 	char			*new_dir_path;
 
 	if (!check_args(args_split, minishell))
-		return ;
+		return (minishell->exit_status);
 	dir_path = NULL;
 	dir_path = getcwd(dir_path, PATH_MAX);
 	if (!dir_path)
@@ -149,7 +139,7 @@ void	ft_cd(char **args_split, t_shell *minishell)
 			printf("chdir: error retrieving current directory: getcwd: \
 cannot access parent directories: No such file or directory\n");
 			minishell->exit_status = 1;
-			return ;
+			return (minishell->exit_status);
 		}
 		if (minishell->lst_envs)
 		{
@@ -157,7 +147,7 @@ cannot access parent directories: No such file or directory\n");
 			printf("dir_path : %s\n", dir_path);
 		}
 		else
-			return ;
+			return (minishell->exit_status);
 	}
 	new_dir_path = NULL;
 	if (!args_split[1] || !args_split[1][0] || (args_split[1][0] == '~' && \
@@ -178,4 +168,5 @@ cannot access parent directories: No such file or directory\n");
 	}
 	if (go_to_folder(dir_path, new_dir_path, args_split, minishell))
 		update_pwds(dir_path, new_dir_path, args_split, minishell);
+	return (minishell->exit_status);
 }

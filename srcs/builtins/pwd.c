@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:17:18 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 15:21:31 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/11 11:20:16 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_pwd(char **args_split)
 {
 	char	*dir_path;
 
-	if (args_split[1][0] && args_split[1][0] == '-')
+	if (args_split[1] && args_split[1][0] && args_split[1][0] == '-')
 	{
 		printf("bash: pwd: -%c: invalid option\n", args_split[1][1]);
 		return (2);

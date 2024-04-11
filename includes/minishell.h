@@ -244,7 +244,7 @@ char		*ft_strdup(char *src);
 
 
 //builtins
-void		ft_cd(char **argv, t_shell *minishell);
+int			ft_cd(char **argv, t_shell *minishell);
 int			ft_pwd(char **args_split);
 int			ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
@@ -285,7 +285,7 @@ void		free_lstcmds(t_shell *bash);
 //utils_exec.c
 void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
 void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
-void		ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+char		*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 void		pipe_loop(t_tree *tree, t_shell *bash);
 int			wait_loop(t_tree *tree);
 

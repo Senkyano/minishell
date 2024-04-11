@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 15:46:10 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/11 14:18:01 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_shell	init_bash(char **env)
 	bash.std_out = dup(1);
 	malloc_env(&bash, (char **)env);
 	bash.env = (char **)env;
+	bash.len_cmds = 0;
 	bash.path = get_paths((char **)env);
 	return (bash);
 }
@@ -77,6 +78,7 @@ void	loop_minishell(t_shell *bash)
 			printf("exit status : %d\n", bash->exit_status);
 			free_tree(bash->tree);
 			bash->tree = NULL;
+			bash->len_cmds = 0;
 			g_status_code = 0;
 		}
 	}

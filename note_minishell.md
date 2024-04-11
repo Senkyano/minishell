@@ -669,6 +669,11 @@ A faire (Pas encore fait) :
 	- cd /var quitte mon minishell apres avoir supprime a alors que l'on est dans a/b
 	- 'exit 7843 svf' ne doit pas exit mais quand meme mettre le message 'too many arguments' et 'exit gsv 54' doit exit avec le message d'erreur 'numeric argument required'
 	- quand je fais : 'mkdir a a/b', 'cd a/b', 'rm -fr ../../a', 'cd' => le OLDPWD ne recupere pas bien le chemin, il faut que je regarde dans la fonction cd ce qui se passe
+	- ./Makefile => bash: ./Makefile: Permission denied, exit_status = 126, pareil pour
+	'touch hola', './hola'
+	- 'env -i ./minishell', 'env' est cense affiche quand meme le PWD, 'SHLVL' et '_'.
+	- 'ls | ls | hola | rev' -> doit s'arreter a hola et ne pas faire rev
+	- 'ech|o hola | cat' doit juste faire 'command not found' pour 'ech' et 'o' avec exit_status = 127
 2. integrer la gestion des redirection avec les fds dans l'execution
 3. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status (ajouter une option pour recuperer l'exit
 status et l'afficher avec echo)
