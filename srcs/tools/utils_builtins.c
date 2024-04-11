@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:17:41 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 11:57:34 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	exec_builtins(char **cmd, t_shell *bash)
 
 	exit_status = 0;
 	if (!ft_strcmp(cmd[0], "cd"))
-		ft_cd(cmd, bash);
+		exit_status = ft_cd(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "env"))
 		exit_status = ft_env(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "pwd"))
-		ft_pwd();
+		exit_status = ft_pwd(cmd);
 	else if (!ft_strcmp(cmd[0], "export"))
 		exit_status = ft_export(cmd, bash);
 	else if (!ft_strcmp(cmd[0], "unset"))

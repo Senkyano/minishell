@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/04 13:11:49 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 15:05:02 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 {
 	// int		result;
 
-	/*result =*/ execve(cmd_path, cmd, bash->env);
+	init_signal_child();
+	result = execve(cmd_path, cmd, bash->env);
 	free_shell(bash);
 	exit(127);
 }
@@ -25,7 +26,6 @@ void	exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
 	if (struct_cmd->child == 0)
 	{
-		init_signal_child();
 		if (struct_cmd->index == bash->len_cmds - 1)
 			dup2(bash->std_out, 1);
 		else
@@ -47,14 +47,18 @@ void	exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 	}
 }
 
-void	ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
+char	*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
 	struct_cmd->child = fork();
 	if (struct_cmd->child == -1)
 		free_shell(bash);
 	exec_cmd(fd, cmd_path, struct_cmd, bash);
 	if (cmd_path)
+	{
 		free(cmd_path);
+		cmd_path = NULL;
+	}
+	return (cmd_path);
 }
 
 void	pipe_loop(t_tree *tree, t_shell *bash)
@@ -63,7 +67,6 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 	char		*cmd_path;
 	int			fd[2];
 
-	g_status_code = IN_CMD;
 	cmd_path = NULL;
 	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
@@ -80,7 +83,7 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 			close(fd[1]);
 		}
 		else
-			ft_fork(fd, cmd_path, cmds, bash);
+			cmd_path = ft_fork(fd, cmd_path, cmds, bash);
 		cmds = cmds->next;
 	}
 }
@@ -91,6 +94,7 @@ int	wait_loop(t_tree *tree)
 	int			status;
 	int			exit_status;
 
+	exit_status = 0;
 	cmds = tree->lst_cmd;
 	while (cmds)
 	{
@@ -103,8 +107,8 @@ int	wait_loop(t_tree *tree)
 		waitpid(cmds->child, &status, 0);
 		if (WIFEXITED(status))
 			exit_status = WEXITSTATUS(status);
+		exit_status = manage_signal(status, exit_status);
 		cmds = cmds->next;
 	}
-	g_status_code = 0;
 	return (exit_status);
 }

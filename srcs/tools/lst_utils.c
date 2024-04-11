@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 09:46:38 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:14:27 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/09 15:32:41 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-t_envlist	*lst_new(char *str)
+t_envlist	*lst_new(char *str, int display)
 {
 	t_envlist	*new;
 	char		**splitting;
@@ -21,6 +21,8 @@ t_envlist	*lst_new(char *str)
 	if (!new)
 		exit(0);
 	splitting = ft_split_onedel(str, '=');
+	if (splitting[0] && splitting[1] && splitting[2])
+		printf("splitting : %s\n", splitting[2]);
 	if (!splitting)
 		exit(0);
 	new->key = splitting[0];
@@ -28,6 +30,7 @@ t_envlist	*lst_new(char *str)
 		new->value = splitting[1];
 	else
 		new->value = NULL;
+	new->display = display;
 	new->splitting = splitting;
 	new->next = NULL;
 	return (new);

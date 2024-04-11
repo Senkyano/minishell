@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 15:36:20 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 15:04:16 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,26 @@
 
 int	g_status_code;
 
-int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env, int *exit_status)
+int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env)
 {
 	if (tree->left_child)
-		ft_tree_exec(tree->left_child, bash, env, exit_status);
-	if (tree->type == OPERATOR_AND && *exit_status == 0)
-		ft_tree_exec(tree->right_child, bash, env, exit_status);
-	if (tree->type == OPERATOR_OR && *exit_status != 0)
-		ft_tree_exec(tree->right_child, bash, env, exit_status);
+		ft_tree_exec(tree->left_child, bash, env);
+	if (tree->type == OPERATOR_AND && bash->exit_status == 0)
+		ft_tree_exec(tree->right_child, bash, env);
+	if (tree->type == OPERATOR_OR && bash->exit_status != 0)
+		ft_tree_exec(tree->right_child, bash, env);
 	if (tree->type == LST_CMD)
 	{
-		if (!ft_strcmp(tree->lst_cmd->cmd[0], "exit") && \
-			!tree->lst_cmd->next)
-			ft_exit(tree->lst_cmd->cmd, bash);
-		if (!ft_strcmp(tree->lst_cmd->cmd[0], "cd") && \
-			!tree->lst_cmd->next)
+		if (exec_without_fork(tree, bash))
+			return (bash->exit_status);
+		else
 		{
-			ft_cd(tree->lst_cmd->cmd, bash);
-			return (0);
+			pipe_loop(tree, bash);
+			bash->exit_status = wait_loop(tree);
+			dup2(bash->std_in, 0);
 		}
-		pipe_loop(tree, bash);
-		*exit_status = wait_loop(tree);
 	}
-	return (*exit_status);
+	return (bash->exit_status);
 }
 
 t_shell	init_bash(char **env)
@@ -44,16 +41,16 @@ t_shell	init_bash(char **env)
 	t_shell	bash;
 
 	lib_memset(&bash, 0, sizeof(bash));
-	g_status_code = 0;
 	bash.std_in = dup(0);
 	bash.std_out = dup(1);
 	malloc_env(&bash, (char **)env);
 	bash.env = (char **)env;
+	bash.len_cmds = 0;
 	bash.path = get_paths((char **)env);
 	return (bash);
 }
 
-void	loop_minishell(int *exit_status, t_shell *bash)
+void	loop_minishell(t_shell *bash)
 {
 	char	*str;
 
@@ -67,20 +64,23 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 			close(bash->std_in);
 			close(bash->std_out);
 			free_shell(bash);
-			write(2, "exit\n", 5);
+			write(2, "exit\n", 6);
 			exit(0);
 		}
 		else
 		{
 			if (!build_process(str, bash))
 				continue ;
-			// bash->str_split = ft_split(str, ' ');
-			// init_tree2(bash->str_split, bash);
-			*exit_status = ft_tree_exec(bash->tree, bash, \
-				&bash->env, exit_status);
+			init_signal_ign();
+			bash->exit_status = 0;
+			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
+			init_signal();
 			dup2(bash->std_in, 0);
+			printf("exit status : %d\n", bash->exit_status);
 			free_tree(bash->tree);
 			bash->tree = NULL;
+			bash->len_cmds = 0;
+			g_status_code = 0;
 		}
 	}
 }
@@ -88,18 +88,15 @@ void	loop_minishell(int *exit_status, t_shell *bash)
 int	main(int argc, const char **argv, const char **env)
 {
 	t_shell	bash;
-	int		exit_status;
 
 	if (argv == NULL)
 		return (1);
 	g_status_code = 0;
 	init_signal();
 	bash = init_bash((char **)env);
-	exit_status = 0;
+	bash.exit_status = 0;
 	rl_line_buffer = NULL;
-	loop_minishell(&exit_status, &bash);
-	printf("exit_status : %d\n", exit_status);
-	free_shell(&bash);
+	loop_minishell(&bash);
 	(void)argc;
 	return (0);
 }

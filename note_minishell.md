@@ -662,15 +662,33 @@ redirection de la ligne de commande.
 
 A faire (Pas encore fait) :
 
-1. Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell (mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le merge sera fait), lorsque je lance minishell dans minishell : cela pose des problemes au niveau des signaux, est-ce que c'est demande de gerer les signaux dans des minishells imbriquees ?
-2. Ajouter un here_doc comme dans pipex
-3. integrer la gestion des redirection avec les fds dans l'execution
-4. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status
-5. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce
-sera plus simple)
-6. Tout mettre a la norme
+1. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce sera plus simple)
+	- unset doit unset plusieurs variables de suite et garder les memes regles de parsing
+	de la fonction, et on doit pouvoir faire 'unset "" HOLA' -> unset le HOLA tout en 
+	renvoyant 1 pour le exit_status
+	- cd /var quitte mon minishell apres avoir supprime a alors que l'on est dans a/b
+	- 'exit 7843 svf' ne doit pas exit mais quand meme mettre le message 'too many arguments' et 'exit gsv 54' doit exit avec le message d'erreur 'numeric argument required'
+	- quand je fais : 'mkdir a a/b', 'cd a/b', 'rm -fr ../../a', 'cd' => le OLDPWD ne recupere pas bien le chemin, il faut que je regarde dans la fonction cd ce qui se passe
+	- ./Makefile => bash: ./Makefile: Permission denied, exit_status = 126, pareil pour
+	'touch hola', './hola'
+	- 'env -i ./minishell', 'env' est cense affiche quand meme le PWD, 'SHLVL' et '_'.
+	- 'ls | ls | hola | rev' -> doit s'arreter a hola et ne pas faire rev
+	- 'ech|o hola | cat' doit juste faire 'command not found' pour 'ech' et 'o' avec exit_status = 127
+2. integrer la gestion des redirection avec les fds dans l'execution
+3. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status (ajouter une option pour recuperer l'exit
+status et l'afficher avec echo)
+4. Tout mettre a la norme
 
 <br/>
+
+Remarque pour le parsing :
+- echo \n hola -> 'n hola', le \ doit etre enleve mais le caractere qui suit doit etre
+conserve ? (pas sur dans le fichier csv)
+-  ""''echo hola""'''' que""'' tal""'' -> hola que tal, exit_status = 0
+- re-tester avec le parsing final pour 'echo' a partir de la ligne 111 du fichier csv
+- Rechecker apres la gestion des doubles quotes et expansion : export HOLA="  bonjour  hey  " => bonjour hey$, exit_status = 0, en fait cela se situe au moment de l'expansion
+car les espaces sont conserver dans l'environnement, et ce n'est pas la fonction 'echo'
+qui enleve les espaces.
 
 fait :
 
@@ -680,12 +698,23 @@ pour enlever un argument a la fonction "exec_cmdbash"
 - Pour l'instant je n'ai que deux types d'exit status : 1 ou 0, mais il faut que je specifie les autres cas d'erreur avec exit_status (127 ...)
 - Il faut que je fasse une fonction pour free l'arbre dans 'free_shell'
 - Faire une boucle de wait en dehors de la loop de pipe pour que les fils s'execute tous en meme temps comme dans pipex, et retourner l'exit status du dernier child a la fin de la boucle de wait dans le parent.
+- Il faut que je puisse lancer un executable, exemple : lancer minishell dans minishell (mais pour le tester c'est liee au parsing, parce que le split de mon main cree des mauvais argument pour l'execution, je verrai ca quand le parsing sera ajouter et que le merge sera fait), lorsque je lance minishell dans minishell : cela pose des problemes au niveau des signaux, est-ce que c'est demande de gerer les signaux dans des minishells imbriquees ?
+- Gerer le cas avec ./minishell && ./minishell et le double exit (peut etre en mettant	dup2(bash->std_in, 0) a la fin de exit pour pas qu'il evite la readline du prochain fils minishell mais ca ne marche pas pour l'instant), en fait la readline est a null directement, il n'attend pas une entree de l'entree standard dans le deuxieme minishell fils et rentre dans la condition du Ctrl+D, en fait le probleme c'est que readline n'attend pas une nouvelle commande et renvoie directement null, il est possible que le fd de lecture soit deja remplie avec quelque chose, et que cela cree le retour null de readline, a priori le fd 0 est disponible, on avait teste avec une fonction.
+- Juste quand je fais unset PATH j'ai 'free(): invalid pointer', c'est parce que lorsque
+j'unset le PATH, on doit supprimer et free l'environnement, sauf que je n'avais pas defini mon pointeur de l'env dans ma fonction 'unset' sur NULL lorsque cela se produisait.
+- (CE N'EST PAS A GERER) Gerer le cas "./minishell | ./minishell" en l'ajoutant dans les fonctions a tester
+avant de fork (un minishell dans un pipe ne doit pas etre lance avec execve, en fait si on essaye de lancer un minishell apres un pipe, ca ne fonctionne pas, car minishell prend un argument, et donc on skip l'execution du minishell, par contre cela fonctionne pour un minishell avant le pipe, il faut juste l'executer a la fin de la boucle de pipe, et s'il y a d'autre processus ensuite, il seront executer lorsque l'on aura quitter le
+minishell ainsi lancee)
+=> la maniere de faire c'est de mettre le fd du premier pipe au fd d'ecriture standard
+pour lancer normalement le minishell et skip le deuxieme minishell qui n'est pas cense s'executer, sauf que cela pose probleme quand je lance un premier minishell, que j'exit et que je relance la commande "./minishell | ./minishell"
 
 Free && Leaks :
 
 Il faudra que j'enleve les free(args_split), parce qu'il ne sont due qu'a mon initialisation qui rajoute un malloc, alors que tout est bien free dans la fonction
 free_shell sinon, notamment quand l'exit status est a 1 a cause du fait que la commande a echoue...
-Pour tester sans les leaks de la readline : valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell "cat supp.supp | wc -l"
+Pour tester sans les leaks de la readline : valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=supp.supp ./minishell
+
+- Les fonctions grep et ls leak et ce n'est pas demande de gerer ces leaks
 
 A faire : 
 

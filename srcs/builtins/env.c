@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:05:32 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/10 09:18:14 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,28 @@ int	ft_env(char **args_split, t_shell *minishell)
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{
-		ft_putstr_fd(list_envs->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putstr_fd(list_envs->value, 1);
-		ft_putchar_fd('\n', 1);
+		if (list_envs->display)
+		{
+			ft_putstr_fd(list_envs->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putstr_fd(list_envs->value, 1);
+			ft_putchar_fd('\n', 1);
+		}
 		list_envs = list_envs->next;
 	}
 	return (0);
+}
+
+void	no_args(t_envlist *lst_envs)
+{
+	while (lst_envs)
+	{
+		if (lst_envs->value)
+			printf("declare -x %s=%s\n", lst_envs->key, lst_envs->value);
+		else if (!lst_envs->value && lst_envs->display)
+			printf("declare -x %s=""\n", lst_envs->key);
+		else if (!lst_envs->value && !lst_envs->display)
+			printf("declare -x %s\n", lst_envs->key);
+		lst_envs = lst_envs->next;
+	}
 }

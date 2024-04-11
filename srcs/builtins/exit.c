@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/02 17:05:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:17:35 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	ft_exit(char **cmd, t_shell *bash)
 	int	tmp;
 
 	error = 0;
-	ft_putendl_fd("exit", STDOUT_FILENO);
+	if (!bash->len_cmds)
+		ft_putendl_fd("exit", STDOUT_FILENO);
 	if (!cmd[1])
 		exit_code = 0;
 	if (cmd[1])

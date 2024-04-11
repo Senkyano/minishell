@@ -49,10 +49,6 @@
 # define OPERATOR_OR 2
 # define LST_CMD 3
 
-# define OPERATOR_AND 1
-# define OPERATOR_OR 2
-# define LST_CMD 3
-
 # define IN_CMD 1
 # define IN_HEREDOC 2
 # define CTRL_C 3
@@ -62,6 +58,7 @@ extern int	g_status_code;
 
 typedef struct t_list {
 	int				index;
+	int				display;
 	char			*key;
 	char			*value;
 	char			**splitting;
@@ -253,10 +250,11 @@ char		*ft_strdup(char *src);
 
 
 //builtins
-void		ft_cd(char **argv, t_shell *minishell);
-void		ft_pwd(void);
-void		ft_unset(char **args_split, t_shell *minishell);
+int			ft_cd(char **argv, t_shell *minishell);
+int			ft_pwd(char **args_split);
+int			ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
+void		no_args(t_envlist *lst_envs);
 void		ft_echo(char **args_split);
 void		ft_exit(char **cmd, t_shell *bash);
 int			ft_env(char **args_split, t_shell *minishell);
@@ -265,7 +263,7 @@ int			check_env_key(t_shell *minishell, char *str);
 char		*get_value_env(t_shell *minishell, char *key);
 
 //lst_utils.c
-t_envlist	*lst_new(char *str);
+t_envlist	*lst_new(char *str, int display);
 void		lstadd_back(t_envlist *new, t_envlist *lst);
 void		lstclear(t_envlist *lst);
 t_lstcmd	*lst_index(t_lstcmd *lst, int index);
@@ -293,12 +291,17 @@ void		free_lstcmds(t_shell *bash);
 //utils_exec.c
 void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
 void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
-void		ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+char		*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 void		pipe_loop(t_tree *tree, t_shell *bash);
 int			wait_loop(t_tree *tree);
+
+//utils2_exec.c
+int			exec_without_fork(t_tree *tree, t_shell *bash);
 
 //utils_signal.c
 void		init_signal(void);
 void		init_signal_child(void);
+void		init_signal_ign(void);
+int			manage_signal(int status, int exit_status);
 
 #endif
