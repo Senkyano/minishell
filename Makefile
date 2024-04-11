@@ -64,7 +64,6 @@ PARS_C =	condition_launch.c \
 			creat_cmd.c \
 			create_lstcmd.c \
 			build_branch.c \
-			build_tree.c \
 			new_tree.c \
 			gestion_quote.c \
 			free_essential.c
