@@ -54,6 +54,9 @@
 # define CTRL_C 3
 # define CTRL_BS 4
 
+# define HERE_DOC 1
+# define NO_HERE_DOC 2
+
 extern int	g_status_code;
 
 typedef struct t_list {
@@ -77,23 +80,6 @@ typedef struct s_token
 	int				tot_pars;
 }	t_token;
 
-typedef struct s_lstfd
-{
-	// char			*name; pour que se soit bien securiser mais on as pas forcement besoin en realite
-	bool			in_file;
-	bool			out_file;
-	bool			file_here;
-	int				fd;
-	struct s_lstfd	*next;
-}	t_lstfd;
-
-typedef struct s_lsthere
-{
-	int					fd[2];
-	char				*lim;
-	struct s_lsthere	*next;
-}	t_lsthere;
-
 typedef struct	s_infopars
 {
 	int		spe; // 1 = process // 2 = cmd // 3 = file // 4 = redirections // 5 = pipe
@@ -111,7 +97,9 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
+	int				last_infile;
 	int				in_file;
+	char			*in_file_name;
 	int				out_file;
 	struct s_lstcmd	*next; //pipe
 }	t_lstcmd;
@@ -213,17 +201,17 @@ void		id_shellst(t_shell *bash);
 bool		sub_shell(t_infopars *lst, t_shell *bash);
 // Utils lst_cmd
 t_lstcmd	*build_cmd(t_infopars *lst, int index);
-t_lstcmd	*create_lstcmd(t_infopars *lst);
+t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash);
 void		free_lstcmd(t_lstcmd *lst);
 void		print_lstcmd(t_lstcmd *lstcmd);
 // TREE
-t_tree		*build_branch(t_infopars *lstchar);
+t_tree		*build_branch(t_infopars *lstchar, t_shell *bash);
 void		print_branch(t_tree *branch);
 void		free_branch(t_tree *branch);
 t_tree		*build_tree(t_infopars *lst_char, t_tree **main_tree);
 
 t_infopars	*noeud_first(t_infopars *lst_char);
-bool		building_tree(t_tree **curr_tree, t_infopars *last_ele);
+bool		building_tree(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash);
 t_tree		*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);
 void		print_tree(t_tree *main_tree);

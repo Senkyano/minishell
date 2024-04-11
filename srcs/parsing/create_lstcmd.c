@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/10 16:17:58 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 18:49:50 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_infopars	*next_pipe(t_infopars *lst);
 static bool			exist_next_pipe(t_infopars *lst);
 static void			add_lstcmd(t_lstcmd **lst_cmd, t_lstcmd *new_cmd);
 
-t_lstcmd	*create_lstcmd(t_infopars *lst)
+t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash)
 {
 	t_infopars	*curr;
 	t_lstcmd	*tmp_cmd;

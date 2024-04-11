@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:03:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/09 21:03:49 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/11 18:07:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_infopars	*last_par(t_infopars *lst_char);
 t_infopars	*noeud_first(t_infopars *lst_char);
 bool		more_process(t_infopars *lst_char);
 
-bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
+bool	building_tree(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash)
 {
 	t_infopars	*curr;
 	t_tree		*new_branch;
@@ -24,7 +24,7 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 
 	if (last_ele->spe == 1)
 	{
-		new_branch = build_branch(last_ele);
+		new_branch = build_branch(last_ele, bash);
 		if (!new_branch)
 			return (false);
 		if (!(*curr_tree))
@@ -49,7 +49,7 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele)
 	{
 		if (last_ele->spe != 0)
 		{
-			lst_cmd = build_branch(last_ele);
+			lst_cmd = build_branch(last_ele, bash);
 			if (!lst_cmd)
 				return (false);
 			(*curr_tree) = lst_cmd;
