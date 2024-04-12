@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:22:16 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/11 18:55:26 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/12 22:36:24 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_infopars	*last_infile(t_infopars *lst_char)
 	t_infopars	*last;
 
 	curr = lst_char;
+	last = NULL;
 	while (curr)
 	{
 		if (curr->spe == 4)
@@ -29,7 +30,7 @@ t_infopars	*last_infile(t_infopars *lst_char)
 			return (last);
 		curr = curr->next;
 	}
-	return (NULL);
+	return (last);
 }
 
 t_infopars	*last_outfile(t_infopars *lst_char)
@@ -37,6 +38,7 @@ t_infopars	*last_outfile(t_infopars *lst_char)
 	t_infopars	*curr;
 	t_infopars	*last;
 
+	last = NULL;
 	curr = lst_char;
 	while (curr)
 	{
@@ -49,5 +51,5 @@ t_infopars	*last_outfile(t_infopars *lst_char)
 			return (last);
 		curr = curr->next;
 	}
-	return (NULL);
+	return (last);
 }

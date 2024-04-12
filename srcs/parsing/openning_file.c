@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 18:20:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/12 22:36:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	write_here(pid_t *here ,int fd[2], char *lim, t_shell *bash)
 	char	*line;
 
 	*here = fork();
-	if (here < 0)
+	if (*here < 0)
 	{
 		if (fd[0] != 0)
 			close(fd[0]);
@@ -83,7 +83,7 @@ bool	def_file(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 
 	curr = last_infile(lst_char);
 	if (curr)
-	{
+	{	
 		if (curr->prec->str[0] == '<' && str_len(curr->prec->str) == 1)
 		{
 			cmd->in_file_name = lib_strup(curr->str);
@@ -109,7 +109,7 @@ bool	def_file(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 
 //definir le dernier fichier d'entree
 
-void	define_last_in(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
+void	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 {
 	t_infopars	*curr;
 
@@ -117,7 +117,7 @@ void	define_last_in(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 	def_file(lst_char, cmd, bash);
 	while (curr && curr->spe != 5 && curr->spe != 1 && curr->spe != 0)
 	{
-		if (curr->spe == 3 && curr->str[0] == '<')
+		if (curr->spe == 4 && curr->str[0] == '<')
 		{
 			if (str_len(curr->str) == 1)
 				cmd->last_infile = NO_HERE_DOC;
