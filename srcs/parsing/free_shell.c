@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:27:48 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/08 10:18:36 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/12 18:23:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	free_tree(t_tree *tree)
 {
-	t_lstcmd *tmp_lst_cmd;
+	t_lstcmd	*tmp_lst_cmd;
 
 	if (tree->left_child)
 		free_tree(tree->left_child);
@@ -39,6 +39,8 @@ void	free_tree(t_tree *tree)
 
 void	free_shell(t_shell *bash)
 {
+	if (bash->lst_char)
+		free_boxshell(&bash->lst_char);
 	if (bash->path)
 		lib_free_split(bash->path);
 	if (bash->lst_envs)
@@ -48,15 +50,3 @@ void	free_shell(t_shell *bash)
 	if (bash->str_split)
 		free(bash->str_split);
 }
-
-// void	free_tree(t_tree *curr)
-// {
-// 	if (curr->left_child)
-// 		free_tree(curr->left);
-// 	if (curr->right_child)
-// 		free_tree(curr->right_child);
-// 	if (curr->type == 1 || curr->type == 2)
-// 		free(curr);
-// 	else if (curr->type == 3)
-// 		free_lst_cmd();
-// }

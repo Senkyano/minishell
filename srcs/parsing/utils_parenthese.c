@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 18:40:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/03 16:12:51 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/12 18:23:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static bool	good_bef_pars(t_infopars *pre, t_infopars *curr, t_shell *bash);
 static bool	good_af_pars(t_infopars *next, t_infopars *curr, t_shell *bash);
-bool	count_out_pars(t_infopars **curr, t_infopars *pre, t_token *token);
-void	count_in_pars(t_infopars **curr, t_token *token);
+bool		count_out_pars(t_infopars **curr, t_infopars *pre, t_token *token);
+void		count_in_pars(t_infopars **curr, t_token *token);
 
 bool	check_pars(t_infopars **curr, t_token *token, t_shell *bash)
 {

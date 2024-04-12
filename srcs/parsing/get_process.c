@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/10 15:56:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/12 18:24:12 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "lib_utils.h"
 
 static bool	start_process(char *str, t_shell *bash);
-void	free_lstchar(t_infopars *lst_char);
+void		free_lstchar(t_infopars *lst_char);
 t_infopars	*noeud_first(t_infopars *lst_char);
 
 bool	build_process(char *str, t_shell *bash)
@@ -30,7 +30,7 @@ bool	build_process(char *str, t_shell *bash)
 	}
 	curr = last_boxshell(bash->lst_char);
 	curr = noeud_first(curr);
-	if (!building_tree(&bash->tree, curr))
+	if (!building_tree(&bash->tree, curr, bash))
 	{
 		free_essential(bash);
 		printf_error(RED"Building TREE Fail\n"RST);

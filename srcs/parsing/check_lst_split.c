@@ -6,13 +6,14 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:52:58 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/03 14:57:58 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/12 18:27:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 bool	calcul_pars(t_token *token, t_shell *bash);
+bool	check_token(t_token token, t_shell *bash);
 
 bool	check_lst_split(t_shell *bash)
 {
@@ -36,6 +37,13 @@ bool	check_lst_split(t_shell *bash)
 		if (curr)
 			curr = curr->next;
 	}
+	if (!check_token(token, bash))
+		return (false);
+	return (true);
+}
+
+bool	check_token(t_token token, t_shell *bash)
+{
 	if (token.in_pars > token.out_pars)
 	{
 		printf_error(RED" -- Feature not include --\n"RST);

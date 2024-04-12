@@ -158,10 +158,14 @@ void		add_boxshell(t_infopars **all, t_infopars *part);
 void		add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
 t_infopars *next, t_infopars **old);
 // Free process
+void		eradication(t_shell *bash, int fd);
 void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
 void		free_tree(t_tree *tree);
+void		free_essential(t_shell *bash);
+void		free_branch(t_tree *branch);
+void		free_lstcmd(t_lstcmd *lst);
 // Print process
 void		print_strshell(t_infopars *lst);
 // In
@@ -202,12 +206,10 @@ bool		sub_shell(t_infopars *lst, t_shell *bash);
 // Utils lst_cmd
 t_lstcmd	*build_cmd(t_infopars *lst, int index);
 t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash);
-void		free_lstcmd(t_lstcmd *lst);
 void		print_lstcmd(t_lstcmd *lstcmd);
 // TREE
 t_tree		*build_branch(t_infopars *lstchar, t_shell *bash);
 void		print_branch(t_tree *branch);
-void		free_branch(t_tree *branch);
 t_tree		*build_tree(t_infopars *lst_char, t_tree **main_tree);
 
 t_infopars	*noeud_first(t_infopars *lst_char);
@@ -219,10 +221,9 @@ void		print_tree(t_tree *main_tree);
 //test
 int			len_inquote(char *str);
 bool		suppress_quote(t_infopars *lst_char);
-void		free_essential(t_shell *bash);
-
-
-
+t_infopars	*last_infile(t_infopars *lst_char);
+t_infopars	*last_outfile(t_infopars *lst_char);
+void		define_last_in(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash);
 
 
 //libft

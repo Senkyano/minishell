@@ -6,61 +6,78 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:03:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/11 18:07:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/12 18:42:42 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_infopars	*last_par(t_infopars *lst_char);
-t_infopars	*noeud_first(t_infopars *lst_char);
 bool		more_process(t_infopars *lst_char);
+bool		branch_pro(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash);
+bool		branch_cmd(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash);
 
 bool	building_tree(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash)
 {
-	t_infopars	*curr;
-	t_tree		*new_branch;
-	t_tree		*lst_cmd;
-
 	if (last_ele->spe == 1)
 	{
-		new_branch = build_branch(last_ele, bash);
-		if (!new_branch)
+		if (!branch_pro(curr_tree, last_ele, bash))
 			return (false);
-		if (!(*curr_tree))
-			(*curr_tree) = new_branch;
-		curr = noeud_first(last_ele->prec);
-		if (!building_tree(&new_branch->left_child, curr))
-			return (false);
-		if (last_ele->next->spe != 0)
-		{
-			if (!building_tree(&new_branch->right_child, last_ele->next))
-				return (false);
-		}
-		else if (last_ele->next->spe == 0)
-		{
-			curr = last_par(last_ele->next->next);
-			curr = noeud_first(curr);
-			if (!building_tree(&new_branch->right_child, curr))
-				return (false);
-		}
 	}
 	else if (last_ele->spe != 1)
 	{
-		if (last_ele->spe != 0)
-		{
-			lst_cmd = build_branch(last_ele, bash);
-			if (!lst_cmd)
-				return (false);
-			(*curr_tree) = lst_cmd;
-		}
-		else if (last_ele->spe == 0 && last_ele->str[0] == '(') 
-		{
-			curr = last_par(last_ele->next);
-			curr = noeud_first(curr);
-			if (!building_tree(curr_tree, curr))
-				return (false);
-		}
+		if (!branch_cmd(curr_tree, last_ele, bash))
+			return (false);
+	}
+	return (true);
+}
+
+bool	branch_cmd(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash)
+{
+	t_infopars	*curr;
+	t_tree		*lst_cmd;
+
+	if (last_ele->spe != 0)
+	{
+		lst_cmd = build_branch(last_ele, bash);
+		if (!lst_cmd)
+			return (false);
+		(*curr_tree) = lst_cmd;
+	}
+	else if (last_ele->spe == 0 && last_ele->str[0] == '(')
+	{
+		curr = last_par(last_ele->next);
+		curr = noeud_first(curr);
+		if (!building_tree(curr_tree, curr, bash))
+			return (false);
+	}
+	return (true);
+}
+
+bool	branch_pro(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash)
+{
+	t_infopars	*curr;
+	t_tree		*new_branch;
+
+	new_branch = build_branch(last_ele, bash);
+	if (!new_branch)
+		return (false);
+	if (!(*curr_tree))
+		(*curr_tree) = new_branch;
+	curr = noeud_first(last_ele->prec);
+	if (!building_tree(&new_branch->left_child, curr, bash))
+		return (false);
+	if (last_ele->next->spe != 0)
+	{
+		if (!building_tree(&new_branch->right_child, last_ele->next, bash))
+			return (false);
+	}
+	else if (last_ele->next->spe == 0)
+	{
+		curr = last_par(last_ele->next->next);
+		curr = noeud_first(curr);
+		if (!building_tree(&new_branch->right_child, curr, bash))
+			return (false);
 	}
 	return (true);
 }
