@@ -6,13 +6,14 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:30 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 21:10:31 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/14 12:06:04 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	size_cmd(t_infopars	*lst);
+static void	init_cmd(t_lstcmd *cmd, int index);
 
 t_lstcmd	*build_cmd(t_infopars *lst, int index)
 {
@@ -23,7 +24,7 @@ t_lstcmd	*build_cmd(t_infopars *lst, int index)
 	info_cmd = malloc(sizeof(t_lstcmd));
 	if (!info_cmd)
 		return (NULL);
-	lib_memset(info_cmd, 0, sizeof(info_cmd));
+	init_cmd(info_cmd, index);
 	info_cmd->cmd = malloc(sizeof(char *) * (size_cmd(lst) + 1));
 	if (!info_cmd->cmd)
 		return (free(info_cmd), NULL);
@@ -36,11 +37,24 @@ t_lstcmd	*build_cmd(t_infopars *lst, int index)
 		curr = curr->next;
 	}
 	info_cmd->cmd[i] = NULL;
-	info_cmd->next = NULL;
-	info_cmd->index = index;
-	info_cmd->in_file_name = NULL;
 	info_cmd->available = 1;
 	return (info_cmd);
+}
+
+static void	init_cmd(t_lstcmd *cmd, int index)
+{
+	cmd->error = 0;
+	cmd->index = index;
+	cmd->max_index = 0;
+	cmd->available = 0;
+	cmd->cmd = NULL;
+	cmd->t_path = NULL;
+	cmd->child = 0;
+	cmd->last_infile = 0;
+	cmd->in_file = 0;
+	cmd->in_file_name = NULL;
+	cmd->out_file = 0;
+	cmd->next = NULL;
 }
 
 void	print_lstcmd(t_lstcmd *lstcmd)

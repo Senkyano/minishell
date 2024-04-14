@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 22:36:07 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/14 20:57:53 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,64 +14,48 @@
 
 // Ouvrir tout les fichier de type heredoc
 
-bool	write_here(pid_t *here ,int fd[2], char *lim, t_shell *bash)
-{
-	char	*line;
-
-	*here = fork();
-	if (*here < 0)
-	{
-		if (fd[0] != 0)
-			close(fd[0]);
-		if (fd[1] != 0)
-			close(fd[1]);
-		printf_error(RED"error: fork failed\n"RST);
-		return (false);
-	}
-	else if (here == 0)
-	{
-		close(fd[0]);
-		while (1)
-		{
-			line = readline("> ");
-			if (!line || !slib_cmp(line, lim))
-				eradication(bash, fd[1]);
-			write(fd[1], line, sizeof(line));
-			write(fd[1], "\n", 1);
-		}
-	}
-	return (true);
-}
-
-bool	open_heredoc(t_infopars	*lst_char, t_lstcmd *cmd, t_shell *bash)
+bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 {
 	t_infopars	*curr;
-	int			pipefd[2];
-	pid_t		here;
+	pid_t		heredoc;
+	int			fd[2];
 
 	curr = lst_char;
-	here = 0;
-	lib_memset(pipefd, 0, sizeof(int));
+	lib_memset(fd, 0, sizeof(fd));
+	(void)cmd;
+	(void)bash;
 	while (curr)
 	{
-		if (curr->spe == 3 && curr->prec->str[0] == '<' && \
-		str_len(curr->prec->str) == 2)
+		if (curr->spe == 4 && curr->str[0] == '<' && str_len(curr->str) == 2)
 		{
-			if (cmd->in_file != 0)
-				close(cmd->in_file);
-			if (pipe(pipefd))
+			if (fd[0] != 0)
+				close(fd[0]);
+			if (fd[1] != 0)
+				close(fd[1]);
+			printf_error("heredoc\n");
+			if (pipe(fd) < 0)
+				return (false);
+			heredoc = fork();
+			if (heredoc < 0)
 			{
-				bash->exit_status = 127;					
+				printf_error(RED"fork failed\n"RST);
 				return (false);
 			}
-			cmd->in_file = pipefd[0];
-			if (!write_here(&here, pipefd, curr->str, bash))
-				return (false);
-			close(pipefd[1]);
-			waitpid(here, NULL, 0);
+			else if (heredoc == 0)
+			{
+				close(fd[0]);
+				close(fd[1]);
+				eradication(bash, 0);
+				exit(0);
+			}
+			wait(); // wait for the child to finish
 		}
 		curr = curr->next;
 	}
+	if (fd[0] != 0)
+		close(fd[0]);
+	if (fd[1] != 0)
+		close(fd[1]);
 	return (true);
 }
 
@@ -100,6 +84,7 @@ bool	def_file(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 			cmd->out_file = open(curr->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (cmd->out_file < 0)
 		{
+			printf_error(RED"Max file descriptor reached\n"RST);
 			bash->exit_status = 127;
 			return (false);
 		}
@@ -109,12 +94,15 @@ bool	def_file(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 
 //definir le dernier fichier d'entree
 
-void	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
+bool	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 {
 	t_infopars	*curr;
 
 	curr = lst_char;
-	def_file(lst_char, cmd, bash);
+	if (!def_file(lst_char, cmd, bash))
+		return (false);
+	if (!open_heredoc(lst_char, cmd, bash))
+		return (false);
 	while (curr && curr->spe != 5 && curr->spe != 1 && curr->spe != 0)
 	{
 		if (curr->spe == 4 && curr->str[0] == '<')
@@ -126,4 +114,5 @@ void	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 		}
 		curr = curr->next;
 	}
+	return (true);
 }

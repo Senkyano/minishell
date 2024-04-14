@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:54:23 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 18:05:29 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/14 20:52:49 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ void	eradication(t_shell *bash, int fd)
 		lstclear(bash->lst_envs);
 	if (fd != 0)
 		close(fd);
+	close(bash->std_in);
+	close(bash->std_out);
 	exit(0);
 }

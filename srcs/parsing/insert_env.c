@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/10 15:33:03 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/14 20:19:09 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 	return (true);
 }
 
-char	*insert_env(char *str, t_shell *bash)
-{
+char	*insert_env(char *str, t_shell *bash) // modification requis pour un meilleur fonctionnement
+{											// Il faut changer le char en t_infopars
 	t_data	x;
 	int		i;
 
