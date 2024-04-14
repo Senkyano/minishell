@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/14 20:57:53 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/14 23:00:26 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 	t_infopars	*curr;
 	pid_t		heredoc;
 	int			fd[2];
+	char		*str;
 
 	curr = lst_char;
 	lib_memset(fd, 0, sizeof(fd));
@@ -32,7 +33,6 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 				close(fd[0]);
 			if (fd[1] != 0)
 				close(fd[1]);
-			printf_error("heredoc\n");
 			if (pipe(fd) < 0)
 				return (false);
 			heredoc = fork();
@@ -44,18 +44,29 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 			else if (heredoc == 0)
 			{
 				close(fd[0]);
+				while (1)
+				{
+					str = readline("> ");
+					if (slib_cmp(str, curr->next->str))
+					{
+						free(str);
+						break ;
+					}
+					write(fd[1], str, str_len(str));
+					write(fd[1], "\n", 2);
+					free(str);
+				}
 				close(fd[1]);
 				eradication(bash, 0);
 				exit(0);
 			}
-			wait(); // wait for the child to finish
+			cmd->in_file = fd[0];
+			close(fd[1]);
+			wait(NULL); // wait for the child to finish
 		}
 		curr = curr->next;
 	}
-	if (fd[0] != 0)
-		close(fd[0]);
-	if (fd[1] != 0)
-		close(fd[1]);
+	close(fd[0]);
 	return (true);
 }
 
