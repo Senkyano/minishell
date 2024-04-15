@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:13:16 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 18:24:28 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:15:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_tree	*build_branch(t_infopars *lstchar, t_shell *bash)
 			new_branch->type = 2;
 		new_branch->lst_cmd = NULL;
 	}
-	else if (lstchar->spe == 2)
+	else if (lstchar->spe != 1)
 	{
 		new_branch->type = 3;
 		new_branch->lst_cmd = create_lstcmd(lstchar, bash);

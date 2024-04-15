@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/14 23:00:26 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:29:08 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 
 	curr = lst_char;
 	lib_memset(fd, 0, sizeof(fd));
-	(void)cmd;
 	(void)bash;
-	while (curr)
+	while (curr && curr->spe != 5)
 	{
 		if (curr->spe == 4 && curr->str[0] == '<' && str_len(curr->str) == 2)
 		{
@@ -43,10 +42,13 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 			}
 			else if (heredoc == 0)
 			{
+				init_signal_child();
 				close(fd[0]);
 				while (1)
 				{
-					str = readline("> ");
+					str = readline(PUR"> "RST);
+					if (!str)
+						break ;
 					if (slib_cmp(str, curr->next->str))
 					{
 						free(str);
@@ -66,7 +68,7 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 		}
 		curr = curr->next;
 	}
-	close(fd[0]);
+	cmd->in_file = fd[0];
 	return (true);
 }
 
