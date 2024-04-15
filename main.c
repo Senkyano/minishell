@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/11 15:08:36 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/15 12:11:07 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env)
 		else
 		{
 			pipe_loop(tree, bash);
-			bash->exit_status = wait_loop(tree);
+			bash->exit_status = wait_loop(tree, bash);
+			bash->last_exit_status = bash->exit_status;
 			dup2(bash->std_in, 0);
 		}
 	}
@@ -53,8 +54,8 @@ t_shell	init_bash(char **env)
 void	loop_minishell(t_shell *bash)
 {
 	char	*str;
+	int		final_exit_status;
 
-	// (void)exit_status;
 	while (1)
 	{
 		str = readline(CY"Minishell >: "RST);
@@ -63,15 +64,17 @@ void	loop_minishell(t_shell *bash)
 		{
 			close(bash->std_in);
 			close(bash->std_out);
+			final_exit_status = bash->exit_status;
 			free_shell(bash);
 			write(2, "exit\n", 6);
-			exit(0);
+			exit(final_exit_status);
 		}
 		else
 		{
 			if (!build_process(str, bash))
 				continue ;
 			init_signal_ign();
+			bash->last_exit_status = bash->exit_status;
 			bash->exit_status = 0;
 			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
 			init_signal();
@@ -95,6 +98,7 @@ int	main(int argc, const char **argv, const char **env)
 	init_signal();
 	bash = init_bash((char **)env);
 	bash.exit_status = 0;
+	bash.last_exit_status = 0;
 	rl_line_buffer = NULL;
 	loop_minishell(&bash);
 	(void)argc;

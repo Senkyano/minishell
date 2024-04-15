@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/11 14:17:35 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/15 12:26:14 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ void	ft_exit(char **cmd, t_shell *bash)
 		}
 		if (cmd[1] && cmd[2] && !error)
 		{
-			exit_code = 1;
+			bash->exit_status = 1;
 			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
+			return ;
 		}
 	}
 	free_shell(bash);

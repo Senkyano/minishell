@@ -662,22 +662,21 @@ redirection de la ligne de commande.
 
 A faire (Pas encore fait) :
 
-1. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce sera plus simple)
+1. integrer la gestion des redirection avec les fds dans l'execution
+2. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce sera plus simple)
+	-  ls | hola | cat => remettre a jour le pipe quand une commande est inconnu pour la fin de la pipeline
+	- 'ls | ls | hola | rev' -> doit s'arreter a hola et ne pas faire rev
+	- ./Makefile => bash: ./Makefile: Permission denied, exit_status = 126, pareil pour
+	'touch hola', './hola', gerer avec (access(cmd->path_cmd[i], X_OK) == 0) pour tester si c'est un executable
 	- unset doit unset plusieurs variables de suite et garder les memes regles de parsing
 	de la fonction, et on doit pouvoir faire 'unset "" HOLA' -> unset le HOLA tout en 
 	renvoyant 1 pour le exit_status
+
 	- cd /var quitte mon minishell apres avoir supprime a alors que l'on est dans a/b
-	- 'exit 7843 svf' ne doit pas exit mais quand meme mettre le message 'too many arguments' et 'exit gsv 54' doit exit avec le message d'erreur 'numeric argument required'
 	- quand je fais : 'mkdir a a/b', 'cd a/b', 'rm -fr ../../a', 'cd' => le OLDPWD ne recupere pas bien le chemin, il faut que je regarde dans la fonction cd ce qui se passe
-	- ./Makefile => bash: ./Makefile: Permission denied, exit_status = 126, pareil pour
-	'touch hola', './hola'
 	- 'env -i ./minishell', 'env' est cense affiche quand meme le PWD, 'SHLVL' et '_'.
-	- 'ls | ls | hola | rev' -> doit s'arreter a hola et ne pas faire rev
 	- 'ech|o hola | cat' doit juste faire 'command not found' pour 'ech' et 'o' avec exit_status = 127
-2. integrer la gestion des redirection avec les fds dans l'execution
-3. Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status (ajouter une option pour recuperer l'exit
-status et l'afficher avec echo)
-4. Tout mettre a la norme
+3. Tout mettre a la norme
 
 <br/>
 
@@ -707,6 +706,8 @@ avant de fork (un minishell dans un pipe ne doit pas etre lance avec execve, en 
 minishell ainsi lancee)
 => la maniere de faire c'est de mettre le fd du premier pipe au fd d'ecriture standard
 pour lancer normalement le minishell et skip le deuxieme minishell qui n'est pas cense s'executer, sauf que cela pose probleme quand je lance un premier minishell, que j'exit et que je relance la commande "./minishell | ./minishell"
+- 'exit 7843 svf' ne doit pas exit mais quand meme mettre le message 'too many - arguments' et 'exit gsv 54' doit exit avec le message d'erreur 'numeric argument required'
+- Gerer le probleme de l'expansion avec le parsing et verifier que 'echo $?' renvoie bien le bon exit status (ajouter une option pour recuperer l'exit status et l'afficher avec echo)
 
 Free && Leaks :
 

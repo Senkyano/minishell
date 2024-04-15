@@ -111,7 +111,9 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
+	int				last_infile;
 	int				in_file;
+	char			*in_file_name;
 	int				out_file;
 	struct s_lstcmd	*next; //pipe
 }	t_lstcmd;
@@ -128,6 +130,7 @@ typedef	struct s_tree
 typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
+	int			last_exit_status;
 	char		**path; // True path
 	int			std_out;
 	int			std_in;
@@ -255,7 +258,7 @@ int			ft_pwd(char **args_split);
 int			ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		no_args(t_envlist *lst_envs);
-void		ft_echo(char **args_split);
+void		ft_echo(char **args_split, t_shell *bash);
 void		ft_exit(char **cmd, t_shell *bash);
 int			ft_env(char **args_split, t_shell *minishell);
 
@@ -293,7 +296,7 @@ void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
 void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 char		*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 void		pipe_loop(t_tree *tree, t_shell *bash);
-int			wait_loop(t_tree *tree);
+int			wait_loop(t_tree *tree, t_shell *bash);
 
 //utils2_exec.c
 int			exec_without_fork(t_tree *tree, t_shell *bash);
