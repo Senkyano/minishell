@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:27:48 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 18:23:15 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/15 17:50:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	free_tree(t_tree *tree)
 		{
 			tmp_lst_cmd = tree->lst_cmd;
 			tree->lst_cmd = tree->lst_cmd->next;
+			if (tmp_lst_cmd->in_file > 0)
+				close(tmp_lst_cmd->in_file);
+			if (tmp_lst_cmd->out_file > 0)
+				close(tmp_lst_cmd->out_file);
 			if (tmp_lst_cmd)
 				lib_free_split(tmp_lst_cmd->cmd);
 			free(tmp_lst_cmd);
