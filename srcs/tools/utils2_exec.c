@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:49:31 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/11 09:42:11 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/15 12:24:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	exec_without_fork(t_tree *tree, t_shell *bash)
 		close(bash->std_in);
 		close(bash->std_out);
 		ft_exit(tree->lst_cmd->cmd, bash);
+		return (1);
 	}
 	if (!ft_strcmp(tree->lst_cmd->cmd[0], "cd") && \
 		!tree->lst_cmd->next)
