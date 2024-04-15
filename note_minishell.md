@@ -664,17 +664,19 @@ A faire (Pas encore fait) :
 
 1. integrer la gestion des redirection avec les fds dans l'execution
 2. Faire tout les tests du fichier csv (lorsque le merge avec le parsing sera fait ce sera plus simple)
+	- Recrer un env lorsqu'on unset le path, mais que l'on re-export PATH, et donc ls 
+	doit etre capable d'etre relancer a ce moment, et egalement lorsqu'on ne re-export pas ls mais que l'on envoie le chemin final "/bin/ls", cela doit fonctionner
 	-  ls | hola | cat => remettre a jour le pipe quand une commande est inconnu pour la fin de la pipeline
 	- 'ls | ls | hola | rev' -> doit s'arreter a hola et ne pas faire rev
 	- ./Makefile => bash: ./Makefile: Permission denied, exit_status = 126, pareil pour
-	'touch hola', './hola', gerer avec (access(cmd->path_cmd[i], X_OK) == 0) pour tester si c'est un executable
+	'touch hola', './hola', gerer avec (access(cmd->path_cmd[i], X_OK) == 0) pour tester si c'est un executable, et tester avec un executable que l'on creer qui a les permissions 644
 	- unset doit unset plusieurs variables de suite et garder les memes regles de parsing
 	de la fonction, et on doit pouvoir faire 'unset "" HOLA' -> unset le HOLA tout en 
 	renvoyant 1 pour le exit_status
 
+	- 'env -i ./minishell', 'env' est cense affiche quand meme le PWD, 'SHLVL' et '_'.
 	- cd /var quitte mon minishell apres avoir supprime a alors que l'on est dans a/b
 	- quand je fais : 'mkdir a a/b', 'cd a/b', 'rm -fr ../../a', 'cd' => le OLDPWD ne recupere pas bien le chemin, il faut que je regarde dans la fonction cd ce qui se passe
-	- 'env -i ./minishell', 'env' est cense affiche quand meme le PWD, 'SHLVL' et '_'.
 	- 'ech|o hola | cat' doit juste faire 'command not found' pour 'ech' et 'o' avec exit_status = 127
 3. Tout mettre a la norme
 
