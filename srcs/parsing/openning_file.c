@@ -6,14 +6,14 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/15 18:16:32 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/15 22:58:17 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2]);
-void	gestion_close(int fd[2]);
+bool	gestion_close(int fd[2], pid_t *heredoc, t_shell *bash, t_infopars *curr);
 
 // Ouvrir tout les fichier de type heredoc
 
@@ -29,20 +29,11 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 	{
 		if (curr->spe == 4 && curr->str[0] == '<' && str_len(curr->str) == 2)
 		{
-			gestion_close(fd);
-			if (pipe(fd) < 0)
+			if (!gestion_close(fd, &heredoc, bash, curr))
 				return (false);
-			heredoc = fork();
-			if (heredoc < 0)
-			{
-				printf_error(RED"fork failed\n"RST);
-				return (false);
-			}
-			else if (heredoc == 0)
-				write_heredoc(curr, bash, fd);
 			cmd->in_file = fd[0];
 			close(fd[1]);
-			wait(NULL); // wait for the child to finish
+			wait(NULL);
 		}
 		curr = curr->next;
 	}
@@ -53,12 +44,26 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 	return (true);
 }
 
-void	gestion_close(int fd[2])
+bool	gestion_close(int fd[2], pid_t *heredoc, t_shell *bash, t_infopars *curr)
 {
 	if (fd[0] != 0)
 		close(fd[0]);
 	if (fd[1] != 0)
 		close(fd[1]);
+	if (pipe(fd) < 0)
+	{
+		printf_error(RED"pipe failed\n"RST);
+		return (false);
+	}
+	*heredoc = fork();
+	if (*heredoc == -1)
+	{
+		printf_error(RED"fork failed\n"RST);
+		return (false);
+	}
+	else if (*heredoc == 0)
+		write_heredoc(curr, bash, fd);
+	return (true);
 }
 
 static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2])
