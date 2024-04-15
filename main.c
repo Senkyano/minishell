@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/15 15:53:29 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/15 15:55:55 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env)
 		else
 		{
 			pipe_loop(tree, bash);
-			bash->exit_status = wait_loop(tree);
+			bash->exit_status = wait_loop(tree, bash);
 			dup2(bash->std_in, 0);
 		}
 	}
