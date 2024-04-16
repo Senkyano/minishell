@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 09:18:14 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 17:20:22 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_env(char **args_split, t_shell *minishell)
 	t_envlist	*list_envs;
 	int			tmp;
 	
-	if (!minishell->lst_envs)
+	if (!minishell->lst_envs || !check_env_key(minishell, "PATH") || !check_path(minishell))
 	{
 		ft_putstr_fd("bash: env: No such file or directory\n", 2);
 		return (127);
@@ -57,7 +57,7 @@ int	ft_env(char **args_split, t_shell *minishell)
 	{
 		if (ft_strcmp(args_split[tmp], "env"))
 		{
-			ft_printf("env: '%s': No such file or directory\n", args_split[tmp]);
+			printf_error("env: '%s': No such file or directory\n", args_split[tmp]);
 			return (127);
 		}
 		tmp++;

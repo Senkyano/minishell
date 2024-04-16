@@ -97,10 +97,10 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
-	int				last_infile;
-	int				in_file;
-	char			*in_file_name;
-	int				out_file;
+	int				last_infile; // parsing
+	int				in_file; // exec
+	char			*in_file_name; // parsing
+	int				out_file; // exec
 	struct s_lstcmd	*next; //pipe
 }	t_lstcmd;
 
@@ -245,7 +245,7 @@ int			ft_pwd(char **args_split);
 int			ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
 void		no_args(t_envlist *lst_envs);
-void		ft_echo(char **args_split, t_shell *bash);
+void		ft_echo(char **args_split);
 void		ft_exit(char **cmd, t_shell *bash);
 int			ft_env(char **args_split, t_shell *minishell);
 
@@ -271,6 +271,7 @@ char		**free_split(char **char_tab);
 void		malloc_env(t_shell *minishell, char **env);
 char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
+int			check_path(t_shell *bash);
 
 //test_execution.c
 void		init_tree1(char **argv, t_shell *bash);

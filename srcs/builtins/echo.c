@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:44:32 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/15 11:22:56 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 17:17:11 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	get_nb_args(char **args_split)
 	return (nb_args);
 }
 
-void	ft_echo(char **args_split, t_shell *bash)
+void	ft_echo(char **args_split)
 {
 	int	flag;
 	int	first_arg;
@@ -67,10 +67,7 @@ void	ft_echo(char **args_split, t_shell *bash)
 	{
 		while (first_arg <= nb_args)
 		{
-			if (args_split[first_arg][0] == '?' && args_split[first_arg][1] == '\0')
-				ft_putnbr_fd(bash->last_exit_status, 1);
-			else
-				ft_putstr_fd(args_split[first_arg], 1);
+			ft_putstr_fd(args_split[first_arg], 1);
 			first_arg++;
 			if (first_arg <= nb_args)
 				ft_putchar_fd(' ', 1);

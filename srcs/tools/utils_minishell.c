@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/09 14:42:28 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 18:42:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**get_paths(char **env)
 	char	*path;
 	int		tmp;
 
-	if (!env[0])
+	if (!env || !env[0])
 		return (NULL);
 	tmp = 0;
 	path = NULL;
@@ -59,7 +59,8 @@ char	**get_paths(char **env)
 		}
 		tmp++;
 	}
-	path_split = ft_split(path, ':');
+	if (path)
+		path_split = ft_split(path, ':');
 	if (!path_split)
 		exit(0);
 	free(path);
@@ -121,6 +122,11 @@ char	*check_cmd(char *cmd, char **path_split)
 		write(2, "Command '' not found\n", 22);
 		return (NULL);
 	}
+	if (cmd[0] == '.' && cmd[1] == '/' && access(cmd, X_OK) == -1)
+	{
+		printf_error("bash : %s: Permission denied\n", cmd);
+		return (NULL);
+	}
 	if (access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
 	tmp = 0;
@@ -136,4 +142,24 @@ char	*check_cmd(char *cmd, char **path_split)
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": command not found\n", 21);
 	return (NULL);
+}
+
+int	check_path(t_shell *bash)
+{
+	char	**paths_str;
+	char	*path_str;
+	int		tmp;
+
+	path_str = get_value_env(bash, "PATH");
+	if (!path_str)
+		return (0);
+	paths_str = ft_split(path_str, ':');
+	tmp = 0;
+	while (paths_str[tmp])
+	{
+		if (!ft_strcmp(paths_str[tmp], "/bin"))
+			return (1);
+		tmp++;
+	}
+	return (0);
 }

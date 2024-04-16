@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/15 15:53:14 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 18:42:39 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 {
 	init_signal_child();
-	execve(cmd_path, cmd, bash->env);
+	if ((check_env_key(bash, "PATH") && check_path(bash)) || access(cmd[0], F_OK) == 0)
+		execve(cmd_path, cmd, bash->env);
+	else
+		printf_error("bash: %s: No such file or directory\n", cmd[0]);
 	free_shell(bash);
 	exit(127);
 }
@@ -77,6 +80,7 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 		if (!is_builtins(cmds->cmd) && !cmd_path)
 		{
 			cmds->available = 0;
+			dup2(fd[0], 0);
 			close(fd[0]);
 			close(fd[1]);
 		}
@@ -96,7 +100,10 @@ int	wait_loop(t_tree *tree, t_shell *bash)
 	{
 		if (!lst_index(cmds, cmds->index)->available)
 		{
-			bash->exit_status = 127;
+			if (cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/' && access(cmds->cmd[0], X_OK) == -1)
+				bash->exit_status = 126;
+			else
+				bash->exit_status = 127;
 			cmds = cmds->next;
 			continue ;
 		}

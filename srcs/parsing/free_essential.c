@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_essential.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:54:23 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/14 20:52:49 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/15 16:13:44 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_essential(t_shell *bash)
 	}
 }
 
-void	eradication(t_shell *bash, int fd)
+void	eradication(t_shell *bash, int exit_status)
 {
 	if (bash->lst_char)
 		free_boxshell(&bash->lst_char);
@@ -38,9 +38,7 @@ void	eradication(t_shell *bash, int fd)
 		lib_free_split(bash->str_split);
 	if (bash->lst_envs)
 		lstclear(bash->lst_envs);
-	if (fd != 0)
-		close(fd);
 	close(bash->std_in);
 	close(bash->std_out);
-	exit(0);
+	exit(exit_status);
 }

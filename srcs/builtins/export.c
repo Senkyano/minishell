@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 10:45:16 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 17:20:46 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	test_replace_elem(char **args_split, int tmp, t_shell *bash)
 			lst_envs->key = splitting_tmp[0];
 			lst_envs->value = splitting_tmp[1];
 			lst_envs->splitting = splitting_tmp;
+			lst_envs->display = 1;
 			return (1);
 		}
 		lst_envs = lst_envs->next;

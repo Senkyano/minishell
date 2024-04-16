@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_lstcmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/14 19:39:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:50:21 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,6 @@ t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash)
 		add_lstcmd(&new_lst, tmp_cmd);
 		if (!define_last(curr, tmp_cmd, bash))
 			return (new_lst);
-		if (tmp_cmd->in_file_name)
-			printf_error("cmd name: %s\n", tmp_cmd->in_file_name);
-		if (tmp_cmd->last_infile != -1)
-			printf_error("cmd fd: %d\n", tmp_cmd->last_infile);
 		free(tmp_cmd->in_file_name);
 		if (!exist_next_pipe(curr))
 			return (new_lst);
