@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:45:18 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 14:24:58 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 22:34:38 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,18 @@ void	free_box(t_infopars *curr)
 	if (curr->str)
 		lib_free_split(&curr->str);
 	free(curr);
+}
+
+bool	take_value(char *str, t_shell *bash, t_data *x)
+{
+	char	*tmp;
+
+	tmp = env_value(str, bash->lst_envs, name_env(str), bash);
+	if (!tmp)
+		return (false);
+	x->new_str = opti_join(x->new_str, tmp);
+	free(tmp);
+	if (!x->new_str)
+		return (false);
+	return (true);
 }

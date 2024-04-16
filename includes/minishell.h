@@ -188,6 +188,9 @@ bool		replace_lstchar_env(t_infopars *lst_char, t_shell *bash);
 t_infopars	*true_expand(t_infopars *curr, char **str, t_shell *bash);
 bool		space_in_expand(char *str);
 t_infopars	*lst_shellstr_env(char **str);
+bool		take_value(char *str, t_shell *bash, t_data *x);
+bool		expander(t_infopars *curr, t_shell *bash);
+char		*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);

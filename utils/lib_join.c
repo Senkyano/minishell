@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:29:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 17:40:57 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 22:17:38 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,26 @@ char	*strall_join(char *str1, char *str2)
 	size_t	j;
 	char	*new_str;
 
+	if (!str1)
+	{
+		str1 = lib_strup("");
+		if (!str1)
+			return (NULL);
+	}
+	if (!str2)
+	{
+		str2 = lib_strup("");
+		if (!str2)
+			return (NULL);
+	}
 	new_str = malloc((str_len(str1) + str_len(str2) + 1) * sizeof(char));
 	if (!new_str)
 		return (NULL);
 	i = -1;
 	j = -1;
-	while (str1[++i])
+	while (str1[++i] != 0)
 		new_str[i] = str1[i];
-	while (str2[++j])
+	while (str2[++j] != 0)
 		new_str[i + j] = str2[j];
 	new_str[i + j] = '\0';
 	free(str2);
