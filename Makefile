@@ -51,6 +51,7 @@ PARS_C =	condition_launch.c \
 			split_minishell.c \
 			skip_part.c \
 			insert_env.c \
+			second_insert_env.c \
 			utils_lst_split.c \
 			utils_box.c \
 			utils_box2.c \

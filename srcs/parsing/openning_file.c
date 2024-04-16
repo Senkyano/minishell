@@ -6,14 +6,15 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/15 22:58:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 12:32:06 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2]);
-bool	gestion_close(int fd[2], pid_t *heredoc, t_shell *bash, t_infopars *curr);
+bool		gestion_close(int fd[2], pid_t *here, t_shell *bash, \
+t_infopars *curr);
 
 // Ouvrir tout les fichier de type heredoc
 
@@ -44,7 +45,7 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 	return (true);
 }
 
-bool	gestion_close(int fd[2], pid_t *heredoc, t_shell *bash, t_infopars *curr)
+bool	gestion_close(int fd[2], pid_t *here, t_shell *bash, t_infopars *curr)
 {
 	if (fd[0] != 0)
 		close(fd[0]);
@@ -55,13 +56,13 @@ bool	gestion_close(int fd[2], pid_t *heredoc, t_shell *bash, t_infopars *curr)
 		printf_error(RED"pipe failed\n"RST);
 		return (false);
 	}
-	*heredoc = fork();
-	if (*heredoc == -1)
+	*here = fork();
+	if (*here == -1)
 	{
 		printf_error(RED"fork failed\n"RST);
 		return (false);
 	}
-	else if (*heredoc == 0)
+	else if (*here == 0)
 		write_heredoc(curr, bash, fd);
 	return (true);
 }
@@ -108,7 +109,8 @@ void	def_file(t_infopars *lst_char, t_lstcmd *cmd, int def)
 		if (str_len(curr->prec->str) == 1)
 			cmd->out_file = open(curr->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (str_len(curr->prec->str) == 2)
-			cmd->out_file = open(curr->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			cmd->out_file = open(curr->str, O_WRONLY | O_CREAT | \
+		O_APPEND, 0644);
 	}
 }
 

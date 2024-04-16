@@ -184,6 +184,9 @@ int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
 bool		replace_lstchar_env(t_infopars *lst_char, t_shell *bash);
+t_infopars	*true_expand(t_infopars *curr, char **str, t_shell *bash);
+bool		space_in_expand(char *str);
+t_infopars	*lst_shellstr_env(char **str);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);
