@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 12:32:06 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 19:36:00 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 	}
 	if (def == HERE_DOC)
 		cmd->in_file = fd[0];
-	else
+	else if (fd[0] != 0)
 		close(fd[0]);
 	return (true);
 }
@@ -121,6 +121,7 @@ bool	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 	t_infopars	*curr;
 
 	curr = lst_char;
+	(void)bash;
 	while (curr && curr->spe != 5 && curr->spe != 1 && curr->spe != 0)
 	{
 		if (curr->spe == 4 && curr->str[0] == '<')
