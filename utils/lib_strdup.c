@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:46:15 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/10 21:40:18 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:13:31 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,12 @@ char	*lib_strup(char *str)
 	new_str = malloc(sizeof(char) * (str_len(str) + 1));
 	if (!new_str)
 		return (NULL);
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i] && str[i] != '\0')
+	{
 		new_str[i] = str[i];
+		i++;
+	}
 	new_str[i] = '\0';
 	return (new_str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/15 15:50:18 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 16:49:50 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	loop_minishell(t_shell *bash)
 			if (!build_process(str, bash))
 				continue ;
 			init_signal_ign();
+			bash->last_exit_status = bash->exit_status;
 			bash->exit_status = 0;
 			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
 			init_signal();

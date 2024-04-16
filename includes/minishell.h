@@ -116,6 +116,7 @@ typedef	struct s_tree
 typedef struct	s_shell
 {
 	int			exit_status; // gestion des erreur
+	int			last_exit_status;
 	char		**path; // True path
 	int			std_out;
 	int			std_in;
