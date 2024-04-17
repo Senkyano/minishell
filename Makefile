@@ -69,7 +69,8 @@ PARS_C =	condition_launch.c \
 			gestion_quote.c \
 			free_essential.c \
 			openning_file.c \
-			redirection.c
+			redirection.c \
+			closing_all.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))

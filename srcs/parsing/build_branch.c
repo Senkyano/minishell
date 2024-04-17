@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_branch.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:13:16 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/15 14:15:07 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 15:55:49 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ t_tree	*build_branch(t_infopars *lstchar, t_shell *bash)
 	new_branch = malloc(sizeof(t_tree));
 	if (!new_branch)
 		return (NULL);
+	new_branch->parent = NULL;
+	new_branch->left_child = NULL;
+	new_branch->right_child = NULL;
 	if (lstchar->spe == 1)
 	{
 		if (lstchar->str[0] == '&')
@@ -34,9 +37,6 @@ t_tree	*build_branch(t_infopars *lstchar, t_shell *bash)
 		if (!new_branch->lst_cmd)
 			return (NULL);
 	}
-	new_branch->parent = NULL;
-	new_branch->left_child = NULL;
-	new_branch->right_child = NULL;
 	return (new_branch);
 }
 

@@ -189,7 +189,7 @@ t_infopars	*true_expand(t_infopars *curr, char **str, t_shell *bash);
 bool		space_in_expand(char *str);
 t_infopars	*lst_shellstr_env(char **str);
 bool		take_value(char *str, t_shell *bash, t_data *x);
-bool		expander(t_infopars *curr, t_shell *bash);
+bool	expander(t_infopars *curr, t_shell *bash, t_infopars **new_curr);
 char		*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
@@ -224,7 +224,7 @@ bool		building_tree(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash);
 t_tree		*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);
 void		print_tree(t_tree *main_tree);
-
+void		close_tree(t_tree *curr);
 //test
 int			len_inquote(char *str);
 bool		suppress_quote(t_infopars *lst_char);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 09:39:31 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 14:46:53 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 	{
 		if (curr->spe == 2)
 		{
-			if (!expander(curr, bash))
+			if (!expander(curr, bash, &curr))
 				return (false);
 		}
 		curr = curr->next;
@@ -33,7 +33,7 @@ bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 	return (true);
 }
 
-bool	expander(t_infopars *curr, t_shell *bash)
+bool	expander(t_infopars *curr, t_shell *bash, t_infopars **new_curr)
 {
 	char	**tmp;
 
@@ -50,7 +50,7 @@ bool	expander(t_infopars *curr, t_shell *bash)
 		if (!tmp)
 			return (false);
 		curr->str = NULL;
-		curr = true_expand(curr, tmp, bash);
+		*new_curr = true_expand(curr, tmp, bash);
 		if (!curr)
 			return (false);
 	}

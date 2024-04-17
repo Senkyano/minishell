@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 14:33:10 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 14:52:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ bool	build_process(char *str, t_shell *bash)
 	curr = noeud_first(curr);
 	if (!building_tree(&bash->tree, curr, bash))
 	{
+		close_tree(bash->tree);
 		free_essential(bash);
 		printf_error(RED"Building TREE Fail\n"RST);
 		return (false);

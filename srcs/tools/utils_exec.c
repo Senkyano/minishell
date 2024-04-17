@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 13:44:33 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 14:53:09 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ void	exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 {
 	if (struct_cmd->child == 0)
 	{
-		if (struct_cmd->index == bash->len_cmds - 1)
-			dup2(bash->std_out, 1);
+		if (struct_cmd->out_file > 0)
+			dup2(struct_cmd->out_file, 1);
 		else
-			dup2(fd[1], 1);
+		{
+			if (struct_cmd->index == bash->len_cmds - 1)
+				dup2(bash->std_out, 1);
+			else
+				dup2(fd[1], 1);
+		}
+		close_tree(bash->tree);
 		close(fd[1]);
 		close(fd[0]);
 		close(bash->std_out);
@@ -74,7 +80,9 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 	bash->len_cmds = lst_size(cmds);
 	while (cmds)
 	{
-		if (pipe(fd) == -1)
+		if (cmds->in_file > 0)
+			dup2(cmds->in_file, 0);
+		if (pipe(fd) == -1 || cmds->in_file == -1)
 			break ;
 		if (!is_builtins(cmds->cmd))
 			cmd_path = check_cmd(cmds->cmd[0], bash->path);
