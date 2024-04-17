@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:44:32 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 17:17:11 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:18:48 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_flag(int *first_arg, char **args_split)
 {
 	int	tmp;
 	int	tmp2;
-	
+
 	tmp = 1;
 	while (args_split[tmp] && !ft_strncmp(args_split[tmp], "-n", 2))
 	{
@@ -42,11 +42,13 @@ int	get_nb_args(char **args_split)
 	tmp = 1;
 	nb_args = 0;
 	if (args_split[tmp])
+	{
 		while (args_split[tmp])
 		{
 			nb_args++;
 			tmp++;
 		}
+	}
 	return (nb_args);
 }
 

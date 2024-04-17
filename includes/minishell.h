@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef minishell_H
-# define minishell_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -80,10 +80,10 @@ typedef struct s_token
 	int				tot_pars;
 }	t_token;
 
-typedef struct	s_infopars
+typedef struct s_infopars
 {
-	int		spe; // 1 = process // 2 = cmd // 3 = file // 4 = redirections // 5 = pipe
-	char	*str;
+	int					spe;
+	char				*str;
 	struct s_infopars	*next;
 	struct s_infopars	*prec;
 }	t_infopars;
@@ -241,6 +241,7 @@ char		*ft_strdup(char *src);
 
 //builtins
 int			ft_cd(char **argv, t_shell *minishell);
+int			check_args(char **args_split, t_shell *minishell);
 int			ft_pwd(char **args_split);
 int			ft_unset(char **args_split, t_shell *minishell);
 int			ft_export(char	**args_split, t_shell *minishell);
@@ -270,6 +271,7 @@ char		**get_paths(char **env);
 char		**free_split(char **char_tab);
 void		malloc_env(t_shell *minishell, char **env);
 char		**ft_split_onedel(char const *s, char c);
+int			check_cmd_parsing(char *cmd);
 char		*check_cmd(char *cmd, char **path_split);
 int			check_path(t_shell *bash);
 
@@ -293,6 +295,7 @@ int			exec_without_fork(t_tree *tree, t_shell *bash);
 void		init_signal(void);
 void		init_signal_child(void);
 void		init_signal_ign(void);
+void		init_signal_heredoc(void);
 int			manage_signal(int status, int exit_status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:02 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/03 15:54:36 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 13:35:27 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,15 @@ void	init_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-
 void	init_signal_ign(void)
 {
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	init_signal_heredoc(void)
+{
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 }
 

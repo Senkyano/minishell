@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/15 12:26:14 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:18:00 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ long int	ft_atoi_long(const char *str, int *error)
 	{
 		result = (result * 10) + (str[i] - 48);
 		if (check_out_of_range(result, error, neg))
-			break;
+			break ;
 		i++;
 	}
 	return ((result * neg) % 256);
@@ -53,7 +53,7 @@ int	is_digit(char *arg)
 	int	tmp;
 
 	tmp = 0;
-	if  (arg[tmp] == '-' ||	arg[tmp] == '+')
+	if (arg[tmp] == '-' || arg[tmp] == '+')
 		tmp++;
 	while (arg[tmp])
 	{
@@ -64,11 +64,35 @@ int	is_digit(char *arg)
 	return (1);
 }
 
+int	check_numeric_argument(char **cmd, int *error, int exit_code)
+{
+	int	tmp;
+
+	tmp = 0;
+	while (cmd[1][tmp] == ' ')
+		tmp++;
+	if (!is_digit(cmd[1] + tmp))
+	{
+		exit_code = 2;
+		*error = 1;
+		printf("bash: exit: %s: numeric argument required\n", cmd[1]);
+	}
+	else
+	{
+		exit_code = ft_atoi_long(cmd[1], error);
+		if (*error)
+		{
+			exit_code = 2;
+			printf("bash: exit: %s: numeric argument required\n", cmd[1]);
+		}
+	}
+	return (exit_code);
+}
+
 void	ft_exit(char **cmd, t_shell *bash)
 {	
 	int	exit_code;
-	int error;
-	int	tmp;
+	int	error;
 
 	error = 0;
 	if (!bash->len_cmds)
@@ -77,29 +101,12 @@ void	ft_exit(char **cmd, t_shell *bash)
 		exit_code = 0;
 	if (cmd[1])
 	{
-		tmp = 0;
-		while (cmd[1][tmp] == ' ')
-			tmp++;
-		if (!is_digit(cmd[1] + tmp))
-		{
-			exit_code = 2;
-			error = 1;
-			printf("bash: exit: %s: numeric argument required\n", cmd[1]);
-		}
-		else
-		{
-			exit_code = ft_atoi_long(cmd[1], &error);
-			if (error)
-			{
-				exit_code = 2;
-				printf("bash: exit: %s: numeric argument required\n", cmd[1]);
-			}
-		}
+		error = check_numeric_argument(cmd, &error, exit_code);
 		if (cmd[1] && cmd[2] && !error)
 		{
 			bash->exit_status = 1;
-			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
-			return ;
+			return (ft_putendl_fd("bash: exit: too many arguments", \
+				STDERR_FILENO));
 		}
 	}
 	free_shell(bash);

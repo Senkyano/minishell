@@ -6,37 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 18:42:15 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 13:29:42 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
-
-// void	ls_cmd(void)
-// {
-// 	char			*dir_path;
-// 	DIR				*rep;
-// 	struct dirent	*fichierLU;
-
-// 	dir_path = NULL;
-// 	rep = NULL;
-// 	fichierLU = NULL;
-// 	dir_path = getcwd(dir_path, PATH_MAX);
-// 	rep = opendir(dir_path);
-// 	if (!rep)
-// 		exit(1);
-// 	fichierLU = readdir(rep);
-// 	while (fichierLU)
-// 	{
-// 		ft_putstr_fd(fichierLU->d_name, 1);
-// 		ft_putchar(' ');
-// 		fichierLU = readdir(rep);
-// 	}
-// 	ft_putchar('\n');
-// 	if (closedir(rep) == -1)
-// 		exit(-1);
-// 	free(dir_path);
-// }
+#include "minishell.h"
 
 char	**get_paths(char **env)
 {
@@ -65,17 +39,6 @@ char	**get_paths(char **env)
 		exit(0);
 	free(path);
 	return (path_split);
-}
-
-char	**free_split(char **char_tab)
-{
-	int	tmp;
-
-	tmp = 0;
-	while (char_tab[tmp])
-		free(char_tab[tmp++]);
-	free(char_tab);
-	return (NULL);
 }
 
 void	malloc_env(t_shell *minishell, char **env)
@@ -112,21 +75,30 @@ void	malloc_env(t_shell *minishell, char **env)
 // Pour la key 'DBUS_SESSION_BUS_ADDRESS' de l'environnement il y a deux egal
 // et donc cela pose un probleme avec le split
 
+int	check_cmd_parsing(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	else if (cmd[0] == 0)
+	{
+		write(2, "Command '' not found\n", 22);
+		return (0);
+	}
+	if (cmd[0] == '.' && cmd[1] == '/' && access(cmd, X_OK) == -1)
+	{
+		printf_error("bash : %s: Permission denied\n", cmd);
+		return (0);
+	}
+	return (1);
+}
+
 char	*check_cmd(char *cmd, char **path_split)
 {
 	char	*path_str;
 	int		tmp;
 
-	if (cmd == NULL)
-	{
-		write(2, "Command '' not found\n", 22);
+	if (!check_cmd_parsing(cmd))
 		return (NULL);
-	}
-	if (cmd[0] == '.' && cmd[1] == '/' && access(cmd, X_OK) == -1)
-	{
-		printf_error("bash : %s: Permission denied\n", cmd);
-		return (NULL);
-	}
 	if (access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
 	tmp = 0;

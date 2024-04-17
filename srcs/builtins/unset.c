@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:51:20 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 15:48:15 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:20:13 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_unset_path(char **args_split, t_shell *bash)
 		bash->lst_envs = NULL;
 		test = 1;
 	}
-	return (test);	
+	return (test);
 }
 
 int	parsing_unset(char **args_split)

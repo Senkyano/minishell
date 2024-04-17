@@ -6,35 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:25:33 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/11 11:58:39 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:36:38 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "minishell.h"
-
-int	check_args(char **args_split, t_shell *minishell)
-{
-	if (args_split[1] && args_split[1][0] && \
-		args_split[1][0] == '-' && args_split[1][1] == '-')
-	{
-		printf("bash: cd: -%c: invalid option\n", args_split[1][1]);
-		minishell->exit_status = 2;
-		return (0);
-	}
-	else if (args_split[1] && args_split[2] && args_split[2][0] != '\n')
-		ft_putendl_fd("bash: cd: too many arguments", 2);
-	else if (!check_env_key(minishell, "PWD"))
-		ft_putendl_fd("minishell : cd: PWD not set", 2);
-	else if (!check_env_key(minishell, "OLDPWD"))
-		ft_putendl_fd("minishell : cd: OLDPWD not set", 2);
-	else if (!check_env_key(minishell, "HOME"))
-		ft_putendl_fd("minishell : cd: HOME not set", 2);
-	else
-		return (1);
-	minishell->exit_status = 1;
-	return (0);
-}
 
 char	*particular_path(t_shell *minishell, char *dir_path, int option)
 {
@@ -64,7 +40,8 @@ char	*particular_path(t_shell *minishell, char *dir_path, int option)
 	return (new_dir_path);
 }
 
-int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split, t_shell *minishell)
+int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split, \
+	t_shell *minishell)
 {
 	DIR				*rep;
 	struct dirent	*fichierlu;
@@ -96,10 +73,8 @@ int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split, t_shell 
 void	update_pwds(char *dir_path, char *new_dir_path, \
 					char **args_split, t_shell *minishell)
 {
-	// char		*home_path;
 	t_envlist	*list_envs;	
 
-	// home_path = get_value_env(minishell, "HOME");
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{
@@ -122,14 +97,12 @@ void	update_pwds(char *dir_path, char *new_dir_path, \
 	}
 }
 
-int	ft_cd(char **args_split, t_shell *minishell)
+char	*get_dir_path(char **args_split, t_shell *minishell)
 {
-	char			*dir_path;
-	char			*dir_path_tmp;
-	char			*new_dir_path;
+	char	*dir_path;
 
 	if (!check_args(args_split, minishell))
-		return (minishell->exit_status);
+		return (NULL);
 	dir_path = NULL;
 	dir_path = getcwd(dir_path, PATH_MAX);
 	if (!dir_path)
@@ -139,16 +112,25 @@ int	ft_cd(char **args_split, t_shell *minishell)
 			printf("chdir: error retrieving current directory: getcwd: \
 cannot access parent directories: No such file or directory\n");
 			minishell->exit_status = 1;
-			return (minishell->exit_status);
+			return (NULL);
 		}
 		if (minishell->lst_envs)
-		{
 			dir_path = get_value_env(minishell, "PWD");
-			printf("dir_path : %s\n", dir_path);
-		}
 		else
-			return (minishell->exit_status);
+			return (NULL);
 	}
+	return (dir_path);
+}
+
+int	ft_cd(char **args_split, t_shell *minishell)
+{
+	char			*dir_path;
+	char			*dir_path_tmp;
+	char			*new_dir_path;
+
+	dir_path = get_dir_path(args_split, minishell);
+	if (!dir_path)
+		return (minishell->exit_status);
 	new_dir_path = NULL;
 	if (!args_split[1] || !args_split[1][0] || (args_split[1][0] == '~' && \
 		!args_split[1][1]))

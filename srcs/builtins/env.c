@@ -6,11 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 17:20:22 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 10:58:16 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 int	check_env_key(t_shell *minishell, char *str)
 {
@@ -42,12 +42,12 @@ char	*get_value_env(t_shell *minishell, char *key)
 	return (NULL);
 }
 
-int	ft_env(char **args_split, t_shell *minishell)
+int	check_args_env(char **args_split, t_shell *minishell)
 {
-	t_envlist	*list_envs;
 	int			tmp;
-	
-	if (!minishell->lst_envs || !check_env_key(minishell, "PATH") || !check_path(minishell))
+
+	if (!minishell->lst_envs || !check_env_key(minishell, "PATH") \
+		|| !check_path(minishell))
 	{
 		ft_putstr_fd("bash: env: No such file or directory\n", 2);
 		return (127);
@@ -57,11 +57,21 @@ int	ft_env(char **args_split, t_shell *minishell)
 	{
 		if (ft_strcmp(args_split[tmp], "env"))
 		{
-			printf_error("env: '%s': No such file or directory\n", args_split[tmp]);
+			printf_error("env: '%s': No such file or directory\n", \
+				args_split[tmp]);
 			return (127);
 		}
 		tmp++;
 	}
+	return (0);
+}
+
+int	ft_env(char **args_split, t_shell *minishell)
+{
+	t_envlist	*list_envs;
+
+	if (check_args_env(args_split, minishell))
+		return (127);
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{

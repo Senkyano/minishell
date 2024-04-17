@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 17:20:46 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:19:45 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	parsing_export(char	**args_split, int index)
 		if ((!((splitting_tmp[0][tmp] >= 48 && splitting_tmp[0][tmp] <= 57) || \
 			(splitting_tmp[0][tmp] >= 65 && splitting_tmp[0][tmp] <= 90) || \
 			(splitting_tmp[0][tmp] >= 97 && splitting_tmp[0][tmp] <= 122)) && \
-			splitting_tmp[0][tmp] != '=' && splitting_tmp[0][tmp] != '_') || 
+			splitting_tmp[0][tmp] != '=' && splitting_tmp[0][tmp] != '_') ||
 			args_split[index][0] == '=' || (splitting_tmp[0][0] >= 48 && \
 			splitting_tmp[0][0] <= 57 && !ft_strchr(splitting_tmp[0], '=')))
 		{
@@ -89,8 +89,8 @@ t_envlist	*add_elem_env(char **args_split, int tmp, t_shell *bash)
 int	exec_export(char **args_split, int tmp, int exit_status, t_shell *bash)
 {
 	t_envlist	*new;
-	
-	if(!test_replace_elem(args_split, tmp, bash))
+
+	if (!test_replace_elem(args_split, tmp, bash))
 	{
 		new = add_elem_env(args_split, tmp, bash);
 		if (!new)

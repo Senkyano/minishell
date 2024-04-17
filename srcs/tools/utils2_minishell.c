@@ -6,35 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:21:18 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/09 15:56:46 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:53:32 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static int	count_words(char const *s, char c)
-// {
-// 	int	part;
-// 	int	count;
-
-// 	part = 0;
-// 	count = 0;
-// 	while (*s != '\0')
-// 	{
-// 		if (*s == c && !count && *s != '\0')
-// 		{
-// 			s++;
-// 			count = 1;
-// 		}
-// 		while (*s == c && *s != '\0')
-// 			s++;
-// 		if (*s != c && *s != '\0')
-// 			part++;
-// 		while (*s != c && *s != '\0')
-// 			s++;
-// 	}
-// 	return (part);
-// }
 
 static char	*ft_word_first(char const *s, char c)
 {
@@ -110,6 +86,40 @@ char	**ft_split_onedel(char const *s, char c)
 	}
 	char_tab[1] = 0;
 	return (char_tab);
+}
+
+int	check_args(char **args_split, t_shell *minishell)
+{
+	if (args_split[1] && args_split[1][0] && \
+		args_split[1][0] == '-' && args_split[1][1] == '-')
+	{
+		printf("bash: cd: -%c: invalid option\n", args_split[1][1]);
+		minishell->exit_status = 2;
+		return (0);
+	}
+	else if (args_split[1] && args_split[2] && args_split[2][0] != '\n')
+		ft_putendl_fd("bash: cd: too many arguments", 2);
+	else if (!check_env_key(minishell, "PWD"))
+		ft_putendl_fd("minishell : cd: PWD not set", 2);
+	else if (!check_env_key(minishell, "OLDPWD"))
+		ft_putendl_fd("minishell : cd: OLDPWD not set", 2);
+	else if (!check_env_key(minishell, "HOME"))
+		ft_putendl_fd("minishell : cd: HOME not set", 2);
+	else
+		return (1);
+	minishell->exit_status = 1;
+	return (0);
+}
+
+char	**free_split(char **char_tab)
+{
+	int	tmp;
+
+	tmp = 0;
+	while (char_tab[tmp])
+		free(char_tab[tmp++]);
+	free(char_tab);
+	return (NULL);
 }
 
 // int		main(void)

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 17:40:31 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 10:49:47 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ t_shell	init_bash(char **env)
 	lib_memset(&bash, 0, sizeof(bash));
 	bash.std_in = dup(0);
 	bash.std_out = dup(1);
+	if (!bash.std_in || !bash.std_out)
+		exit(0);
 	malloc_env(&bash, (char **)env);
 	bash.env = (char **)env;
 	bash.len_cmds = 0;
@@ -50,6 +52,17 @@ t_shell	init_bash(char **env)
 	if (!bash.path)
 		exit(127);
 	return (bash);
+}
+
+void	post_init_exec(t_shell *bash)
+{
+	init_signal();
+	dup2(bash->std_in, 0);
+	printf("exit status : %d\n", bash->exit_status);
+	free_tree(bash->tree);
+	bash->tree = NULL;
+	bash->len_cmds = 0;
+	g_status_code = 0;
 }
 
 void	loop_minishell(t_shell *bash)
@@ -76,13 +89,7 @@ void	loop_minishell(t_shell *bash)
 			bash->last_exit_status = bash->exit_status;
 			bash->exit_status = 0;
 			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
-			init_signal();
-			dup2(bash->std_in, 0);
-			printf("exit status : %d\n", bash->exit_status);
-			free_tree(bash->tree);
-			bash->tree = NULL;
-			bash->len_cmds = 0;
-			g_status_code = 0;
+			post_init_exec(bash);
 		}
 	}
 }

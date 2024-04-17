@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   openning_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/15 14:29:08 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 13:35:22 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 			}
 			else if (heredoc == 0)
 			{
-				init_signal_child();
+				init_signal_heredoc();
 				close(fd[0]);
 				while (1)
 				{

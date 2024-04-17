@@ -6,11 +6,11 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 09:46:38 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/09 15:32:41 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 11:46:11 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 t_envlist	*lst_new(char *str, int display)
 {
