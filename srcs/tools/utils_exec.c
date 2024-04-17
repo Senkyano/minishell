@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 18:55:57 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 21:52:42 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,8 @@ char	*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 void	pipe_loop(t_tree *tree, t_shell *bash)
 {
 	t_lstcmd	*cmds;
-	char		*cmd_path;
 	int			fd[2];
 
-	cmd_path = NULL;
 	cmds = tree->lst_cmd;
 	bash->len_cmds = lst_size(cmds);
 	while (cmds)
