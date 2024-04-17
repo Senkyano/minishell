@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 13:46:12 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 16:33:54 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	main(int argc, const char **argv, const char **env)
 {
 	t_shell	bash;
 
+	launch_shell(argc, env);
 	if (argv == NULL)
 		return (1);
 	g_status_code = 0;
