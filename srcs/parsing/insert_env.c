@@ -6,15 +6,15 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/14 20:19:09 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 09:39:31 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lib_utils.h"
 
-static char	*env_value(char *str, t_envlist *lst_envs, int i);
-static void	join_tmp(t_data *x);
+static bool	join_tmp(t_data *x);
+t_infopars	*lst_shellstr_env(char **str);
 
 bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 {
@@ -25,8 +25,7 @@ bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 	{
 		if (curr->spe == 2)
 		{
-			curr->str = insert_env(curr->str, bash);
-			if (!curr->str)
+			if (!expander(curr, bash))
 				return (false);
 		}
 		curr = curr->next;
@@ -34,13 +33,61 @@ bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
 	return (true);
 }
 
-char	*insert_env(char *str, t_shell *bash) // modification requis pour un meilleur fonctionnement
-{											// Il faut changer le char en t_infopars
+bool	expander(t_infopars *curr, t_shell *bash)
+{
+	char	**tmp;
+
+	tmp = NULL;
+	curr->str = insert_env(curr->str, bash);
+	if (!curr->str)
+	{
+		printf_error(RED"Malloc fail\n"RST);
+		return (false);
+	}
+	if (space_in_expand(curr->str))
+	{
+		tmp = split_minishell(curr->str);
+		if (!tmp)
+			return (false);
+		curr->str = NULL;
+		curr = true_expand(curr, tmp, bash);
+		if (!curr)
+			return (false);
+	}
+	return (true);
+}
+
+t_infopars	*lst_shellstr_env(char **str)
+{
+	t_infopars	*new_lst;
+	t_infopars	*tmp;
+	int			i;
+
+	i = -1;
+	new_lst = NULL;
+	while (str[++i])
+	{
+		tmp = diff_boxshell(str[i], 2);
+		if (!tmp)
+		{
+			printf_error(RED"Malloc fail\n"RST);
+			free_split(str);
+			return (NULL);
+		}
+		add_boxshell(&new_lst, tmp);
+	}
+	lib_free_split(str);
+	return (new_lst);
+}
+
+char	*insert_env(char *str, t_shell *bash)
+{
 	t_data	x;
 	int		i;
 
 	i = 0;
 	lib_memset(&x, 0, sizeof(x));
+	x.new_str = NULL;
 	while (str[i])
 	{
 		if (str[i] != '$')
@@ -52,18 +99,16 @@ char	*insert_env(char *str, t_shell *bash) // modification requis pour un meille
 		}
 		else if (str[i++] == '$')
 		{
-			x.new_str = opti_join(x.new_str, env_value(str + i, bash->lst_envs, \
-			name_env(str + i)));
-			if (!x.new_str)
-				return (NULL);
+			take_value(str + i, bash, &x);
 			i += name_env(str + i);
 		}
-		join_tmp(&x);
+		if (!join_tmp(&x))
+			return (NULL);
 	}
 	return (free(str), x.new_str);
 }
 
-static void	join_tmp(t_data *x)
+static bool	join_tmp(t_data *x)
 {
 	if (!x->new_str && x->tmp)
 	{
@@ -71,7 +116,7 @@ static void	join_tmp(t_data *x)
 		free(x->tmp);
 		x->tmp = NULL;
 		if (!x->new_str)
-			return ;
+			return (false);
 	}
 	else if (x->new_str && x->tmp)
 	{
@@ -79,20 +124,26 @@ static void	join_tmp(t_data *x)
 		free(x->tmp);
 		x->tmp = NULL;
 		if (!x->new_str)
-			return ;
+			return (false);
 	}
+	return (true);
 }
 
-static char	*env_value(char *str, t_envlist *lst_envs, int i)
+char	*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash)
 {
 	t_envlist	*curr;
 
 	curr = lst_envs;
+	if (str_len(str) == 0 || (str[0] != '?' && !is_char(str[0]) && \
+	!is_num(str[0])))
+		return (lib_strup("$"));
+	else if (str[0] == '?')
+		return (ft_itoa(bash->last_exit_status));
 	while (curr)
 	{
 		if (str_ncmp(str, curr->key, i) && str_len(curr->key) == i)
-			return (curr->value);
+			return (lib_strup(curr->value));
 		curr = curr->next;
 	}
-	return (NULL);
+	return (lib_strup(""));
 }

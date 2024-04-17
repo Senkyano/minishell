@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/13 18:24:51 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 09:39:20 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 # include <stddef.h>
 # include <stdbool.h>
+
+typedef struct s_data_lib
+{
+	char	*new_str;
+	int		i;
+	int		x;
+	int		trig;
+}	t_data_lib;
 
 // Nbr
 int		nbr_base(long int nbr, int base);

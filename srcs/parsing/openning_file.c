@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 13:35:22 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 13:43:21 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 			}
 			else if (heredoc == 0)
 			{
-				init_signal_heredoc();
+				init_signal_child();
 				close(fd[0]);
 				while (1)
 				{
@@ -59,7 +59,7 @@ bool	open_heredoc(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 					free(str);
 				}
 				close(fd[1]);
-				eradication(bash, 0);
+				eradication(bash);
 				exit(0);
 			}
 			cmd->in_file = fd[0];

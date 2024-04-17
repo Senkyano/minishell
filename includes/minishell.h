@@ -159,7 +159,7 @@ void		add_boxshell(t_infopars **all, t_infopars *part);
 void		add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
 t_infopars *next, t_infopars **old);
 // Free process
-void		eradication(t_shell *bash, int fd);
+void		eradication(t_shell *bash);
 void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
@@ -185,6 +185,12 @@ int			skip_insert_env(char *str, char c);
 // ENV
 char		*insert_env(char *str, t_shell *bash);
 bool		replace_lstchar_env(t_infopars *lst_char, t_shell *bash);
+t_infopars	*true_expand(t_infopars *curr, char **str, t_shell *bash);
+bool		space_in_expand(char *str);
+t_infopars	*lst_shellstr_env(char **str);
+bool		take_value(char *str, t_shell *bash, t_data *x);
+bool		expander(t_infopars *curr, t_shell *bash);
+char		*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);

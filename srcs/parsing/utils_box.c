@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:13:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/03/26 20:12:19 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 14:22:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_infopars	*diff_boxshell(char *str, int spe)
 	while (str[++x])
 		case_info->str[x] = str[x];
 	case_info->str[x] = '\0';
-	case_info->spe = 0;
+	case_info->spe = spe;
 	case_info->next = NULL;
 	case_info->prec = NULL;
 	return (case_info);

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:39:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/11 15:03:48 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 17:49:01 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	skip_not_env(char *str)
 	while ((str[i] != '$' || token.in_sgquote) && str[i])
 	{
 		in_sgquote(str[i], &token);
+		in_doquote(str[i], &token);
 		i++;
 	}
 	return (i);
@@ -33,6 +34,8 @@ int	name_env(char *str)
 	int	len;
 
 	len = 0;
+	if (str[0] == '?')
+		return (1);
 	while (str[len] && (is_char(str[len]) || is_num(str[len])))
 		len++;
 	return (len);

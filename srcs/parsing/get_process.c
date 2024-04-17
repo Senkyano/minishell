@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 18:24:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 14:33:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ bool	build_process(char *str, t_shell *bash)
 	t_infopars	*curr;
 
 	if (!str_len(str))
+	{
+		free(str);
 		return (false);
+	}
 	if (!start_process(str, bash))
 	{
 		free_essential(bash);
