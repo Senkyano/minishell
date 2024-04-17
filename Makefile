@@ -70,7 +70,8 @@ PARS_C =	condition_launch.c \
 			free_essential.c \
 			openning_file.c \
 			redirection.c \
-			closing_all.c
+			closing_all.c \
+			insert_env_here.c
 
 SRC_PARS = $(addprefix $(SRCS)/$(PARS)/, $(PARS_C))
 OBJ_PARS = $(patsubst %.c, $(OBJS)/%.o, $(PARS_C))
@@ -89,7 +90,6 @@ OBJ_BUT = $(patsubst %.c, $(OBJS)/%.o, $(BUT_C))
 TOOL_C =	lst_utils.c \
 			utils_minishell.c \
 			utils2_minishell.c \
-			test_execution.c \
 			utils_builtins.c \
 			utils_exec.c \
 			utils_signal.c \

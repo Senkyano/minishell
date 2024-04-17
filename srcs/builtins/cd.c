@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:25:33 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 11:36:38 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 18:19:28 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,26 @@ char	*particular_path(t_shell *minishell, char *dir_path, int option)
 int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split, \
 	t_shell *minishell)
 {
-	DIR				*rep;
-	struct dirent	*fichierlu;
+	t_data	d;
 
 	if (args_split[1] && args_split[1][0] && (args_split[1][0] != '~' || \
 		(args_split[1][0] == '~' && args_split[1][1])) && \
 		ft_strncmp(args_split[1], "-", 2))
 	{
-		rep = opendir(dir_path);
-		if (!rep)
+		d.rep = opendir(dir_path);
+		if (!d.rep)
 			exit(1);
-		fichierlu = readdir(rep);
-		while (!ft_strncmp(fichierlu->d_name, args_split[1], \
-			ft_strlen(args_split[1])) && fichierlu)
-			fichierlu = readdir(rep);
+		d.fichierlu = readdir(d.rep);
+		while (!ft_strncmp(d.fichierlu->d_name, args_split[1], \
+			ft_strlen(args_split[1])) && d.fichierlu)
+			d.fichierlu = readdir(d.rep);
 		if (chdir(args_split[1]) != 0)
 		{
 			minishell->exit_status = 1;
-			return (free(dir_path), free(new_dir_path), free(rep), perror("chdir"), 0);
+			return (free(dir_path), free(new_dir_path), free(d.rep), \
+			perror("chdir"), 0);
 		}
-		free(rep);
+		free(d.rep);
 	}
 	else
 		if (chdir(new_dir_path) != 0)
@@ -124,31 +124,29 @@ cannot access parent directories: No such file or directory\n");
 
 int	ft_cd(char **args_split, t_shell *minishell)
 {
-	char			*dir_path;
-	char			*dir_path_tmp;
-	char			*new_dir_path;
+	t_data	d;
 
-	dir_path = get_dir_path(args_split, minishell);
-	if (!dir_path)
+	d.dir_path = get_dir_path(args_split, minishell);
+	if (!d.dir_path)
 		return (minishell->exit_status);
-	new_dir_path = NULL;
+	d.new_dir_path = NULL;
 	if (!args_split[1] || !args_split[1][0] || (args_split[1][0] == '~' && \
 		!args_split[1][1]))
-		new_dir_path = particular_path(minishell, dir_path, 0);
+		d.new_dir_path = particular_path(minishell, d.dir_path, 0);
 	else if (args_split[1][0] == '-' && !args_split[1][1])
-		new_dir_path = ft_strdup(get_value_env(minishell, "OLDPWD"));
+		d.new_dir_path = ft_strdup(get_value_env(minishell, "OLDPWD"));
 	else if (!ft_strncmp(args_split[1], "..", 2) && \
 		(ft_strlen(args_split[1]) == 2))
-		new_dir_path = particular_path(minishell, dir_path, 1);
+		d.new_dir_path = particular_path(minishell, d.dir_path, 1);
 	else if (args_split[1] && args_split[1][0] && ft_strncmp(args_split[1], \
 		"..", 2) && ft_strncmp(args_split[1], "~", 2) && \
 		ft_strncmp(args_split[1], "-", 2))
 	{
-		dir_path_tmp = ft_strjoin(dir_path, "/");
-		new_dir_path = ft_strjoin(dir_path_tmp, args_split[1]);
-		free(dir_path_tmp);
+		d.dir_path_tmp = ft_strjoin(d.dir_path, "/");
+		d.new_dir_path = ft_strjoin(d.dir_path_tmp, args_split[1]);
+		free(d.dir_path_tmp);
 	}
-	if (go_to_folder(dir_path, new_dir_path, args_split, minishell))
-		update_pwds(dir_path, new_dir_path, args_split, minishell);
+	if (go_to_folder(d.dir_path, d.new_dir_path, args_split, minishell))
+		update_pwds(d.dir_path, d.new_dir_path, args_split, minishell);
 	return (minishell->exit_status);
 }

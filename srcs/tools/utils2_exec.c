@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:49:31 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 11:55:25 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 18:58:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,36 @@ int	exec_without_fork(t_tree *tree, t_shell *bash)
 		return (1);
 	}
 	return (0);
+}
+
+void	exec_cmd2(t_lstcmd *struct_cmd, t_shell *bash, char *cmd_path)
+{
+	if (is_builtins(struct_cmd->cmd))
+		exec_builtins(struct_cmd->cmd, bash);
+	else
+		exec_child(cmd_path, struct_cmd->cmd, bash);
+}
+
+void	pipe_loop2(t_shell *bash, t_lstcmd *cmds, int *fd)
+{
+	char		*cmd_path;
+
+	cmd_path = NULL;
+	if (!is_builtins(cmds->cmd))
+		cmd_path = check_cmd(cmds->cmd[0], bash->path);
+	if (!is_builtins(cmds->cmd) && !cmd_path)
+	{
+		cmds->available = 0;
+		dup2(fd[0], 0);
+		close(fd[0]);
+		close(fd[1]);
+	}
+	else
+		cmd_path = ft_fork(fd, cmd_path, cmds, bash);
+}
+
+void	init_signal_heredoc(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
 }

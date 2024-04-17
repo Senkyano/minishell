@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:29:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 22:17:38 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:14:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,9 @@ char	*str2_join(char *str1, char *str2)
 
 char	*strall_join(char *str1, char *str2)
 {
-	size_t	i;
-	size_t	j;
-	char	*new_str;
+	t_data_lib	data;
 
+	lib_memset(&data, -1, sizeof(data));
 	if (!str1)
 	{
 		str1 = lib_strup("");
@@ -130,19 +129,15 @@ char	*strall_join(char *str1, char *str2)
 	{
 		str2 = lib_strup("");
 		if (!str2)
-			return (NULL);
+			return (free(str1), NULL);
 	}
-	new_str = malloc((str_len(str1) + str_len(str2) + 1) * sizeof(char));
-	if (!new_str)
+	data.new_str = malloc((str_len(str1) + str_len(str2) + 1) * sizeof(char));
+	if (!data.new_str)
 		return (NULL);
-	i = -1;
-	j = -1;
-	while (str1[++i] != 0)
-		new_str[i] = str1[i];
-	while (str2[++j] != 0)
-		new_str[i + j] = str2[j];
-	new_str[i + j] = '\0';
-	free(str2);
-	free(str1);
-	return (new_str);
+	while (str1[++data.i] != 0)
+		data.new_str[data.i] = str1[data.i];
+	while (str2[++data.j] != 0)
+		data.new_str[data.i + data.j] = str2[data.j];
+	data.new_str[data.i + data.j] = '\0';
+	return (free(str2), free(str1), data.new_str);
 }

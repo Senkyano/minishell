@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:28 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 09:39:20 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:05:56 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_data_lib
 	char	*new_str;
 	int		i;
 	int		x;
+	int		j;
 	int		trig;
 }	t_data_lib;
 

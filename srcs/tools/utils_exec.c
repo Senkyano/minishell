@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 14:53:09 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 18:55:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ void	exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash)
 		close(fd[0]);
 		close(bash->std_out);
 		close(bash->std_in);
-		if (is_builtins(struct_cmd->cmd))
-			exec_builtins(struct_cmd->cmd, bash);
-		else
-			exec_child(cmd_path, struct_cmd->cmd, bash);
+		exec_cmd2(struct_cmd, bash, cmd_path);
 	}
 	else
 	{
@@ -84,17 +81,7 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 			dup2(cmds->in_file, 0);
 		if (pipe(fd) == -1 || cmds->in_file == -1)
 			break ;
-		if (!is_builtins(cmds->cmd))
-			cmd_path = check_cmd(cmds->cmd[0], bash->path);
-		if (!is_builtins(cmds->cmd) && !cmd_path)
-		{
-			cmds->available = 0;
-			dup2(fd[0], 0);
-			close(fd[0]);
-			close(fd[1]);
-		}
-		else
-			cmd_path = ft_fork(fd, cmd_path, cmds, bash);
+		pipe_loop2(bash, cmds, fd);
 		cmds = cmds->next;
 	}
 }
@@ -108,17 +95,16 @@ int	wait_loop(t_tree *tree, t_shell *bash)
 	cmds = tree->lst_cmd;
 	while (cmds)
 	{
-		if (cmds->cmd[0])
-			if (!lst_index(cmds, cmds->index)->available)
-			{
-				if (cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/' && \
-					access(cmds->cmd[0], X_OK) == -1)
-					bash->exit_status = 126;
-				else
-					bash->exit_status = 127;
-				cmds = cmds->next;
-				continue ;
-			}
+		if (!lst_index(cmds, cmds->index))
+		{
+			if (cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/' && \
+				access(cmds->cmd[0], X_OK) == -1)
+				bash->exit_status = 126;
+			else
+				bash->exit_status = 127;
+			cmds = cmds->next;
+			continue ;
+		}
 		waitpid(cmds->child, &status, 0);
 		if (WIFEXITED(status))
 			bash->exit_status = WEXITSTATUS(status);

@@ -88,36 +88,36 @@ typedef struct s_infopars
 	struct s_infopars	*prec;
 }	t_infopars;
 
-typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de base
+typedef struct s_lstcmd
 {
-	int				error;		// pour des cas specifique
-	int				index;		// index pour les pipes
+	int				error;
+	int				index;
 	int				max_index;
 	int				available;
-	char			**cmd;	  // cmd
-	char			**t_path; // true path
-	pid_t			child;	  // child sous-process
-	int				last_infile; // parsing
-	int				in_file; // exec
-	char			*in_file_name; // parsing
-	int				out_file; // exec
-	struct s_lstcmd	*next; //pipe
+	char			**cmd;
+	char			**t_path;
+	pid_t			child;
+	int				last_infile;
+	int				in_file;
+	char			*in_file_name;
+	int				out_file;
+	struct s_lstcmd	*next;
 }	t_lstcmd;
 
-typedef	struct s_tree
+typedef struct s_tree
 {
-	int				type; // voir reference dans le def
-	struct s_tree	*parent; // non necessaire
+	int				type;
+	struct s_tree	*parent;
 	struct s_tree	*left_child;
 	struct s_tree	*right_child;
 	t_lstcmd		*lst_cmd;
 }	t_tree;
 
-typedef struct	s_shell
+typedef struct s_shell
 {
-	int			exit_status; // gestion des erreur
+	int			exit_status;
 	int			last_exit_status;
-	char		**path; // True path
+	char		**path;
 	int			std_out;
 	int			std_in;
 	int			nbr_path;
@@ -131,11 +131,16 @@ typedef struct	s_shell
 
 typedef struct s_data
 {
-	char 		*tmp;
-	char		*new_str;
-	int			i;
-	t_infopars	*new_lst;
-	t_infopars	*tmp_box;
+	char			*tmp;
+	char			*new_str;
+	int				i;
+	char			*dir_path;
+	char			*dir_path_tmp;
+	char			*new_dir_path;
+	DIR				*rep;
+	struct dirent	*fichierlu;
+	t_infopars		*new_lst;
+	t_infopars		*tmp_box;
 }	t_data;
 
 // Erreur
@@ -152,7 +157,8 @@ t_infopars	*cut_boxshell(char *str);
 t_infopars	*first_boxshell(t_infopars *last);
 t_infopars	*last_boxshell(t_infopars *curr);
 // Process manipulation
-t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, t_infopars *curr);
+t_infopars	*supp_blockshell(t_infopars *pre, t_infopars *next, \
+t_infopars *curr);
 // Process add
 bool		build_process(char *str, t_shell *bash);
 void		add_boxshell(t_infopars **all, t_infopars *part);
@@ -189,8 +195,10 @@ t_infopars	*true_expand(t_infopars *curr, char **str, t_shell *bash);
 bool		space_in_expand(char *str);
 t_infopars	*lst_shellstr_env(char **str);
 bool		take_value(char *str, t_shell *bash, t_data *x);
-bool	expander(t_infopars *curr, t_shell *bash, t_infopars **new_curr);
+bool		expander(t_infopars *curr, t_shell *bash, t_infopars **new_curr);
 char		*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash);
+char		*insert_env_here(char *str, t_shell *bash);
+bool		join_tmp(t_data *x);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);
@@ -220,7 +228,8 @@ void		print_branch(t_tree *branch);
 t_tree		*build_tree(t_infopars *lst_char, t_tree **main_tree);
 
 t_infopars	*noeud_first(t_infopars *lst_char);
-bool		building_tree(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash);
+bool		building_tree(t_tree **curr_tree, t_infopars *last_ele, \
+t_shell *bash);
 t_tree		*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);
 void		print_tree(t_tree *main_tree);
@@ -232,7 +241,6 @@ t_infopars	*last_infile(t_infopars *lst_char);
 t_infopars	*last_outfile(t_infopars *lst_char);
 bool		define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash);
 
-
 //libft
 // char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
@@ -243,7 +251,6 @@ char		*ft_strjoin_gnl(char *s1, char *s2, size_t size);
 // int			ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char		**ft_free(char **char_tab, int nb_words);
 char		*ft_strdup(char *src);
-
 
 //builtins
 int			ft_cd(char **argv, t_shell *minishell);
@@ -269,7 +276,8 @@ int			lst_size(t_lstcmd *lstcmd);
 //builtins_utils.c
 int			exec_builtins(char **cmd, t_shell *bash);
 int			is_builtins(char **cmd);
-void		launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash);
+void		launch_builtins(int std_out, int *fd, t_lstcmd *cmds, \
+t_shell *bash);
 
 //utils_minishell.c
 void		ls_cmd(void);
@@ -289,14 +297,17 @@ void		free_lstcmds(t_shell *bash);
 
 //utils_exec.c
 void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
-void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
-char		*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
+void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
+t_shell *bash);
+char		*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, \
+t_shell *bash);
 void		pipe_loop(t_tree *tree, t_shell *bash);
+void		pipe_loop2(t_shell *bash, t_lstcmd *cmds, int *fd);	
 int			wait_loop(t_tree *tree, t_shell *bash);
 
 //utils2_exec.c
 int			exec_without_fork(t_tree *tree, t_shell *bash);
-
+void		exec_cmd2(t_lstcmd *struct_cmd, t_shell *bash, char *cmd_path);
 //utils_signal.c
 void		init_signal(void);
 void		init_signal_child(void);

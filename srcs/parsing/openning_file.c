@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   openning_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 16:21:37 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 19:36:19 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2])
 {
 	char	*str;
-	// (void)bash;
 
 	init_signal_heredoc();
 	close(fd[0]);
@@ -84,6 +83,7 @@ static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2])
 			free(str);
 			break ;
 		}
+		str = insert_env_here(str, bash);
 		write(fd[1], str, str_len(str));
 		write(fd[1], "\n", 2);
 		free(str);
