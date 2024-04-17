@@ -97,10 +97,10 @@ typedef struct	s_lstcmd // quelque soit la liste il y auras de le default lst de
 	char			**cmd;	  // cmd
 	char			**t_path; // true path
 	pid_t			child;	  // child sous-process
-	int				last_infile;
-	int				in_file;
-	char			*in_file_name;
-	int				out_file;
+	int				last_infile; // parsing
+	int				in_file; // exec
+	char			*in_file_name; // parsing
+	int				out_file; // exec
 	struct s_lstcmd	*next; //pipe
 }	t_lstcmd;
 
@@ -159,7 +159,7 @@ void		add_boxshell(t_infopars **all, t_infopars *part);
 void		add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
 t_infopars *next, t_infopars **old);
 // Free process
-void		eradication(t_shell *bash, int fd);
+void		eradication(t_shell *bash);
 void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
@@ -277,6 +277,7 @@ char		**free_split(char **char_tab);
 void		malloc_env(t_shell *minishell, char **env);
 char		**ft_split_onedel(char const *s, char c);
 char		*check_cmd(char *cmd, char **path_split);
+int			check_path(t_shell *bash);
 
 //test_execution.c
 void		init_tree1(char **argv, t_shell *bash);
@@ -289,7 +290,7 @@ void		exec_child(char *cmd_path, char **cmd, t_shell *bash);
 void		exec_cmd(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 char		*ft_fork(int *fd, char *cmd_path, t_lstcmd *struct_cmd, t_shell *bash);
 void		pipe_loop(t_tree *tree, t_shell *bash);
-int			wait_loop(t_tree *tree);
+int			wait_loop(t_tree *tree, t_shell *bash);
 
 //utils2_exec.c
 int			exec_without_fork(t_tree *tree, t_shell *bash);

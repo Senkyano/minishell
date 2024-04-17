@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 08:51:20 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/10 15:18:27 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/16 15:48:15 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_unset(char **args_split, t_shell *bash)
 	t_envlist	*previous;
 	t_envlist	*lst_envs;
 
-	if (!args_split[1] || check_unset_path(args_split, bash))
+	if (!args_split[1])
 		return (0);
 	if (args_split[1][0] && args_split[1][0] == '-')
 	{

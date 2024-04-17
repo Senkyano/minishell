@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/15 15:50:02 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 12:52:26 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 {
 	init_signal_child();
-	execve(cmd_path, cmd, bash->env);
+	if ((check_env_key(bash, "PATH") && check_path(bash)) || access(cmd[0], F_OK) == 0)
+		execve(cmd_path, cmd, bash->env);
+	else
+		printf_error("bash: %s: No such file or directory\n", cmd[0]);
 	free_shell(bash);
 	exit(127);
 }
@@ -77,6 +80,7 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 		if (!is_builtins(cmds->cmd) && !cmd_path)
 		{
 			cmds->available = 0;
+			dup2(fd[0], 0);
 			close(fd[0]);
 			close(fd[1]);
 		}
@@ -86,27 +90,29 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 	}
 }
 
-int	wait_loop(t_tree *tree)
+int	wait_loop(t_tree *tree, t_shell *bash)
 {
 	t_lstcmd	*cmds;
 	int			status;
-	int			exit_status;
 
-	exit_status = 0;
 	cmds = tree->lst_cmd;
 	while (cmds)
 	{
-		if (!lst_index(cmds, cmds->index)->available)
-		{
-			exit_status = 127;
-			cmds = cmds->next;
-			continue ;
-		}
+		if (cmds->cmd[0])
+			if (!lst_index(cmds, cmds->index)->available)
+			{
+				if (cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/' && access(cmds->cmd[0], X_OK) == -1) // check if cmd[0] is good
+					bash->exit_status = 126;
+				else
+					bash->exit_status = 127;
+				cmds = cmds->next;
+				continue ;
+			}
 		waitpid(cmds->child, &status, 0);
 		if (WIFEXITED(status))
-			exit_status = WEXITSTATUS(status);
-		exit_status = manage_signal(status, exit_status);
+			bash->exit_status = WEXITSTATUS(status);
+		bash->exit_status = manage_signal(status, bash->exit_status);
 		cmds = cmds->next;
 	}
-	return (exit_status);
+	return (bash->exit_status);
 }

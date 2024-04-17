@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:54:23 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/15 18:11:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 12:10:18 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ void	free_essential(t_shell *bash)
 	}
 }
 
-void	eradication(t_shell *bash, int fd)
+void	eradication(t_shell *bash)
 {
-	(void)fd;
 	if (bash->lst_char)
 		free_boxshell(&bash->lst_char);
 	if (bash->tree)

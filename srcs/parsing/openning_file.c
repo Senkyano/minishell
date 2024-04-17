@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:31:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 19:36:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 12:10:48 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2])
 		free(str);
 	}
 	close(fd[1]);
-	eradication(bash, 0);
+	eradication(bash);
 }
 
 //definir si il y a un fichier d'entree ou de sortie

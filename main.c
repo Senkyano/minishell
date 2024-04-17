@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 16:49:50 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 12:09:35 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_tree_exec(t_tree *tree, t_shell *bash, char ***env)
 		else
 		{
 			pipe_loop(tree, bash);
-			bash->exit_status = wait_loop(tree);
+			bash->exit_status = wait_loop(tree, bash);
 			dup2(bash->std_in, 0);
 		}
 	}
@@ -47,6 +47,8 @@ t_shell	init_bash(char **env)
 	bash.env = (char **)env;
 	bash.len_cmds = 0;
 	bash.path = get_paths((char **)env);
+	if (!bash.path)
+		exit(127);
 	return (bash);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:44:32 by yrio              #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/16 17:17:11 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	ft_echo(char **args_split)
 	first_arg = 1;
 	flag = check_flag(&first_arg, args_split);
 	nb_args = get_nb_args(args_split);
-	if (args_split[nb_args] && args_split[nb_args][ft_strlen(args_split[nb_args]) - 1] == '\n')
-		args_split[nb_args][ft_strlen(args_split[nb_args]) - 1] = '\0';
 	if (!args_split[1])
 		ft_putchar_fd('\n', 1);
 	else if (!ft_strncmp(args_split[1], "-n", 2) && flag && !args_split[2])
