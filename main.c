@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 16:33:54 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 11:55:51 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	post_init_exec(t_shell *bash)
 {
 	init_signal();
 	dup2(bash->std_in, 0);
-	printf("exit status : %d\n", bash->exit_status);
 	free_tree(bash->tree);
 	bash->tree = NULL;
 	bash->len_cmds = 0;

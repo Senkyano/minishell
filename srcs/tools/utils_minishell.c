@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 13:45:54 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 11:55:37 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,10 @@ int	check_path(t_shell *bash)
 	while (paths_str[tmp])
 	{
 		if (!ft_strcmp(paths_str[tmp], "/bin"))
+		{
+			free_split(paths_str);
 			return (1);
+		}
 		tmp++;
 	}
 	return (0);
