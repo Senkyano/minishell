@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:25:33 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 18:19:28 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:09:10 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,16 @@ char	*particular_path(t_shell *minishell, char *dir_path, int option)
 int	go_to_folder(char *dir_path, char *new_dir_path, char **args_split, \
 	t_shell *minishell)
 {
-	t_data	d;
-
 	if (args_split[1] && args_split[1][0] && (args_split[1][0] != '~' || \
 		(args_split[1][0] == '~' && args_split[1][1])) && \
 		ft_strncmp(args_split[1], "-", 2))
 	{
-		d.rep = opendir(dir_path);
-		if (!d.rep)
-			exit(1);
-		d.fichierlu = readdir(d.rep);
-		while (!ft_strncmp(d.fichierlu->d_name, args_split[1], \
-			ft_strlen(args_split[1])) && d.fichierlu)
-			d.fichierlu = readdir(d.rep);
 		if (chdir(args_split[1]) != 0)
 		{
 			minishell->exit_status = 1;
-			return (free(dir_path), free(new_dir_path), free(d.rep), \
+			return (free(dir_path), free(new_dir_path), \
 			perror("chdir"), 0);
 		}
-		free(d.rep);
 	}
 	else
 		if (chdir(new_dir_path) != 0)

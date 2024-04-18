@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:49:31 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:09:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:13:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	pipe_loop2(t_shell *bash, t_lstcmd *cmds, int *fd)
 	cmd_path = NULL;
 	if (!is_builtins(cmds->cmd))
 		cmd_path = check_cmd(cmds->cmd[0], bash->path);
-	if (!is_builtins(cmds->cmd) && !cmd_path)
+	if ((!is_builtins(cmds->cmd) && !cmd_path))
 	{
 		cmds->available = 0;
 		dup2(fd[0], 0);
@@ -77,7 +77,15 @@ void	pipe_loop2(t_shell *bash, t_lstcmd *cmds, int *fd)
 		close(fd[1]);
 	}
 	else
-		cmd_path = ft_fork(fd, cmd_path, cmds, bash);
+	{
+		if (strcmp(cmds->cmd[0], "cd"))
+			cmd_path = ft_fork(fd, cmd_path, cmds, bash);
+		else
+		{
+			close(fd[0]);
+			close(fd[1]);
+		}
+	}
 }
 
 void	init_signal_here(void)

@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:08 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 11:19:45 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 15:40:32 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	parsing_export(char	**args_split, int index)
 
 	tmp = 0;
 	splitting_tmp = ft_split_onedel(args_split[index], '=');
+	if (check_empty_args(splitting_tmp))
+		return (1);
 	while (splitting_tmp[0][tmp])
 	{
 		if ((!((splitting_tmp[0][tmp] >= 48 && splitting_tmp[0][tmp] <= 57) || \

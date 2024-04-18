@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:08:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:12:11 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,15 @@ void	sigint_handler_here(int signal)
 		write(0, "\n", 1);
 		exit(130);
 	}
+}
+
+int	check_empty_args(char **splitting_tmp)
+{
+	if (!splitting_tmp[0][0])
+	{
+		printf("minishell: export: `': not a valid identifier\n");
+		free_split(splitting_tmp);
+		return (1);
+	}
+	return (0);
 }
