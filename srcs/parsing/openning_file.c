@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:09:28 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:56:11 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 
 	curr = lstchar;
 	lib_memset(fd, 0, sizeof(fd));
-	while (curr && curr->spe != 5 && curr->spe != 1)
+	while (curr && curr->spe != 5 && curr->spe != 1 && curr->spe != 0)
 	{
+		if (bash->exit_status == 130)
+			return (false);
 		if (curr->spe == 4 && curr->str[0] == '<' && str_len(curr->str) == 2)
 		{
 			if (!gestion_close(fd, bash, curr))
@@ -44,7 +46,8 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 
 bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 {
-	pid_t	heredoc;
+	int			status;
+	pid_t		heredoc;
 
 	if (fd[0] != 0)
 		close(fd[0]);
@@ -64,7 +67,9 @@ bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 	}
 	else if (heredoc == 0)
 		write_heredoc(curr, bash, fd);
-	waitpid(heredoc, NULL, 0);
+	waitpid(heredoc, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+		bash->exit_status = WEXITSTATUS(status);
 	return (true);
 }
 

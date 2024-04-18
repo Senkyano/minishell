@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:03:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/12 18:42:42 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:48:02 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,15 @@ bool	building_tree(t_tree **curr_tree, t_infopars *last_ele, t_shell *bash)
 {
 	if (last_ele->spe == 1)
 	{
+		if (bash->exit_status != 0)
+			return (false);
 		if (!branch_pro(curr_tree, last_ele, bash))
 			return (false);
 	}
 	else if (last_ele->spe != 1)
 	{
+		if (bash->exit_status != 0)
+			return (false);
 		if (!branch_cmd(curr_tree, last_ele, bash))
 			return (false);
 	}

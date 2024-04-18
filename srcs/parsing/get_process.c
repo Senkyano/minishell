@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 14:52:38 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 18:56:03 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ bool	build_process(char *str, t_shell *bash)
 	t_infopars	*curr;
 
 	if (!str_len(str))
-	{
-		free(str);
-		return (false);
-	}
+		return (free(str), false);
 	if (!start_process(str, bash))
 	{
 		free_essential(bash);
@@ -35,9 +32,12 @@ bool	build_process(char *str, t_shell *bash)
 	curr = noeud_first(curr);
 	if (!building_tree(&bash->tree, curr, bash))
 	{
-		close_tree(bash->tree);
-		free_essential(bash);
-		printf_error(RED"Building TREE Fail\n"RST);
+		if (bash->tree)
+		{
+			close_tree(bash->tree);
+			free_essential(bash);
+			bash->tree = NULL;
+		}
 		return (false);
 	}
 	free_lstchar(bash->lst_char);
