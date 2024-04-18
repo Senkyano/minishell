@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 16:47:02 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 15:39:22 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,15 @@ void	launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash)
 	close(fd[1]);
 	close(fd[0]);
 	exec_builtins(cmds->cmd, bash);
+}
+
+int	check_empty_args(char **splitting_tmp)
+{
+	if (!splitting_tmp[0][0])
+	{
+		printf("minishell: export: `': not a valid identifier\n");
+		free_split(splitting_tmp);
+		return (1);
+	}
+	return (0);
 }

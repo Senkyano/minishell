@@ -278,6 +278,7 @@ int			exec_builtins(char **cmd, t_shell *bash);
 int			is_builtins(char **cmd);
 void		launch_builtins(int std_out, int *fd, t_lstcmd *cmds, \
 t_shell *bash);
+int			check_empty_args(char **splitting_tmp);
 
 //utils_minishell.c
 void		ls_cmd(void);

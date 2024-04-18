@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 11:18:00 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 12:31:39 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	ft_exit(char **cmd, t_shell *bash)
 		exit_code = 0;
 	if (cmd[1])
 	{
-		error = check_numeric_argument(cmd, &error, exit_code);
+		exit_code = check_numeric_argument(cmd, &error, exit_code);
 		if (cmd[1] && cmd[2] && !error)
 		{
 			bash->exit_status = 1;

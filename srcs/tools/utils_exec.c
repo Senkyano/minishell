@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 21:52:42 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:07:54 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	wait_loop(t_tree *tree, t_shell *bash)
 	cmds = tree->lst_cmd;
 	while (cmds)
 	{
-		if (!lst_index(cmds, cmds->index))
+		if (cmds->cmd[0] && !lst_index(cmds, cmds->index)->available)
 		{
 			if (cmds->cmd[0][0] == '.' && cmds->cmd[0][1] == '/' && \
 				access(cmds->cmd[0], X_OK) == -1)
