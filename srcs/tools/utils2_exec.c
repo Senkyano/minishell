@@ -6,11 +6,13 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:49:31 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 18:58:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:48:55 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	sig_heredoc(int *fd);
 
 int	no_env(t_tree *tree, t_shell *bash)
 {
@@ -78,8 +80,17 @@ void	pipe_loop2(t_shell *bash, t_lstcmd *cmds, int *fd)
 		cmd_path = ft_fork(fd, cmd_path, cmds, bash);
 }
 
-void	init_signal_heredoc(void)
+void	sigint_handler_here(int signal)
 {
-	signal(SIGINT, SIG_DFL);
+	if (signal == 2)
+	{
+		write(0, "\n", 1);
+		exit(130);
+	}
+}
+
+void	init_signal_here(void)
+{
+	signal(SIGINT, sigint_handler_here);
 	signal(SIGQUIT, SIG_IGN);
 }

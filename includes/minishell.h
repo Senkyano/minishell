@@ -185,7 +185,7 @@ int			cutting(char *str, t_lstcmd *base);
 // SKIP
 int			skip_space(char *str);
 int			skip_char(char *str);
-int			skip_not_env(char *str);
+int			skip_not_env(char *str, t_token *token);
 int			name_env(char *str);
 int			skip_insert_env(char *str, char c);
 // ENV
@@ -199,6 +199,7 @@ bool		expander(t_infopars *curr, t_shell *bash, t_infopars **new_curr);
 char		*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash);
 char		*insert_env_here(char *str, t_shell *bash);
 bool		join_tmp(t_data *x);
+int			change_(char *str, t_shell *bash, t_data *x, t_token *token);
 // DOMAINE Analysis
 void		listing_split(t_shell *bash);
 bool		malloc_proc(t_data *tmp, char *str);
@@ -312,7 +313,10 @@ void		exec_cmd2(t_lstcmd *struct_cmd, t_shell *bash, char *cmd_path);
 void		init_signal(void);
 void		init_signal_child(void);
 void		init_signal_ign(void);
-void		init_signal_heredoc(void);
+void		init_signal_heredoc(int fd);
 int			manage_signal(int status, int exit_status);
+
+//signal here_doc
+void	init_signal_here(void);
 
 #endif

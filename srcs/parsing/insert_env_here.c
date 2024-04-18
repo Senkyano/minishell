@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:33:13 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 19:36:05 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 13:58:58 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,30 @@ static int	skip_not_env_here(char *str)
 		i++;
 	}
 	return (i);
+}
+
+int	change_(char *str, t_shell *bash, t_data *x, t_token *token)
+{
+	int	len;
+
+	len = 0;
+	in_doquote(*str, token);
+	in_sgquote(*str, token);
+	if (*str != '$')
+	{
+		len = skip_not_env(str, token);
+		x->tmp = strup_to(str, len);
+		if (!x->tmp)
+			return (-1);
+		return (len);
+	}
+	else if (*str == '$' && !token->in_sgquote)
+	{	
+		len++;
+		if (!take_value(str + len, bash, x))
+			return (-1);
+		len += name_env(str + len);
+		return (len);
+	}
+	return (len);
 }

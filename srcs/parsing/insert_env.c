@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 19:37:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:00:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,23 @@ t_infopars	*lst_shellstr_env(char **str)
 char	*insert_env(char *str, t_shell *bash)
 {
 	t_data	x;
+	t_token	token;
 	int		i;
 
 	i = 0;
+	lib_memset(&token, 0, sizeof(token));
 	lib_memset(&x, 0, sizeof(x));
 	x.new_str = NULL;
 	while (str[i])
 	{
-		if (str[i] != '$')
+		i += change_(str + i, bash, &x, &token);
+		if (i == -1)
 		{
-			x.tmp = strup_to(str + i, skip_not_env(str + i));
-			if (!x.tmp)
-				return (NULL);
-			i += skip_not_env(str + i);
-		}
-		else if (str[i++] == '$')
-		{
-			take_value(str + i, bash, &x);
-			i += name_env(str + i);
+			if (x.new_str)
+				free(x.new_str);
+			if (x.tmp)
+				free(x.tmp);
+			return (free(str), NULL);
 		}
 		if (!join_tmp(&x))
 			return (NULL);

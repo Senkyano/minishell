@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_essential.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:54:23 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 16:27:40 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 11:29:55 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,4 @@ void	eradication(t_shell *bash)
 		lib_free_split(bash->str_split);
 	if (bash->lst_envs)
 		lstclear(bash->lst_envs);
-	close(bash->std_in);
-	close(bash->std_out);
-	exit(bash->exit_status);
 }

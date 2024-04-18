@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 19:36:19 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:02:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 
 bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 {
+	int			status;
 	pid_t	heredoc;
 
+	status = 0;
 	if (fd[0] != 0)
 		close(fd[0]);
 	if (fd[1] != 0)
@@ -55,6 +57,7 @@ bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 		printf_error(RED"pipe failed\n"RST);
 		return (false);
 	}
+	init_signal_ign();
 	heredoc = fork();
 	if (heredoc == -1)
 	{
@@ -63,7 +66,12 @@ bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 	}
 	else if (heredoc == 0)
 		write_heredoc(curr, bash, fd);
-	waitpid(heredoc, NULL, 0);
+	waitpid(heredoc, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		bash->exit_status = WEXITSTATUS(status);
+		return (false);
+	}
 	return (true);
 }
 
@@ -71,8 +79,10 @@ static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2])
 {
 	char	*str;
 
-	init_signal_heredoc();
+	close(bash->std_in);
+	close(bash->std_out);
 	close(fd[0]);
+	init_signal_here();
 	while (1)
 	{
 		str = readline(PUR"> "RST);
@@ -90,6 +100,7 @@ static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2])
 	}
 	close(fd[1]);
 	eradication(bash);
+	exit(0);
 }
 
 //definir si il y a un fichier d'entree ou de sortie

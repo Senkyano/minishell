@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 16:33:54 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 13:42:18 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	post_init_exec(t_shell *bash)
 {
 	init_signal();
 	dup2(bash->std_in, 0);
-	printf("exit status : %d\n", bash->exit_status);
 	free_tree(bash->tree);
 	bash->tree = NULL;
 	bash->len_cmds = 0;
@@ -83,11 +82,11 @@ void	loop_minishell(t_shell *bash)
 		}
 		else
 		{
+			bash->last_exit_status = bash->exit_status;
 			if (!build_process(str, bash))
 				continue ;
-			init_signal_ign();
-			bash->last_exit_status = bash->exit_status;
 			bash->exit_status = 0;
+			init_signal_ign();
 			bash->exit_status = ft_tree_exec(bash->tree, bash, &bash->env);
 			post_init_exec(bash);
 		}

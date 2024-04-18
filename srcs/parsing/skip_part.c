@@ -6,24 +6,26 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:39:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 17:49:01 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:58:06 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lib_utils.h"
 
-int	skip_not_env(char *str)
+int	skip_not_env(char *str, t_token *token)
 {
-	int		i;
-	t_token	token;
+	int	i;
 
 	i = 0;
-	lib_memset(&token, 0, sizeof(token));
-	while ((str[i] != '$' || token.in_sgquote) && str[i])
+	if (str[i] == '\'')
+		i++;
+	else if (str[i] == '"')
+		i++;
+	while (str[i] && (str[i] != '$' || token->in_sgquote))
 	{
-		in_sgquote(str[i], &token);
-		in_doquote(str[i], &token);
+		in_sgquote(str[i], token);
+		in_doquote(str[i], token);
 		i++;
 	}
 	return (i);
@@ -31,14 +33,14 @@ int	skip_not_env(char *str)
 
 int	name_env(char *str)
 {
-	int	len;
+	int	i;
 
-	len = 0;
-	if (str[0] == '?')
+	i = 0;
+	if (str[i] == '?')
 		return (1);
-	while (str[len] && (is_char(str[len]) || is_num(str[len])))
-		len++;
-	return (len);
+	while (str[i] && (is_char(str[i]) || is_num(str[i])))
+		i++;
+	return (i);
 }
 
 int	skip_char(char *str)
