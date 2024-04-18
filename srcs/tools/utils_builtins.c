@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/16 16:47:02 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/18 18:08:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,13 @@ void	launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash)
 	close(fd[1]);
 	close(fd[0]);
 	exec_builtins(cmds->cmd, bash);
+}
+
+void	sigint_handler_here(int signal)
+{
+	if (signal == 2)
+	{
+		write(0, "\n", 1);
+		exit(130);
+	}
 }

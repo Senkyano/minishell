@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:02:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:09:28 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 
 bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 {
-	int			status;
 	pid_t	heredoc;
 
-	status = 0;
 	if (fd[0] != 0)
 		close(fd[0]);
 	if (fd[1] != 0)
@@ -66,12 +64,7 @@ bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr)
 	}
 	else if (heredoc == 0)
 		write_heredoc(curr, bash, fd);
-	waitpid(heredoc, &status, 0);
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
-		bash->exit_status = WEXITSTATUS(status);
-		return (false);
-	}
+	waitpid(heredoc, NULL, 0);
 	return (true);
 }
 

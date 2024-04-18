@@ -313,10 +313,8 @@ void		exec_cmd2(t_lstcmd *struct_cmd, t_shell *bash, char *cmd_path);
 void		init_signal(void);
 void		init_signal_child(void);
 void		init_signal_ign(void);
-void		init_signal_heredoc(int fd);
+void		sigint_handler_here(int signal);
 int			manage_signal(int status, int exit_status);
-
-//signal here_doc
-void	init_signal_here(void);
+void		init_signal_here(void);
 
 #endif
