@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 22:00:54 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/02 17:23:34 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:03:30 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ void	lib_free_split(char **sent)
 	if (!sent)
 		return ;
 	while (sent[i])
- 		free(sent[i++]);
+		free(sent[i++]);
 	free(sent);
 }

@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   insert_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:27:47 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 14:46:53 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/17 19:37:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lib_utils.h"
 
-static bool	join_tmp(t_data *x);
 t_infopars	*lst_shellstr_env(char **str);
 
 bool	replace_lstchar_env(t_infopars *lst_char, t_shell *bash)
@@ -108,7 +107,7 @@ char	*insert_env(char *str, t_shell *bash)
 	return (free(str), x.new_str);
 }
 
-static bool	join_tmp(t_data *x)
+bool	join_tmp(t_data *x)
 {
 	if (!x->new_str && x->tmp)
 	{
@@ -127,23 +126,4 @@ static bool	join_tmp(t_data *x)
 			return (false);
 	}
 	return (true);
-}
-
-char	*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash)
-{
-	t_envlist	*curr;
-
-	curr = lst_envs;
-	if (str_len(str) == 0 || (str[0] != '?' && !is_char(str[0]) && \
-	!is_num(str[0])))
-		return (lib_strup("$"));
-	else if (str[0] == '?')
-		return (ft_itoa(bash->last_exit_status));
-	while (curr)
-	{
-		if (str_ncmp(str, curr->key, i) && str_len(curr->key) == i)
-			return (lib_strup(curr->value));
-		curr = curr->next;
-	}
-	return (lib_strup(""));
 }

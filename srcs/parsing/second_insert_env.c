@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:45:18 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/16 22:34:38 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/17 19:00:50 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_box(t_infopars *curr);
 bool	space_in_expand(char *str)
 {
 	t_token	token;
-	int	i;
+	int		i;
 
 	i = -1;
 	lib_memset(&token, 0, sizeof(token));
@@ -77,4 +77,23 @@ bool	take_value(char *str, t_shell *bash, t_data *x)
 	if (!x->new_str)
 		return (false);
 	return (true);
+}
+
+char	*env_value(char *str, t_envlist *lst_envs, int i, t_shell *bash)
+{
+	t_envlist	*curr;
+
+	curr = lst_envs;
+	if (str_len(str) == 0 || (str[0] != '?' && !is_char(str[0]) && \
+	!is_num(str[0])))
+		return (lib_strup("$"));
+	else if (str[0] == '?')
+		return (ft_itoa(bash->last_exit_status));
+	while (curr)
+	{
+		if (str_ncmp(str, curr->key, i) && str_len(curr->key) == i)
+			return (lib_strup(curr->value));
+		curr = curr->next;
+	}
+	return (lib_strup(""));
 }
