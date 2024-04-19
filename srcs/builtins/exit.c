@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:45:55 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 12:31:39 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/19 09:44:56 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,10 @@ void	ft_exit(char **cmd, t_shell *bash)
 				STDERR_FILENO));
 		}
 	}
+	if (bash->std_in > 0)
+		close(bash->std_in);
+	if (bash->std_out > 0)
+		close(bash->std_out);
 	free_shell(bash);
 	exit(exit_code);
 }

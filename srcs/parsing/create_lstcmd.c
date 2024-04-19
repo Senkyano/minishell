@@ -6,7 +6,7 @@
 /*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 15:55:58 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/19 10:57:43 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	add_lstcmd(t_lstcmd **lst_cmd, t_lstcmd *new_cmd)
 	while (curr->next)
 		curr = curr->next;
 	curr->next = new_cmd;
+	new_cmd->prec = curr;
 }
 
 static bool	exist_next_pipe(t_infopars *lst)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   creat_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 14:56:30 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/14 12:06:04 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/19 10:54:50 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	init_cmd(t_lstcmd *cmd, int index)
 	cmd->in_file_name = NULL;
 	cmd->out_file = 0;
 	cmd->next = NULL;
+	cmd->prec = NULL;
 }
 
 void	print_lstcmd(t_lstcmd *lstcmd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/18 18:56:03 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/19 09:57:24 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ bool	build_process(char *str, t_shell *bash)
 {
 	t_infopars	*curr;
 
-	if (!str_len(str))
+	if (!str_len(str) || only_space(str))
 		return (free(str), false);
 	if (!start_process(str, bash))
 	{
+		free(bash->str_split);
 		free_essential(bash);
 		return (false);
 	}
@@ -72,7 +73,6 @@ static bool	start_process(char *str, t_shell *bash)
 	bash->str_split = split_minishell(str);
 	if (!bash->str_split)
 	{
-		bash->str_split = NULL;
 		free(str);
 		printf_error(RED"Malloc fail\n"RST);
 		return (false);

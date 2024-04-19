@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/10 13:43:49 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/19 09:57:44 by yrio             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,18 @@ int	count_minishell(char *str)
 		i += skip_char(str + i);
 	}
 	return (mini_count);
+}
+
+bool	only_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (false);
+		i++;
+	}
+	return (true);
 }

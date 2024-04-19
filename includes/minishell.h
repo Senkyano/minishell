@@ -102,6 +102,7 @@ typedef struct s_lstcmd
 	char			*in_file_name;
 	int				out_file;
 	struct s_lstcmd	*next;
+	struct s_lstcmd	*prec;
 }	t_lstcmd;
 
 typedef struct s_tree
@@ -149,6 +150,7 @@ void		gestion_exit(char *msg, t_shell *bash);
 bool		check_lst_split(t_shell *bash);
 bool		check_process(t_infopars *pars);
 bool		in_feature(t_infopars *curr, t_shell *bash);
+bool		only_space(char *str);
 // Get
 void		get_true_path(t_shell *bash, char const **env);
 // Case
@@ -235,7 +237,8 @@ t_tree		*back_parent(t_tree *curr_tree);
 // void	free_tree(t_tree *main_tree);
 void		print_tree(t_tree *main_tree);
 void		close_tree(t_tree *curr);
-//test
+//Heredoc
+void		close_out_heredoc(t_shell *bash, int fd, t_lstcmd *lstcmd);
 int			len_inquote(char *str);
 bool		suppress_quote(t_infopars *lst_char);
 t_infopars	*last_infile(t_infopars *lst_char);
