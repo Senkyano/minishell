@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/19 10:18:43 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/20 17:55:36 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ char	*check_cmd(char *cmd, char **path_split)
 		free(path_str);
 		tmp++;
 	}
-	write(2, cmd, ft_strlen(cmd));
-	write(2, ": command not found\n", 21);
+	printf_error("%s : command not found\n", cmd);
 	return (NULL);
 }
 
