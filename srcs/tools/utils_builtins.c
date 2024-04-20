@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 12:19:54 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:12:11 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/20 12:18:50 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,6 @@ void	launch_builtins(int std_out, int *fd, t_lstcmd *cmds, t_shell *bash)
 	close(fd[1]);
 	close(fd[0]);
 	exec_builtins(cmds->cmd, bash);
-}
-
-void	sigint_handler_here(int signal)
-{
-	if (signal == 2)
-	{
-		write(0, "\n", 1);
-		exit(130);
-	}
 }
 
 int	check_empty_args(char **splitting_tmp)

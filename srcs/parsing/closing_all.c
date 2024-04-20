@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   closing_all.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:47:48 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/19 11:02:28 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/20 17:35:41 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,12 @@ void	close_out_heredoc(t_shell *bash, int fd, t_lstcmd *lstcmd)
 {
 	t_lstcmd	*first;
 
-	first = first_cmd_pipe(lstcmd);
-	if (first)
-		close_cmds(first);
+	if (lstcmd)
+	{
+		first = first_cmd_pipe(lstcmd);
+		if (first)
+			close_cmds(first);
+	}
 	close_tree(bash->tree);
 	if (fd > 0)
 		close(fd);

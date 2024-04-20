@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:39:00 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/18 12:58:06 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/20 12:24:54 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	skip_space(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && (str[i] == 32 || str[i] == 11))
+	while (str[i] && (str[i] == 32 || str[i] == 11 || str[i] == 9))
 		i++;
 	return (i);
 }

@@ -93,7 +93,8 @@ TOOL_C =	lst_utils.c \
 			utils_builtins.c \
 			utils_exec.c \
 			utils_signal.c \
-			utils2_exec.c
+			utils2_exec.c \
+			signal_heredoc.c
 
 SRC_TOOL = $(addprefix $(SRCS)/$(TOOLS)/, $(TOOL_C))
 OBJ_TOOL = $(patsubst %.c, $(OBJS)/%.o, $(TOOL_C))

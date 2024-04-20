@@ -174,6 +174,7 @@ void		free_blockstrshell(t_infopars *selec);
 void		free_tree(t_tree *tree);
 void		free_essential(t_shell *bash);
 void		free_branch(t_tree *branch);
+void		free_current_branch(t_tree *branch);
 void		free_lstcmd(t_lstcmd *lst);
 // Print process
 void		print_strshell(t_infopars *lst);
@@ -223,8 +224,9 @@ void		id_shellst(t_shell *bash);
 bool		sub_shell(t_infopars *lst, t_shell *bash);
 // Utils lst_cmd
 t_lstcmd	*build_cmd(t_infopars *lst, int index);
-t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash);
+t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash, t_tree *branch);
 void		print_lstcmd(t_lstcmd *lstcmd);
+t_lstcmd	*first_cmd_pipe(t_lstcmd *lstcmd);
 // TREE
 t_tree		*build_branch(t_infopars *lstchar, t_shell *bash);
 void		print_branch(t_tree *branch);
@@ -243,7 +245,7 @@ int			len_inquote(char *str);
 bool		suppress_quote(t_infopars *lst_char);
 t_infopars	*last_infile(t_infopars *lst_char);
 t_infopars	*last_outfile(t_infopars *lst_char);
-bool		define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash);
+bool		define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash, t_tree *branch);
 
 //libft
 // char		*ft_strjoin(char const *s1, char const *s2);
@@ -317,7 +319,6 @@ void		exec_cmd2(t_lstcmd *struct_cmd, t_shell *bash, char *cmd_path);
 void		init_signal(void);
 void		init_signal_child(void);
 void		init_signal_ign(void);
-void		sigint_handler_here(int signal);
 int			manage_signal(int status, int exit_status);
 void		init_signal_here(void);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:36:10 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/19 09:57:44 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/20 14:24:15 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	only_space(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ')
+		if (str[i] != ' ' && str[i] != 9 && str[i] != '\n')
 			return (false);
 		i++;
 	}

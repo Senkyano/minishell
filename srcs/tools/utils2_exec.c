@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils2_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 09:49:31 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/19 09:43:26 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/20 12:18:37 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sig_heredoc(int *fd);
 
 int	no_env(t_tree *tree, t_shell *bash)
 {
@@ -82,10 +80,4 @@ void	pipe_loop2(t_shell *bash, t_lstcmd *cmds, int *fd)
 			close(fd[1]);
 		}
 	}
-}
-
-void	init_signal_here(void)
-{
-	signal(SIGINT, sigint_handler_here);
-	signal(SIGQUIT, SIG_IGN);
 }

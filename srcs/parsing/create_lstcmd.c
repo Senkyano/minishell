@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_lstcmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 16:42:33 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/19 10:57:43 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/20 17:44:05 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,30 @@ static t_infopars	*next_pipe(t_infopars *lst);
 static bool			exist_next_pipe(t_infopars *lst);
 static void			add_lstcmd(t_lstcmd **lst_cmd, t_lstcmd *new_cmd);
 
-t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash)
+t_lstcmd	*create_lstcmd(t_infopars *lst, t_shell *bash, t_tree *branch)
 {
 	t_infopars	*curr;
 	t_lstcmd	*tmp_cmd;
-	t_lstcmd	*new_lst;
 	int			i;
 
 	curr = lst;
-	new_lst = NULL;
 	i = 0;
-	(void)bash;
 	while (curr)
 	{
 		tmp_cmd = build_cmd(curr, i++);
 		if (!tmp_cmd)
 		{
-			free_lstcmd(new_lst);
+			free_lstcmd(branch->lst_cmd);
 			return (NULL);
 		}
-		add_lstcmd(&new_lst, tmp_cmd);
-		if (!define_last(curr, tmp_cmd, bash))
-			return (new_lst);
+		add_lstcmd(&branch->lst_cmd, tmp_cmd);
+		if (!define_last(curr, tmp_cmd, bash, branch)) // envoyer branch
+			return (branch->lst_cmd);
 		if (!exist_next_pipe(curr))
-			return (new_lst);
+			return (branch->lst_cmd);
 		curr = next_pipe(curr);
 	}
-	return (new_lst);
+	return (branch->lst_cmd);
 }
 
 void	free_lstcmd(t_lstcmd *lst)

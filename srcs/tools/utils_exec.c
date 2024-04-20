@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:12:58 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/19 21:14:51 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,13 @@ void	pipe_loop(t_tree *tree, t_shell *bash)
 			break ;
 		pipe_loop2(bash, cmds, fd);
 		cmds = cmds->next;
+	}
+	if (cmds)
+	{
+		if (fd[0] > 0)
+			close(fd[0]);
+		if (fd[1] > 0)
+			close(fd[1]);
 	}
 }
 

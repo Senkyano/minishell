@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   openning_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/19 11:02:48 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/20 17:41:54 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2], \
-t_lstcmd *lstcmd);
-bool		gestion_close(int fd[2], t_shell *bash, t_infopars *curr, \
-t_lstcmd *lstcmd);
+static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2], t_tree *branch);
+bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr, t_tree *branch);
 
 // Ouvrir tout les fichier de type heredoc
 
-bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
+bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, t_tree *branch)
 {
 	t_infopars	*curr;
 	int			fd[2];
@@ -32,22 +30,21 @@ bool	open_heredoc(t_infopars *lstchar, t_lstcmd *cmd, t_shell *bash, int def)
 			return (false);
 		if (curr->spe == 4 && curr->str[0] == '<' && str_len(curr->str) == 2)
 		{
-			if (!gestion_close(fd, bash, curr, cmd))
+			if (!gestion_close(fd, bash, curr, branch))
 				return (false);
 			cmd->in_file = fd[0];
 			close(fd[1]);
 		}
 		curr = curr->next;
 	}
-	if (def == HERE_DOC)
+	if (cmd->last_infile == HERE_DOC)
 		cmd->in_file = fd[0];
-	else if (fd[0] != 0 && def == NO_HERE_DOC)
+	else if (fd[0] != 0 && cmd->last_infile == NO_HERE_DOC)
 		close(fd[0]);
 	return (true);
 }
 
-bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr, \
-t_lstcmd *lstcmd)
+bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr, t_tree *branch)
 {
 	int			status;
 	pid_t		heredoc;
@@ -69,19 +66,19 @@ t_lstcmd *lstcmd)
 		return (false);
 	}
 	else if (heredoc == 0)
-		write_heredoc(curr, bash, fd, lstcmd);
+		write_heredoc(curr, bash, fd, branch);
 	waitpid(heredoc, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 		bash->exit_status = WEXITSTATUS(status);
 	return (true);
 }
 
-static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2], \
-t_lstcmd *lstcmd)
+static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2], t_tree *branch)
 {
 	char	*str;
 
-	close_out_heredoc(bash, fd[0], lstcmd);
+	close_out_heredoc(bash, fd[0], branch->lst_cmd);
+	free_current_branch(branch);
 	init_signal_here();
 	while (1)
 	{
@@ -95,11 +92,11 @@ t_lstcmd *lstcmd)
 		}
 		str = insert_env_here(str, bash);
 		write(fd[1], str, str_len(str));
-		write(fd[1], "\n", 2);
 		free(str);
+		write(fd[1], "\n", 2);
 	}
-	close(fd[1]);
 	eradication(bash);
+	close(fd[1]);
 	exit(0);
 }
 
@@ -131,7 +128,7 @@ bool	def_file(t_infopars *lst_char, t_lstcmd *cmd, int def)
 
 //definir le dernier fichier d'entree
 
-bool	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
+bool	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash, t_tree *branch)
 {
 	t_infopars	*curr;
 
@@ -149,7 +146,7 @@ bool	define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash)
 	}
 	if (!def_file(lst_char, cmd, cmd->last_infile))
 		return (false);
-	if (!open_heredoc(lst_char, cmd, bash, cmd->last_infile))
+	if (!open_heredoc(lst_char, cmd, bash, branch))
 		return (false);
 	return (true);
 }
