@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 08:00:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/18 18:52:09 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/21 13:54:12 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	loop_minishell(t_shell *bash)
 
 	while (1)
 	{
+		bash->exit_status = g_status_code;
 		str = readline(CY"Minishell >: "RST);
 		add_history(str);
 		if (!str)
