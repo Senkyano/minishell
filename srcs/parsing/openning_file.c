@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/21 14:13:36 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/21 15:34:00 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,17 +112,7 @@ bool	def_file(t_infopars *lst_char, t_lstcmd *cmd, int def)
 		if (curr->prec->str[0] == '<' && str_len(curr->prec->str) == 1)
 			cmd->in_file = open(curr->str, O_RDONLY);
 	}
-	curr = last_outfile(lst_char);
-	if (curr)
-	{
-		if (str_len(curr->prec->str) == 1)
-			cmd->out_file = open(curr->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (str_len(curr->prec->str) == 2)
-			cmd->out_file = open(curr->str, O_WRONLY | O_CREAT | \
-		O_APPEND, 0644);
-		if (cmd->out_file < 0)
-			return (false);
-	}
+	last_outfile(lst_char, cmd);
 	return (true);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:36:59 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/19 09:57:24 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/21 15:03:19 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static bool	lst_shellstr(t_shell *bash)
 
 static bool	start_process(char *str, t_shell *bash)
 {
+	add_history(str);
 	bash->str_split = split_minishell(str);
 	if (!bash->str_split)
 	{

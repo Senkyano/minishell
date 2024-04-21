@@ -244,7 +244,7 @@ void		close_out_heredoc(t_shell *bash, int fd, t_lstcmd *lstcmd);
 int			len_inquote(char *str);
 bool		suppress_quote(t_infopars *lst_char);
 t_infopars	*last_infile(t_infopars *lst_char);
-t_infopars	*last_outfile(t_infopars *lst_char);
+void		last_outfile(t_infopars *lst_char, t_lstcmd *curr_cmd);
 bool		define_last(t_infopars *lst_char, t_lstcmd *cmd, t_shell *bash, t_tree *branch);
 
 //libft
