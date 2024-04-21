@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:29:02 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/17 18:14:44 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/21 13:22:34 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ char	*opti_join(char *str1, char *str2)
 	if (!str1)
 	{
 		str1 = lib_strup("");
-		data.trig = 1;
 		if (!str1)
 			return (NULL);
 	}
 	if (!str2)
 		return (str1);
-	data.new_str = malloc((str_len(str1) + str_len(str2) + 1 * sizeof(char)));
+	data.new_str = malloc((str_len(str1) + str_len(str2) + 1) * sizeof(char));
 	if (!data.new_str)
 		return (NULL);
 	while (str1[++data.i])

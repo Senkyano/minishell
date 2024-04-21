@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:51:41 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/19 21:14:51 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/21 13:33:52 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	exec_child(char *cmd_path, char **cmd, t_shell *bash)
 		execve(cmd_path, cmd, bash->env);
 	else
 		printf_error("bash: %s: No such file or directory\n", cmd[0]);
+	free(cmd_path);
 	free_shell(bash);
 	exit(127);
 }

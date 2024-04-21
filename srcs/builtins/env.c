@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrio <yrio@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 07:26:19 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/17 10:58:16 by yrio             ###   ########.fr       */
+/*   Updated: 2024/04/21 13:47:11 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ int	ft_env(char **args_split, t_shell *minishell)
 {
 	t_envlist	*list_envs;
 
-	if (check_args_env(args_split, minishell))
-		return (127);
+	(void)args_split;
+	// if (check_args_env(args_split, minishell))
+	// 	return (127);
 	list_envs = minishell->lst_envs;
 	while (list_envs != NULL)
 	{

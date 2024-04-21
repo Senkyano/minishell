@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:37:47 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/20 17:55:36 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/21 13:30:26 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	check_cmd_parsing(char *cmd)
 char	*check_cmd(char *cmd, char **path_split)
 {
 	char	*path_str;
+	char	*path_tmp;
 	int		tmp;
 
 	if (!check_cmd_parsing(cmd))
@@ -104,8 +105,12 @@ char	*check_cmd(char *cmd, char **path_split)
 	tmp = 0;
 	while (path_split[tmp])
 	{
-		path_str = ft_strjoin_gnl(ft_strjoin(path_split[tmp], "/"), \
-			cmd, ft_strlen(cmd));
+		path_tmp = str_join(path_split[tmp], "/");
+		if (!path_tmp)
+			return (NULL);
+		path_str = opti_join(path_tmp, cmd);
+		if (!path_str)
+			return (NULL);
 		if (access(path_str, F_OK) == 0)
 			return (path_str);
 		free(path_str);
