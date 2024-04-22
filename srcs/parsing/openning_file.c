@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:04:05 by yrio              #+#    #+#             */
-/*   Updated: 2024/04/21 15:34:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:52:02 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,29 @@ bool	gestion_close(int fd[2], t_shell *bash, t_infopars *curr, t_tree *branch)
 
 static void	write_heredoc(t_infopars *curr, t_shell *bash, int fd[2], t_tree *branch)
 {
-	char	*str;
+	char		*str;
+	char		*lim;
 
 	close_out_heredoc(bash, fd[0], branch->lst_cmd);
-	free_current_branch(branch);
+	lim = lib_strup(curr->next->str);
+	eradication(bash, branch);
 	init_signal_here();
 	while (1)
 	{
 		str = readline(PUR"> "RST);
 		if (!str)
 			break ;
-		if (slib_cmp(str, curr->next->str))
+		if (slib_cmp(str, lim))
 		{
 			free(str);
 			break ;
 		}
-		str = insert_env_here(str, bash);
+		// str = insert_env_here(str, bash);
 		write(fd[1], str, str_len(str));
 		free(str);
 		write(fd[1], "\n", 2);
 	}
-	eradication(bash);
+	free(lim);
 	close(fd[1]);
 	exit(0);
 }

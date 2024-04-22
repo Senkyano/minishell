@@ -167,14 +167,13 @@ void		add_boxshell(t_infopars **all, t_infopars *part);
 void		add_btw_boxshell(t_infopars *pre, t_infopars *new_lst, \
 t_infopars *next, t_infopars **old);
 // Free process
-void		eradication(t_shell *bash);
+void		eradication(t_shell *bash, t_tree *branch);
 void		free_boxshell(t_infopars **all);
 void		free_shell(t_shell *bash);
 void		free_blockstrshell(t_infopars *selec);
 void		free_tree(t_tree *tree);
 void		free_essential(t_shell *bash);
 void		free_branch(t_tree *branch);
-void		free_current_branch(t_tree *branch);
 void		free_lstcmd(t_lstcmd *lst);
 // Print process
 void		print_strshell(t_infopars *lst);

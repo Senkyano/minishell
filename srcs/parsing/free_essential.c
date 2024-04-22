@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:54:23 by rihoy             #+#    #+#             */
-/*   Updated: 2024/04/20 17:46:03 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:49:14 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_tree_era(t_tree *curr)
 		free(curr);
 }
 
-void	eradication(t_shell *bash)
+void	eradication(t_shell *bash, t_tree *branch)
 {
 	if (bash->lst_char)
 		free_boxshell(&bash->lst_char);
@@ -79,10 +79,6 @@ void	eradication(t_shell *bash)
 		lib_free_split(bash->str_split);
 	if (bash->lst_envs)
 		lstclear(bash->lst_envs);
-}
-
-void	free_current_branch(t_tree *branch)
-{
 	if (branch->lst_cmd)
 		free_cmds_era(branch->lst_cmd);
 	free(branch);
